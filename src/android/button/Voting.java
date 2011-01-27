@@ -69,6 +69,7 @@ public class Voting extends Activity {
 	            				Intent i2 = new Intent();
 	            				i2.setClass(Voting.this,Information.class);
 	            				startActivity(i2);
+	            				
 	            					break;
 	        }
 	        return true;
