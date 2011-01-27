@@ -19,6 +19,8 @@ public class Menu extends TabActivity{
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.main);
 
+	    // where the initial connect for the server will be
+	    
 	    Resources res = getResources(); // Resource object to get Drawables
 	    TabHost tabHost = getTabHost();  // The activity TabHost
 	    TabHost.TabSpec spec;  // Resusable TabSpec for each tab
