@@ -43,6 +43,7 @@ public class Audio extends Activity {
 	            					Intent i = new Intent();
 	            					i.setClass(Audio.this,Help.class);
 	            					startActivity(i);
+	            					finish();
 	            					/*
 	            					Context mContext = getApplicationContext();
 	            					Dialog dialog = new Dialog(mContext);
@@ -60,7 +61,8 @@ public class Audio extends Activity {
 	            				Intent i2 = new Intent();
 	            				i2.setClass(Audio.this,Information.class);
 	            				startActivity(i2);
-	            				
+            					finish();
+
 	            				/*
 	            				Context mContext2 = getApplicationContext();
 	            				Dialog dialog2 = new Dialog(mContext2);
