@@ -6,4 +6,9 @@
 <string name="help">Vote Tab: Allows you to vote for what you want to see on the video wall.\n\nAudio Tab: Allows you to select audio channel for something playing on the screen.\n\nVideo Tab: Allows you to stream video from your Android phone camera to the video wall.\n</string>
 <string name="help_title">\t\t\t\t\t\tHelp</string>
 <string name="info_title">\t\t\t\t   Information</string>
+<string name="settings_title">\t\t\t\t   Settings</string>
+<string name="music_title">Music</string>
+<string name="music_description">Set background music</string>
+<string name="sample_title">Sample</string>
+<string name="sample_description">This is a sample option</string>
 </resources>

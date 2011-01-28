@@ -72,35 +72,20 @@ public class Menu extends TabActivity{
 	    @Override
 	    public boolean onOptionsItemSelected(MenuItem item) {
 	        switch (item.getItemId()) {
-	            case R.id.help:    /* AlertDialog.Builder builder = new AlertDialog.Builder(this);
-									builder.setMessage(R.string.help)
-									.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int id) {
-										dialog.cancel();
-									}
-									});
-									AlertDialog alert = builder.create();
-									alert.show();
-									*/
-	            					Intent i = new Intent();
-	            					i.setClass(Menu.this,Help.class);
+	            case R.id.help:     Intent i = new Intent();
+	            					i.setClass(Menu.this, Help.class);
 	            					startActivity(i);
 									break;
 	            
-	            case R.id.info:    	/*AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
-	            					builder2.setMessage(R.string.information)
-	            					.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	            					public void onClick(DialogInterface dialog, int id) {
-	            						dialog.cancel();
-	            					}
-	            					});
-	            					AlertDialog alert2 = builder2.create();
-	            					alert2.show();
-	            					*/
-	            				Intent i2 = new Intent();
-	            				i2.setClass(Menu.this,Information.class);
-	            				startActivity(i2);
+	            case R.id.info:     Intent i2 = new Intent();
+	            					i2.setClass(Menu.this, Information.class);
+	            					startActivity(i2);
 	            					break;
+	            					
+	            case R.id.settings:     Intent i3 = new Intent();
+										i3.setClass(Menu.this, Settings.class);
+										startActivity(i3);
+										break;
 	        }
 	        return true;
 	    }	
