@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,6 +15,9 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 public class Video extends Activity {
+	
+	public VideoView video;
+	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.video);
@@ -23,14 +27,28 @@ public class Video extends Activity {
             public void onClick(View v) {
                 // Perform action on click
             	setContentView(R.layout.startvideo);
-            	VideoView video = (VideoView) findViewById(R.id.videoview);
-            	
+            	video = (VideoView) findViewById(R.id.videoview);
             	video.setVideoPath("/sdcard/batman.3gp");
             	video.start();
-            	
+            	//Intent i = new Intent();
+				//i.setClass(Video.this, CameraDemo.class);
+				//startActivity(i);
             }
         });
     }
+    
+    @Override
+    public boolean onTouchEvent(MotionEvent e)
+    {
+    	if(video.onTouchEvent(e))
+    	{
+    		video.pause();
+    		return true;
+    	}
+    	else
+    		return false;
+    }
+    
     
   //@Override 
 	 public boolean onPrepareOptionsMenu(Menu menu) { 
