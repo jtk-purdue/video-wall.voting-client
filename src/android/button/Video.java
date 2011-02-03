@@ -25,7 +25,7 @@ public class Video extends Activity {
             	setContentView(R.layout.startvideo);
             	VideoView video = (VideoView) findViewById(R.id.videoview);
             	
-            	video.setVideoPath("/sdcard/batman.3gp");
+            	video.setVideoPath("/sdcard/Teenage_Dream.3gp");
             	video.start();
             	
             }
