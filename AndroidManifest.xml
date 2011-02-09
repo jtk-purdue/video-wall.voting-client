@@ -36,6 +36,8 @@
 
 <activity android:name="Settings"></activity>
 
+<activity android:name="CustomVideoCamera"></activity>
+<activity android:name="CameraDemo"></activity>
 
 <activity android:name="Help"
 		  android:gravity="center_horizontal"

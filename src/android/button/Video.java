@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,13 +27,13 @@ public class Video extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-            	setContentView(R.layout.startvideo);
-            	video = (VideoView) findViewById(R.id.videoview);
-            	video.setVideoPath("/sdcard/batman.3gp");
-            	video.start();
-            	//Intent i = new Intent();
-				//i.setClass(Video.this, CameraDemo.class);
-				//startActivity(i);
+            	//setContentView(R.layout.startvideo);
+            	//video = (VideoView) findViewById(R.id.videoview);
+            	//video.setVideoPath("/sdcard/batman.3gp");
+            	//video.start();
+            	Intent i = new Intent();
+				i.setClass(Video.this, CameraDemo.class);
+				startActivity(i);
             }
         });
     }
