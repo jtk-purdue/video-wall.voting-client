@@ -52,6 +52,9 @@ public class Voting extends Activity {
 										i3.setClass(Voting.this, Settings.class);
 										startActivity(i3);
 										break;
+										
+	            case R.id.quit:     finish();
+									break;
 	        }
 	        return true;
 	    }	

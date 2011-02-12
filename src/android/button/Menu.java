@@ -86,6 +86,9 @@ public class Menu extends TabActivity{
 										i3.setClass(Menu.this, Settings.class);
 										startActivity(i3);
 										break;
+										
+	            case R.id.quit:     finish();
+									break;
 	        }
 	        return true;
 	    }	

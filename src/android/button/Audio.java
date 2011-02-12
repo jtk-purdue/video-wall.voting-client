@@ -48,6 +48,9 @@ public class Audio extends Activity {
 										i3.setClass(Audio.this, Settings.class);
 										startActivity(i3);
 										break;
+	            
+	            case R.id.quit:     finish();
+									break;
 	        }
 	        return true;
 	    }	

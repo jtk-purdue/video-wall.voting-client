@@ -32,7 +32,7 @@ public class Video extends Activity {
             	//video.setVideoPath("/sdcard/batman.3gp");
             	//video.start();
             	Intent i = new Intent();
-				i.setClass(Video.this, CameraDemo.class);
+				i.setClass(Video.this, CameraPreview.class);
 				startActivity(i);
             }
         });
@@ -80,6 +80,9 @@ public class Video extends Activity {
 										i3.setClass(Video.this, Settings.class);
 										startActivity(i3);
 										break;
+										
+	            case R.id.quit:     finish();
+									break;
 	        }
 	        return true;
 	    }	

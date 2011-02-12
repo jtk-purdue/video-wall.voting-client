@@ -52,6 +52,9 @@ public class Welcome extends Activity {
 										i3.setClass(Welcome.this, Settings.class);
 										startActivity(i3);
 										break;
+										
+	            case R.id.quit:     finish();
+									break;
 	        }
 	        return true;
 	    }	
