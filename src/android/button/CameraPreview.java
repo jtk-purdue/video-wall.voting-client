@@ -18,6 +18,7 @@ package android.button;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
@@ -40,6 +41,8 @@ public class CameraPreview extends Activity {
         // Create our Preview view and set it as the content of our activity.
         mPreview = new Preview(this);
         setContentView(mPreview);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
     }
 
 }
