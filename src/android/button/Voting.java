@@ -2,6 +2,7 @@ package android.button;
 
 
 import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
@@ -16,18 +17,28 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ProgressBar;
 import android.widget.AdapterView.OnItemClickListener;
+import java.io.*;
+import java.net.*;
 
 public class Voting extends ListActivity {
+		
+	Socket requestSocket;
+	PrintWriter out;
+ 	BufferedReader in;
+ 	String message;
+
+	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-//        setContentView(R.layout.vote);
+        //setContentView(R.layout.vote);
         setListAdapter(new ArrayAdapter<String>(this, R.layout.vote, COUNTRIES));
 
         ListView lv = getListView();
@@ -37,12 +48,68 @@ public class Voting extends ListActivity {
           public void onItemClick(AdapterView<?> parent, View view,
               int position, long id) {
             // When clicked, show a toast with the TextView text
-            Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
+            Log.d("TOAST", "Before");
+        	  Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
                 Toast.LENGTH_SHORT).show();
+            
+           // Set up connection with server and send the country that was clicked on
+           connect();
           }
         });
-
+        
     }
+    
+    
+ public void connect()
+ {
+    try{
+		//1. creating a socket to connect to the server
+		requestSocket = new Socket("lore.cs.purdue.edu", 4242);
+		Log.d("Connection", "Connected to localhost in port 4242");
+		//2. get Input and Output streams
+		//out = new PrintWriter(requestSocket.getOutputStream(), true);
+		//out.flush();
+		//in = new BufferedReader(new InputStreamReader(requestSocket.getInputStream()));
+		//3: Communicating with the server
+		Log.d("DO", "Test1");
+		/*do{
+			message = in.readLine();
+			System.out.println("server>" + message);
+			sendMessage("GET");
+			message = "END";
+			sendMessage("END");
+			do{
+				message = in.readLine();
+				Log.d("server>", message);
+			}while(!message.equals("END"));
+		}while(!message.equals("END"));*/
+	}
+	catch(UnknownHostException unknownHost){
+		Log.d("Error", "You are trying to connect to an unknown host!");
+	}
+	catch(IOException ioException){
+		//ioException.printStackTrace();
+	}
+	finally{
+		//4: Closing connection
+		//try{
+			//in.close();
+			//out.close();
+			//requestSocket.close();
+		//}
+		//catch(IOException ioException){
+			//ioException.printStackTrace();
+		//}
+	}
+ } 
+    
+    public void sendMessage(String msg)
+	{
+			out.println(msg);
+			out.flush();
+			Log.d("client>", msg);
+	}        
+    
     static final String[] COUNTRIES = new String[] {
         "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra",
         "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina",
