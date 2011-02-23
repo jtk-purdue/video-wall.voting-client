@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import java.util.Collections;
 import android.os.Handler;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.AdapterView.OnItemClickListener;
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 
 public class Voting extends ListActivity {
 		
@@ -33,13 +35,16 @@ public class Voting extends ListActivity {
 	PrintWriter out;
  	BufferedReader in;
  	String message;
-
+ 	ArrayList<String> voteList;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //setContentView(R.layout.vote);
-        setListAdapter(new ArrayAdapter<String>(this, R.layout.vote, COUNTRIES));
+        voteList = new ArrayList<String>();
+        connect("GET");
+        setListAdapter(new ArrayAdapter<String>(this, R.layout.vote, voteList));
+        //setListAdapter(new ArrayAdapter<String>(this, R.layout.vote, COUNTRIES));
 
         ListView lv = getListView();
         lv.setTextFilterEnabled(true);
@@ -49,20 +54,27 @@ public class Voting extends ListActivity {
               int position, long id) {
             // When clicked, show a toast with the TextView text
             Log.d("TOAST", "Before");
-        	  Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
+            String vi = (String) ((TextView) view).getText();
+        	  Toast.makeText(getApplicationContext(), "Voted for " + vi,
                 Toast.LENGTH_SHORT).show();
-            
+      
            // Set up connection with server and send the country that was clicked on
-           connect();
+           connect(vi);
           }
         });
         
     }
-    
-    
- public void connect()
+       
+ public void connect(String voteitem)
  {
-    try{
+	 boolean check = false;
+	 
+	 if(voteitem.equals("GET"))
+	 {
+		 check = true;
+	 }
+	 
+	 try{
 		//1. creating a socket to connect to the server
 		requestSocket = new Socket("lore.cs.purdue.edu", 4242);
 		Log.d("Connection", "Connected to localhost in port 4242");
@@ -75,14 +87,19 @@ public class Voting extends ListActivity {
 		//3: Communicating with the server
 		Log.d("DO", "Test1");
 		do{
-			message = in.readLine();
+			message = in.readLine();		
 			System.out.println("server>" + message);
-			sendMessage("GET");
 			message = "END";
+			sendMessage(voteitem);
 			sendMessage("END");
 			do{
 				message = in.readLine();
 				Log.d("server>", message);
+				
+				if(check == true && !message.equals("END"))
+					voteList.add(message);
+					Collections.sort(voteList);//Sorting Array List in Alpha order
+				
 			}while(!message.equals("END"));
 		}while(!message.equals("END"));
 	}
@@ -91,6 +108,10 @@ public class Voting extends ListActivity {
 	}
 	catch(IOException ioException){
 		ioException.printStackTrace();
+	}
+	catch(Exception e)
+	{
+		Log.d("Error", e.getMessage());
 	}
 	finally{
 		//4: Closing connection
