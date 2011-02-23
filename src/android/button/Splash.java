@@ -19,7 +19,7 @@ public class Splash extends Activity {
          public void run() {
             try {
                int waited = 0;
-               while (waited < 5000) {
+               while (waited < 3000) {
                   sleep(100);
                   waited += 100;
                }
@@ -31,8 +31,7 @@ public class Splash extends Activity {
             Intent i = new Intent();
    			i.setClass(Splash.this, Menu.class);
    			Splash.this.startActivity(i);
-
-               
+   			
             }
          }
       };

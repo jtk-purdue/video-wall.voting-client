@@ -66,13 +66,15 @@ public class Voting extends ListActivity {
 		//1. creating a socket to connect to the server
 		requestSocket = new Socket("lore.cs.purdue.edu", 4242);
 		Log.d("Connection", "Connected to localhost in port 4242");
+		
 		//2. get Input and Output streams
-		//out = new PrintWriter(requestSocket.getOutputStream(), true);
-		//out.flush();
-		//in = new BufferedReader(new InputStreamReader(requestSocket.getInputStream()));
+		out = new PrintWriter(requestSocket.getOutputStream(), true);
+		out.flush();
+		in = new BufferedReader(new InputStreamReader(requestSocket.getInputStream()));
+		
 		//3: Communicating with the server
 		Log.d("DO", "Test1");
-		/*do{
+		do{
 			message = in.readLine();
 			System.out.println("server>" + message);
 			sendMessage("GET");
@@ -82,24 +84,24 @@ public class Voting extends ListActivity {
 				message = in.readLine();
 				Log.d("server>", message);
 			}while(!message.equals("END"));
-		}while(!message.equals("END"));*/
+		}while(!message.equals("END"));
 	}
 	catch(UnknownHostException unknownHost){
 		Log.d("Error", "You are trying to connect to an unknown host!");
 	}
 	catch(IOException ioException){
-		//ioException.printStackTrace();
+		ioException.printStackTrace();
 	}
 	finally{
 		//4: Closing connection
-		//try{
-			//in.close();
-			//out.close();
-			//requestSocket.close();
-		//}
-		//catch(IOException ioException){
-			//ioException.printStackTrace();
-		//}
+		try{
+			in.close();
+			out.close();
+			requestSocket.close();
+		}
+		catch(IOException ioException){
+			ioException.printStackTrace();
+		}
 	}
  } 
     
