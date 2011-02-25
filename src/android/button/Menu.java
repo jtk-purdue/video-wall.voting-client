@@ -55,6 +55,12 @@ public class Menu extends TabActivity{
                 res.getDrawable(R.drawable.ic_tab_artists))
             .setContent(intent);
 	    tabHost.addTab(spec);
+	    
+	    intent = new Intent().setClass(this, Bios.class);
+	    spec = tabHost.newTabSpec("artists").setIndicator("Team",
+                res.getDrawable(R.drawable.ic_tab_artists))
+            .setContent(intent);
+	    tabHost.addTab(spec);
 
 	    tabHost.setCurrentTab(0);
 	}
