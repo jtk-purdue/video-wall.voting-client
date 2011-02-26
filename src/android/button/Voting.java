@@ -28,6 +28,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 public class Voting extends ListActivity {
 		
@@ -36,6 +38,8 @@ public class Voting extends ListActivity {
  	BufferedReader in;
  	String message;
  	ArrayList<String> voteList;
+ 	Animation anim = null;
+ 	
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,8 @@ public class Voting extends ListActivity {
         voteList = new ArrayList<String>();
         connect("GET");
         setListAdapter(new ArrayAdapter<String>(this, R.layout.vote, voteList));
+ 	  	anim = AnimationUtils.loadAnimation( this, R.anim.shake );
+
         //setListAdapter(new ArrayAdapter<String>(this, R.layout.vote, COUNTRIES));
 
         ListView lv = getListView();
@@ -51,13 +57,15 @@ public class Voting extends ListActivity {
 
         lv.setOnItemClickListener(new OnItemClickListener() {
           public void onItemClick(AdapterView<?> parent, View view,
-              int position, long id) {
+              int position, long id)
+          {
             // When clicked, show a toast with the TextView text
+
             Log.d("TOAST", "Before");
             String vi = (String) ((TextView) view).getText();
         	  Toast.makeText(getApplicationContext(), "Voted for " + vi,
                 Toast.LENGTH_SHORT).show();
-      
+        	  view.startAnimation( anim );
            // Set up connection with server and send the country that was clicked on
            connect(vi);
           }
@@ -76,8 +84,8 @@ public class Voting extends ListActivity {
 	 
 	 try{
 		//1. creating a socket to connect to the server
-		requestSocket = new Socket("lore.cs.purdue.edu", 4242);
-		Log.d("Connection", "Connected to localhost in port 4242");
+		requestSocket = new Socket("lore.cs.purdue.edu", 4500);
+		Log.d("Connection", "Connected to localhost in port 4500");
 		
 		//2. get Input and Output streams
 		out = new PrintWriter(requestSocket.getOutputStream(), true);
