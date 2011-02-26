@@ -5,7 +5,7 @@ android:layout_width="fill_parent"
 android:layout_height="fill_parent"
 xmlns:android="http://schemas.android.com/apk/res/android"
 >
-<ImageView android:src="@drawable/audioselect"
+<ImageView android:src="@drawable/team"
          android:id="@+id/ImageView02"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content">
@@ -27,22 +27,22 @@ android:orientation="horizontal"
 >
 <Button
  	android:id="@+id/member1"
- 	android:layout_width="95px"
-	android:layout_height="95px"
+ 	android:layout_width="100px"
+	android:layout_height="100px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
  <Button
  	android:id="@+id/member2"
- 	android:layout_width="95px"
-	android:layout_height="95px"
+ 	android:layout_width="100px"
+	android:layout_height="100px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
  <Button
  	android:id="@+id/member3"
- 	android:layout_width="95px"
-	android:layout_height="95px"
+ 	android:layout_width="100px"
+	android:layout_height="100px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
@@ -58,22 +58,22 @@ android:orientation="horizontal"
 
 <Button
  	android:id="@+id/member4"
- 	android:layout_width="95px"
-	android:layout_height="95px"
+ 	android:layout_width="100px"
+	android:layout_height="100px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
  <Button
  	android:id="@+id/member5"
- 	android:layout_width="95px"
-	android:layout_height="95px"
+ 	android:layout_width="100px"
+	android:layout_height="100px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
  <Button
  	android:id="@+id/member6"
- 	android:layout_width="95px"
-	android:layout_height="95px"
+ 	android:layout_width="100px"
+	android:layout_height="100px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
@@ -89,22 +89,22 @@ android:orientation="horizontal"
 
 <Button
  	android:id="@+id/member7"
- 	android:layout_width="95px"
-	android:layout_height="95px"
+ 	android:layout_width="100px"
+	android:layout_height="100px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
  <Button
  	android:id="@+id/member8"
- 	android:layout_width="95px"
-	android:layout_height="95px"
+ 	android:layout_width="100px"
+	android:layout_height="100px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
  <Button
  	android:id="@+id/member9"
- 	android:layout_width="95px"
-	android:layout_height="95px"
+ 	android:layout_width="100px"
+	android:layout_height="100px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>

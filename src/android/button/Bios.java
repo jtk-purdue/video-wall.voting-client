@@ -20,12 +20,12 @@ public class Bios extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         
         Button button = (Button) findViewById(R.id.member1);
-        //button.setBackgroundColor(Color.TRANSPARENT);
+        button.setBackgroundColor(Color.TRANSPARENT);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
             	Intent i = new Intent();
-				i.setClass(Bios.this, Sohail.class);
+				i.setClass(Bios.this, TylerH.class);
 				startActivity(i);
             }
         });
@@ -37,7 +37,7 @@ public class Bios extends Activity {
             public void onClick(View v) {
 
             	Intent i = new Intent();
-				i.setClass(Bios.this, Sohail.class);
+				i.setClass(Bios.this, TylerW.class);
 				startActivity(i);
             }
         });
@@ -49,7 +49,7 @@ public class Bios extends Activity {
             public void onClick(View v) {
 
             	Intent i = new Intent();
-				i.setClass(Bios.this, Sohail.class);
+				i.setClass(Bios.this, Jaye.class);
 				startActivity(i);
             }
         });
@@ -61,19 +61,19 @@ public class Bios extends Activity {
             public void onClick(View v) {
 
             	Intent i = new Intent();
-				i.setClass(Bios.this, Sohail.class);
+				i.setClass(Bios.this, Maaz.class);
 				startActivity(i);
             }
         });
 
         
         Button button5 = (Button) findViewById(R.id.member5);
-        //button5.setBackgroundColor(Color.TRANSPARENT);
+        button5.setBackgroundColor(Color.TRANSPARENT);
         button5.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
             	Intent i = new Intent();
-				i.setClass(Bios.this, Sohail.class);
+				i.setClass(Bios.this, Korb.class);
 				startActivity(i);
             }
         });
@@ -85,7 +85,7 @@ public class Bios extends Activity {
             public void onClick(View v) {
 
             	Intent i = new Intent();
-				i.setClass(Bios.this, Sohail.class);
+				i.setClass(Bios.this, Jon.class);
 				startActivity(i);
             }
         });
@@ -108,7 +108,7 @@ public class Bios extends Activity {
             public void onClick(View v) {
 
             	Intent i = new Intent();
-				i.setClass(Bios.this, Sohail.class);
+				i.setClass(Bios.this, Nick.class);
 				startActivity(i);
             }
         });
@@ -119,7 +119,7 @@ public class Bios extends Activity {
             public void onClick(View v) {
 
             	Intent i = new Intent();
-				i.setClass(Bios.this, Sohail.class);
+				i.setClass(Bios.this, Rick.class);
 				startActivity(i);
             }
         });
