@@ -9,11 +9,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.VideoView;
+import android.widget.ViewFlipper;
 
-public class Bios extends Activity {
-	
+public class Bios extends Activity
+{
+	Animation anim = null;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bios);
@@ -22,10 +26,11 @@ public class Bios extends Activity {
         Button button = (Button) findViewById(R.id.member1);
         button.setBackgroundColor(Color.TRANSPARENT);
         button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
+            public void onClick(View v) 
+            {
             	Intent i = new Intent();
-				i.setClass(Bios.this, TylerH.class);
+            	i.putExtra("name","TylerH");
+				i.setClass(Bios.this, BioPage.class);
 				startActivity(i);
             }
         });
@@ -34,10 +39,11 @@ public class Bios extends Activity {
         Button button2 = (Button) findViewById(R.id.member2);
         button2.setBackgroundColor(Color.TRANSPARENT);
         button2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
+            public void onClick(View v)
+            {
             	Intent i = new Intent();
-				i.setClass(Bios.this, TylerW.class);
+            	i.putExtra("name","TylerW");
+				i.setClass(Bios.this, BioPage.class);
 				startActivity(i);
             }
         });
@@ -49,7 +55,8 @@ public class Bios extends Activity {
             public void onClick(View v) {
 
             	Intent i = new Intent();
-				i.setClass(Bios.this, Jaye.class);
+            	i.putExtra("name","Jaye");
+				i.setClass(Bios.this, BioPage.class);
 				startActivity(i);
             }
         });
@@ -58,10 +65,11 @@ public class Bios extends Activity {
         Button button4 = (Button) findViewById(R.id.member4);
         button4.setBackgroundColor(Color.TRANSPARENT);
         button4.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
+            public void onClick(View v) 
+            {
             	Intent i = new Intent();
-				i.setClass(Bios.this, Maaz.class);
+            	i.putExtra("name","Maaz");
+				i.setClass(Bios.this, BioPage.class);
 				startActivity(i);
             }
         });
@@ -70,10 +78,11 @@ public class Bios extends Activity {
         Button button5 = (Button) findViewById(R.id.member5);
         button5.setBackgroundColor(Color.TRANSPARENT);
         button5.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
+            public void onClick(View v) 
+            {
             	Intent i = new Intent();
-				i.setClass(Bios.this, Korb.class);
+            	i.putExtra("name","Korb");
+				i.setClass(Bios.this, BioPage.class);
 				startActivity(i);
             }
         });
@@ -82,10 +91,11 @@ public class Bios extends Activity {
         Button button6 = (Button) findViewById(R.id.member6);
         button6.setBackgroundColor(Color.TRANSPARENT);
         button6.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
+            public void onClick(View v)
+            {
             	Intent i = new Intent();
-				i.setClass(Bios.this, Jon.class);
+            	i.putExtra("name","Jon");
+				i.setClass(Bios.this, BioPage.class);
 				startActivity(i);
             }
         });
@@ -94,10 +104,11 @@ public class Bios extends Activity {
         Button button7 = (Button) findViewById(R.id.member7);
         button7.setBackgroundColor(Color.TRANSPARENT);
         button7.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
+            public void onClick(View v) 
+            {
             	Intent i = new Intent();
-				i.setClass(Bios.this, Sohail.class);
+            	i.putExtra("name","Sohail");
+				i.setClass(Bios.this, BioPage.class);
 				startActivity(i);
             }
         });
@@ -105,10 +116,11 @@ public class Bios extends Activity {
         Button button8 = (Button) findViewById(R.id.member8);
         button8.setBackgroundColor(Color.TRANSPARENT);
         button8.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
+            public void onClick(View v)
+            {
             	Intent i = new Intent();
-				i.setClass(Bios.this, Nick.class);
+            	i.putExtra("name","Nick");
+				i.setClass(Bios.this, BioPage.class);
 				startActivity(i);
             }
         });
@@ -116,10 +128,11 @@ public class Bios extends Activity {
         Button button9 = (Button) findViewById(R.id.member9);
         button9.setBackgroundColor(Color.TRANSPARENT);
         button9.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
+            public void onClick(View v) 
+            {
             	Intent i = new Intent();
-				i.setClass(Bios.this, Rick.class);
+            	i.putExtra("name","Rick");
+				i.setClass(Bios.this, BioPage.class);
 				startActivity(i);
             }
         });

@@ -5,6 +5,7 @@ import android.app.Activity;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -39,13 +40,44 @@ public class Voting extends ListActivity {
  	String message;
  	ArrayList<String> voteList;
  	Animation anim = null;
- 	
+ 	ProgressDialog myProgressDialog = null;
 	
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) 
+    {
         super.onCreate(savedInstanceState);
+        myProgressDialog = ProgressDialog.show(Voting.this, "Please wait...", "Populating List...", true);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        //setContentView(R.layout.vote);
         voteList = new ArrayList<String>();
+
+        
+        
+        
+        new Thread()
+        {
+                                        public void run() {
+     
+                                                try{
+        
+                                                        // Do some Fake-Work
+                                                    //connect("GET");
+                                                        sleep(1700);
+        
+                                                } catch (Exception e) 
+                                                { }
+        
+                                                // Dismiss the Dialog
+        
+                                                myProgressDialog.dismiss();
+        
+                                        }
+        
+                                }.start();
+        
+                 
+        
+    
+        
+        //setContentView(R.layout.vote);
         connect("GET");
         setListAdapter(new ArrayAdapter<String>(this, R.layout.vote, voteList));
  	  	anim = AnimationUtils.loadAnimation( this, R.anim.shake );
@@ -72,6 +104,8 @@ public class Voting extends ListActivity {
         });
         
     }
+    
+    
        
  public void connect(String voteitem)
  {

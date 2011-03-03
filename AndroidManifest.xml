@@ -36,16 +36,8 @@
 
 <activity android:name="Settings"></activity>
 <activity android:name="Bios"></activity>
+<activity android:name="BioPage"></activity>
 
-<activity android:name="Sohail"></activity>
-<activity android:name="Maaz"></activity>
-<activity android:name="Nick"></activity>
-<activity android:name="TylerW"></activity>
-<activity android:name="TylerH"></activity>
-<activity android:name="Jon"></activity>
-<activity android:name="Rick"></activity>
-<activity android:name="Jaye"></activity>
-<activity android:name="Korb"></activity>
 
 <activity android:name="CameraPreview"></activity>
 <activity android:name="CameraDemo"></activity>
