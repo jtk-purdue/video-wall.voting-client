@@ -1,0 +1,4 @@
+syntax: glob
+*.apk
+*.dex
+*.ap_
