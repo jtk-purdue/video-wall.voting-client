@@ -25,7 +25,6 @@ import android.widget.Toast;
 public class Audio extends Activity {
     private static final String TAG = null;
 
-//Testing to see if this works sas
     
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
