@@ -6,5 +6,12 @@
     <item android:id="@+id/info"
         android:icon="@drawable/info_icon" 
         android:title="Info"/>
-<item android:id="@+id/settings" android:title="Settings" android:icon="@drawable/info_icon"></item>
+	<item android:id="@+id/settings" 
+		  android:title="Settings" 
+		  android:icon="@drawable/settings_icon">
+	</item>
+	<item android:id="@+id/quit" 
+		  android:title="Quit" 
+		  android:icon="@drawable/quit_icon">
+	</item>
 </menu>
