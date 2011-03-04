@@ -30,7 +30,6 @@ public class Video extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-<<<<<<< local
             	//setContentView(R.layout.startvideo);
             	//video = (VideoView) findViewById(R.id.videoview);
             	//video.setVideoPath("/sdcard/batman.3gp");
@@ -38,14 +37,6 @@ public class Video extends Activity {
             	Intent i = new Intent();
 				i.setClass(Video.this, CameraPreview.class);
 				startActivity(i);
-=======
-            	setContentView(R.layout.startvideo);
-            	VideoView video = (VideoView) findViewById(R.id.videoview);
-            	
-            	video.setVideoPath("/sdcard/Teenage_Dream.3gp");
-            	video.start();
-            	
->>>>>>> other
             }
         });
     }
