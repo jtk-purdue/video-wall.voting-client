@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.MenuInflater;
@@ -18,6 +19,7 @@ public class Menu extends TabActivity{
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 	    // where the initial connect for the server will be
 	    
@@ -50,6 +52,12 @@ public class Menu extends TabActivity{
 
 	    intent = new Intent().setClass(this, Video.class);
 	    spec = tabHost.newTabSpec("artists").setIndicator("Video",
+                res.getDrawable(R.drawable.ic_tab_artists))
+            .setContent(intent);
+	    tabHost.addTab(spec);
+	    
+	    intent = new Intent().setClass(this, Bios.class);
+	    spec = tabHost.newTabSpec("artists").setIndicator("Team",
                 res.getDrawable(R.drawable.ic_tab_artists))
             .setContent(intent);
 	    tabHost.addTab(spec);
@@ -86,6 +94,9 @@ public class Menu extends TabActivity{
 										i3.setClass(Menu.this, Settings.class);
 										startActivity(i3);
 										break;
+										
+	            case R.id.quit:     finish();
+									break;
 	        }
 	        return true;
 	    }	

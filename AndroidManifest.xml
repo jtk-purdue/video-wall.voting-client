@@ -3,7 +3,19 @@
       package="android.button"
       android:versionCode="1"
       android:versionName="1.0">
-    <application android:icon="@drawable/icon2" android:label="@string/app_name">
+      <uses-permission android:name="android.permission.CAMERA" />
+ 	  <uses-feature android:name="android.hardware.camera" />
+      <uses-feature android:name="android.hardware.camera.autofocus" />
+      
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <uses-feature android:name="android.hardware.wifi" android:required="true" />
+    <uses-feature android:name="android.hardware.microphone" android:required="true" />
+      
+    <application android:icon="@drawable/icon3" android:label="@string/app_name">
         <activity android:name=".Splash"
                   android:label="@string/app_name">
             <intent-filter>
@@ -23,6 +35,20 @@
 </activity>
 
 <activity android:name="Settings"></activity>
+<activity android:name="Bios"></activity>
+
+<activity android:name="Sohail"></activity>
+<activity android:name="Maaz"></activity>
+<activity android:name="Nick"></activity>
+<activity android:name="TylerW"></activity>
+<activity android:name="TylerH"></activity>
+<activity android:name="Jon"></activity>
+<activity android:name="Rick"></activity>
+<activity android:name="Jaye"></activity>
+<activity android:name="Korb"></activity>
+
+<activity android:name="CameraPreview"></activity>
+<activity android:name="CameraDemo"></activity>
 
 <activity android:name="Help"
 		  android:gravity="center_horizontal"

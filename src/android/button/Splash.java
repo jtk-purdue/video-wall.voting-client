@@ -3,6 +3,7 @@ package android.button;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
  
 public class Splash extends Activity {
@@ -11,12 +12,14 @@ public class Splash extends Activity {
    public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.splash);
+      setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
       Thread splashThread = new Thread() {
          @Override
          public void run() {
             try {
                int waited = 0;
-               while (waited < 5000) {
+               while (waited < 2000) {
                   sleep(100);
                   waited += 100;
                }
@@ -28,8 +31,7 @@ public class Splash extends Activity {
             Intent i = new Intent();
    			i.setClass(Splash.this, Menu.class);
    			Splash.this.startActivity(i);
-
-               
+   			
             }
          }
       };
