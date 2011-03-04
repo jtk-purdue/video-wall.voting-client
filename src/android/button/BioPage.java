@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-// BioPage Activity changed again
+// BioPage Activity changed again and again
 
 public class BioPage extends Activity {
 	
