@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/*This file sets up the layout for when the help button is pressed.
+ */
+
 public class Help extends Activity
 {
 	@Override
@@ -14,19 +17,7 @@ public class Help extends Activity
 	{
 	       super.onCreate(savedInstanceState);
 	       setContentView(R.layout.help);
-	       /*
-	       Context mContext = getApplicationContext();
-	       Dialog dialog = new Dialog(mContext);
-
-	       dialog.setContentView(R.layout.help);
-	       dialog.setTitle("Custom Dialog");
-
-	       TextView text = (TextView) dialog.findViewById(R.id.text);
-	       text.setText("Hello, this is a custom dialog!");
-	       ImageView image = (ImageView) dialog.findViewById(R.id.icon);
-	       image.setImageResource(R.drawable.icon);
-	       */
-	   }
+	}
 
 
 }

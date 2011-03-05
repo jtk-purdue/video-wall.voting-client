@@ -16,7 +16,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-// BioPage Activity changed again and again
+/*This activity decides which bio-page layout to display and then changes the layout to it. 
+ *
+ */
 
 public class BioPage extends Activity {
 	

@@ -22,6 +22,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*This activity will allow the user to stream audio from a screen (or a set of screens) 
+ * to his/her phone.
+ */
+
 public class Audio extends Activity {
     private static final String TAG = null;
     
@@ -58,9 +62,6 @@ public class Audio extends Activity {
 	            return false;
 	        }
 	    }
-
-
-
 	    
 	    @Override
 	    public boolean onOptionsItemSelected(MenuItem item) {

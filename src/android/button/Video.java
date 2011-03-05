@@ -16,9 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+/*This tab allows users to start video streaming from their phone to the video wall. 
+ * When the “Start Video” button is clicked it jumps to the CameraPreview Activity.
+ */
+
 public class Video extends Activity {
-	
-	public VideoView video;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,29 +32,12 @@ public class Video extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
-            	//setContentView(R.layout.startvideo);
-            	//video = (VideoView) findViewById(R.id.videoview);
-            	//video.setVideoPath("/sdcard/batman.3gp");
-            	//video.start();
             	Intent i = new Intent();
 				i.setClass(Video.this, CameraPreview.class);
 				startActivity(i);
             }
         });
     }
-    
-    @Override
-    public boolean onTouchEvent(MotionEvent e)
-    {
-    	if(video.onTouchEvent(e))
-    	{
-    		video.pause();
-    		return true;
-    	}
-    	else
-    		return false;
-    }
-    
     
   //@Override 
 	 public boolean onPrepareOptionsMenu(Menu menu) { 

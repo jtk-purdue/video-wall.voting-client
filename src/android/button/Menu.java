@@ -12,7 +12,9 @@ import android.view.MenuItem;
 import android.widget.TabHost;
 import android.widget.Toast;
 
- 
+/*This file sets up the tab view that the application uses.
+ */
+
 public class Menu extends TabActivity{
    /** Called when the activity is first created. */
    
