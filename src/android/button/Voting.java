@@ -1,6 +1,5 @@
 package android.button;
 
-
 import android.app.Activity;
 
 import android.app.AlertDialog;
@@ -31,6 +30,10 @@ import java.net.*;
 import java.util.ArrayList;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
+/*When this activity starts, it pulls a list of available shows that can be voted on. 
+ * When a vote is cast it makes a connection with the server and send across what was voted for.
+ */
 
 public class Voting extends ListActivity {
 		

@@ -15,6 +15,9 @@ import android.widget.Button;
 import android.widget.VideoView;
 import android.widget.ViewFlipper;
 
+/*This activity sets up the tab that allows the user to view the bio-pages of team members.
+ */
+
 public class Bios extends Activity
 {
 	Animation anim = null;

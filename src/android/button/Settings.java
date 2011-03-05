@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
+/*This file sets up the layout for when the settings button is pressed.
+ */
+
 public class Settings extends PreferenceActivity
 {
 	@Override

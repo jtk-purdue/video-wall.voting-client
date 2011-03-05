@@ -26,7 +26,8 @@ import android.view.SurfaceView;
 import android.view.Window;
 import java.io.IOException;
 
-// ----------------------------------------------------------------------
+/*This file sets up the video preview on the phone.
+ */
 
 public class CameraPreview extends Activity {    
     private Preview mPreview;
