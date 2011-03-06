@@ -37,7 +37,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 /*When this activity starts, it pulls a list of available shows that can be voted on. 
- * When a vote is cast it makes a connection with the server and send across what was voted for.
+ * When a vote is cast it makes a connection with the server and sends across what was voted for.
  */
 
 public class Voting extends ListActivity {
