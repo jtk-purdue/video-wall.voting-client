@@ -3,11 +3,15 @@ package android.button;
 import android.app.Activity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import java.util.Collections;
 import android.os.Handler;
@@ -15,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,10 +49,29 @@ public class Voting extends ListActivity {
  	ArrayList<String> voteList;
  	Animation anim = null;
  	ProgressDialog myProgressDialog = null;
+ 	boolean internetcheck = false;
 	
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
+        Log.d("Intial Internet State","Right now it is false");
+        internetcheck = checkInternetConnection();
+        
+        
+        //Creating a custom dialog box
+        Context mContext = getApplicationContext();
+        Dialog dialog = new Dialog(mContext);
+
+        dialog.setContentView(R.layout.custom_dialog);
+        dialog.setTitle("Custom Dialog");
+
+        TextView text = (TextView) dialog.findViewById(R.id.text);
+        text.setText("Hello, this is a custom dialog!");
+        ImageView image = (ImageView) dialog.findViewById(R.id.image);
+        image.setImageResource(R.drawable.icon3);
+        //setContentView(R.layout.custom_dialog);
+    	
+    
         myProgressDialog = ProgressDialog.show(Voting.this, "Please wait...", "Populating List...", true);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         voteList = new ArrayList<String>();
@@ -81,11 +105,12 @@ public class Voting extends ListActivity {
     
         
         //setContentView(R.layout.vote);
+                                
         connect("GET");
         setListAdapter(new ArrayAdapter<String>(this, R.layout.vote, voteList));
  	  	anim = AnimationUtils.loadAnimation( this, R.anim.shake );
 
-        //setListAdapter(new ArrayAdapter<String>(this, R.layout.vote, COUNTRIES));
+       // setListAdapter(new ArrayAdapter<String>(this, R.layout.vote, COUNTRIES));
 
         ListView lv = getListView();
         lv.setTextFilterEnabled(true);
@@ -108,7 +133,20 @@ public class Voting extends ListActivity {
         
     }
     
-    
+    private boolean checkInternetConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            Log.d("Connection State", "Internet Connection Not Present");
+            return false;
+        }
+    }
+
+
        
  public void connect(String voteitem)
  {
@@ -148,6 +186,19 @@ public class Voting extends ListActivity {
 			}while(!message.equals("END"));
 		}while(!message.equals("END"));
 	}
+	 
+	 catch(ConnectException e)
+	 {
+		 Log.d("SERVER","Server NOT FOUND");
+		 Toast.makeText(getApplicationContext(), "Server not running",
+	                Toast.LENGTH_LONG).show();
+		 Intent i = new Intent();
+		 i.setClass(this,Welcome.class);
+		 startActivity(i);
+		 finish();
+		 
+	 }
+	 
 	catch(UnknownHostException unknownHost){
 		Log.d("Error", "You are trying to connect to an unknown host!");
 	}
