@@ -59,7 +59,8 @@ public class Voting extends ListActivity {
 		 * image.setImageResource(R.drawable.icon3); //
 		 * setContentView(R.layout.custom_dialog);
 		 */
-
+		if(internetcheck)
+		{
 		myProgressDialog = ProgressDialog.show(Voting.this, "Please wait...",
 				"Populating List...", true);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -81,7 +82,21 @@ public class Voting extends ListActivity {
 
 		}.start();
 
-		connect("GET"); // Contacts server and gets list of available shows
+		try {
+			connect("GET");
+		} catch (ConnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // Contacts server and gets list of available shows
 		setListAdapter(new ArrayAdapter<String>(this, R.layout.vote, voteList));// Sets vote list as layout
 		anim = AnimationUtils.loadAnimation(this, R.anim.shake); // Sets the animation to shake
 		ListView lv = getListView();
@@ -98,9 +113,27 @@ public class Voting extends ListActivity {
 				Toast.makeText(getApplicationContext(), "Voted for " + vi,
 						Toast.LENGTH_SHORT).show();// Show the item which has been voted for through a toast
 				view.startAnimation(anim); // Show animation when clicked
-				connect(vi); // Sends server information on what was voted for
+				try {
+					connect(vi);
+				} catch (ConnectException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (UnknownHostException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} // Sends server information on what was voted for
 			}
 		});
+		}//end of if
+		else 
+			Toast.makeText(getApplicationContext(),"No active internet connection",
+					Toast.LENGTH_SHORT).show();
 
 	}
 
@@ -118,7 +151,7 @@ public class Voting extends ListActivity {
 		}
 	}
 
-	public void connect(String voteitem) {
+	public void connect(String voteitem) throws UnknownHostException, IOException, ConnectException, Exception {
 		boolean check = false;
 
 		if (voteitem.equals("GET")) {
@@ -129,13 +162,19 @@ public class Voting extends ListActivity {
 			// 1. creating a socket to connect to the server
 			requestSocket = new Socket("lore.cs.purdue.edu", 4500);
 			Log.d("Connection", "Connected to localhost in port 4500");
-
+			
+			if(requestSocket==null)
+			{
+				Log.d("REQUEST SOCKET DID NOT WORK","NULL");
+			}
+			
 			// 2. get Input and Output streams
 			out = new PrintWriter(requestSocket.getOutputStream(), true);
 			out.flush();
 			in = new BufferedReader(new InputStreamReader(
-					requestSocket.getInputStream()));
+			requestSocket.getInputStream()));
 
+			
 			// 3: Communicating with the server
 			Log.d("DO", "Test1");
 			do {
@@ -155,18 +194,15 @@ public class Voting extends ListActivity {
 
 				} while (!message.equals("END"));
 			} while (!message.equals("END"));
+			
 		}
-
+		
+			
 		// Handle exception if server was not found
 		catch (ConnectException e) {
 			Log.d("SERVER", "Server NOT FOUND");
 			Toast.makeText(getApplicationContext(), "Server not running",
 					Toast.LENGTH_LONG).show();
-			Intent i = new Intent();
-			i.setClass(this, Welcome.class);
-			startActivity(i);
-			finish();
-
 		}
 
 		// Handles unknown host exception
