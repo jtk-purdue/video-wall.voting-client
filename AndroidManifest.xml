@@ -41,7 +41,7 @@
 
 
 <activity android:name="CameraPreview"></activity>
-<activity android:name="CameraDemo"></activity>
+<activity android:name="GalleryExample"></activity>
 
 <activity android:name="Help"
 		  android:gravity="center_horizontal"
