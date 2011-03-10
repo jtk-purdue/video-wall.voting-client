@@ -57,7 +57,7 @@ public class Menu extends TabActivity {
 		tabHost.addTab(spec);
 
 		// Do the same for the other tabs
-		intent = new Intent().setClass(this, GalleryExample.class);
+		intent = new Intent().setClass(this, Audio.class);
 		spec = tabHost
 				.newTabSpec("albums")
 				.setIndicator("Audio",
@@ -73,7 +73,7 @@ public class Menu extends TabActivity {
 				.setContent(intent);
 		tabHost.addTab(spec);
 
-		intent = new Intent().setClass(this, Bios.class);
+		intent = new Intent().setClass(this, GalleryExample.class);
 		spec = tabHost
 				.newTabSpec("artists")
 				.setIndicator("Team",

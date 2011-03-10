@@ -18,7 +18,11 @@ public class GalleryExample extends Activity {
     private ImageView imgView;
 
     private Integer[] Imgid = {
-            R.drawable.nh, R.drawable.mh, R.drawable.a_3, R.drawable.a_4, R.drawable.a_5, R.drawable.a_6, R.drawable.a_7
+            R.drawable.th, R.drawable.tw, R.drawable.jf, R.drawable.mh, R.drawable.jtk, R.drawable.jm, R.drawable.sm, R.drawable.nh, R.drawable.rf
+    };
+    
+    private Integer[] thumbnails = {
+            R.drawable.tylerh, R.drawable.tylerh, R.drawable.jaye, R.drawable.maaz, R.drawable.korb, R.drawable.jon, R.drawable.sohail, R.drawable.maaz, R.drawable.rick
     };
     
     @Override
@@ -66,8 +70,8 @@ public class GalleryExample extends Activity {
         public View getView(int position, View convertView, ViewGroup parent) {
             ImageView imgView = new ImageView(cont);
 
-            imgView.setImageResource(Imgid[position]);
-            imgView.setLayoutParams(new Gallery.LayoutParams(80, 70));
+            imgView.setImageResource(thumbnails[position]);
+            imgView.setLayoutParams(new Gallery.LayoutParams(195, 200));
             imgView.setScaleType(ImageView.ScaleType.FIT_XY);
             imgView.setBackgroundResource(GalItemBg);
 
