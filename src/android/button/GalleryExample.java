@@ -22,7 +22,7 @@ public class GalleryExample extends Activity {
     };
     
     private Integer[] thumbnails = {
-            R.drawable.tylerh, R.drawable.tylerh, R.drawable.jaye, R.drawable.maaz, R.drawable.korb, R.drawable.jon, R.drawable.sohail, R.drawable.maaz, R.drawable.rick
+            R.drawable.tylerh, R.drawable.tylerw, R.drawable.jaye, R.drawable.maaz, R.drawable.korb, R.drawable.jon, R.drawable.sohail, R.drawable.nick, R.drawable.rick
     };
     
     @Override
