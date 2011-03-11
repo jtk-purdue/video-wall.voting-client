@@ -33,9 +33,11 @@ public class Menu extends TabActivity {
 		TabHost.TabSpec spec; // Resusable TabSpec for each tab
 		Intent intent; // Reusable Intent for each tab
 
+		/*
 		// Create an Intent to launch an Activity for the tab (to be reused)
 		intent = new Intent().setClass(this, Welcome.class);
-
+		
+		
 		// Create a tab with name Welcome and image ic_table_artists
 		spec = tabHost
 				.newTabSpec("artists")
@@ -43,7 +45,16 @@ public class Menu extends TabActivity {
 						res.getDrawable(R.drawable.ic_tab_artists))
 				.setContent(intent);
 		tabHost.addTab(spec);
-
+		*/
+		
+		intent = new Intent().setClass(this, Bios.class);
+		spec = tabHost
+				.newTabSpec("artists")
+				.setIndicator("Team",
+						res.getDrawable(R.drawable.ic_tab_artists))
+				.setContent(intent);
+		tabHost.addTab(spec);
+		
 		intent = new Intent().setClass(this, Voting.class);
 
 		// Initialize a TabSpec for each tab and add it to the TabHost
@@ -73,13 +84,7 @@ public class Menu extends TabActivity {
 				.setContent(intent);
 		tabHost.addTab(spec);
 
-		intent = new Intent().setClass(this, GalleryExample.class);
-		spec = tabHost
-				.newTabSpec("artists")
-				.setIndicator("Team",
-						res.getDrawable(R.drawable.ic_tab_artists))
-				.setContent(intent);
-		tabHost.addTab(spec);
+		
 
 		tabHost.setCurrentTab(0);
 	}
