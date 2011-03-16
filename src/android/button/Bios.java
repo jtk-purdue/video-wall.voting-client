@@ -1,108 +1,184 @@
 package android.button;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.Gallery;
-import android.widget.Gallery.LayoutParams;
-import android.widget.ViewSwitcher.ViewFactory;
-import android.widget.ImageSwitcher;
-import android.widget.ImageView;
-import android.widget.AdapterView.OnItemClickListener;
-
-public class Bios extends Activity implements ViewFactory {
-	Animation anim = null;
-
-	// ---the images to display---
-	Integer[] imageIDs = { R.drawable.th, R.drawable.tw, R.drawable.jf,
-			R.drawable.mh, R.drawable.jtk, R.drawable.jm, R.drawable.sm,
-			R.drawable.nh, R.drawable.rf };
-
-	private Integer[] thumbnails = { R.drawable.tylerh, R.drawable.tylerw,
-			R.drawable.jaye, R.drawable.maaz, R.drawable.korb, R.drawable.jon,
-			R.drawable.sohail, R.drawable.nick, R.drawable.rick };
-
-	private ImageSwitcher imageSwitcher;
-	int ctr = 0;
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.gallery);
-
-		imageSwitcher = (ImageSwitcher) findViewById(R.id.switcher1);
-		imageSwitcher.setFactory(this);
-		imageSwitcher.setInAnimation(AnimationUtils.loadAnimation(this,
-				R.anim.push_up_in));
-		imageSwitcher.setOutAnimation(AnimationUtils.loadAnimation(this,
-				R.anim.push_up_out));
-
-		Gallery gallery = (Gallery) findViewById(R.id.gallery1);
-		gallery.setAdapter(new ImageAdapter(this));
-		gallery.setSelection(4);
-		imageSwitcher.setImageResource(R.drawable.team_instruction);
-
-		gallery.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView parent, View v, int position,
-					long id) {
-				imageSwitcher.setImageResource(imageIDs[position]);
-			}
-		});
-
-	}
-
-	public View makeView() {
-		ImageView imageView = new ImageView(this);
-		imageView.setBackgroundColor(0xFF000000);
-		imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-		imageView.setLayoutParams(new ImageSwitcher.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-		return imageView;
-	}
-
-	public class ImageAdapter extends BaseAdapter {
-		private Context context;
-		private int itemBackground;
-
-		public ImageAdapter(Context c) {
-			context = c;
-
-			// ---setting the style---
-			TypedArray a = obtainStyledAttributes(R.styleable.GalleryTheme);
-			itemBackground = a.getResourceId(
-					R.styleable.GalleryTheme_android_galleryItemBackground, 0);
-			a.recycle();
-		}
-
-		// ---returns the number of images---
-		public int getCount() {
-			return imageIDs.length;
-		}
-
-		// ---returns the ID of an item---
-		public Object getItem(int position) {
-			return position;
-		}
-
-		public long getItemId(int position) {
-			return position;
-		}
-
-		// ---returns an ImageView view---
-		public View getView(int position, View convertView, ViewGroup parent) {
-			ImageView imageView = new ImageView(context);
-			imageView.setImageResource(thumbnails[position]);
-			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-			imageView.setLayoutParams(new Gallery.LayoutParams(170, 175));
-			imageView.setBackgroundResource(itemBackground);
-			return imageView;
-		}
-	}
-}
+   	
+   	import android.app.Activity;
+   	import android.content.Intent;
+   	import android.content.pm.ActivityInfo;
+   	import android.graphics.Color;
+   	import android.os.Bundle;
+   	import android.view.MenuInflater;
+   	import android.view.MenuItem;
+   	import android.view.View;
+   	import android.view.animation.Animation;
+   	import android.widget.Button;
+   	
+   	/*This activity sets up the tab that allows the user to view the bio-pages of team members. Contains invisible buttons overlaid on the images. 
+   	 * Switches to an activity called BioPage, which sets the appropriate layout depending on which button is clicked. Each layout represents an individiual's Bio. 
+   	 */
+   	
+   	public class Bios extends Activity {
+   		Animation anim = null;
+   	
+   		@Override
+   		public void onCreate(Bundle savedInstanceState) {
+   			super.onCreate(savedInstanceState);
+   			setContentView(R.layout.bios);
+   			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+   	
+   			Button button = (Button) findViewById(R.id.member1);// Creating a button
+   			button.setBackgroundColor(Color.TRANSPARENT); // Make button invisible
+   	
+   			button.setOnClickListener(new View.OnClickListener() {
+   				@Override
+   				public void onClick(View v) {
+   					Intent i = new Intent();
+   					i.putExtra("name", "TylerH");// PutExtra is used to send
+   													// information between
+   													// activities. Sends name to
+   													// BioPage activity.
+   					i.setClass(Bios.this, BioPage.class);// Switch to BioPage
+   															// activity.
+   					startActivity(i);
+   				}
+   			});
+   	
+   			// Above process is repeated for each picture.
+   			Button button2 = (Button) findViewById(R.id.member2);
+   			button2.setBackgroundColor(Color.TRANSPARENT);
+   			button2.setOnClickListener(new View.OnClickListener() {
+   				@Override
+   				public void onClick(View v) {
+   					Intent i = new Intent();
+   					i.putExtra("name", "TylerW");
+   					i.setClass(Bios.this, BioPage.class);
+   					startActivity(i);
+   				}
+   			});
+   	
+   			Button button3 = (Button) findViewById(R.id.member3);
+   			button3.setBackgroundColor(Color.TRANSPARENT);
+   			button3.setOnClickListener(new View.OnClickListener() {
+   				@Override
+   				public void onClick(View v) {
+   	
+   					Intent i = new Intent();
+   					i.putExtra("name", "Jaye");
+   					i.setClass(Bios.this, BioPage.class);
+   					startActivity(i);
+   				}
+   			});
+   	
+   			Button button4 = (Button) findViewById(R.id.member4);
+   			button4.setBackgroundColor(Color.TRANSPARENT);
+   			button4.setOnClickListener(new View.OnClickListener() {
+   				@Override
+   				public void onClick(View v) {
+   					Intent i = new Intent();
+   					i.putExtra("name", "Maaz");
+   					i.setClass(Bios.this, BioPage.class);
+   					startActivity(i);
+   				}
+   			});
+   	
+   			Button button5 = (Button) findViewById(R.id.member5);
+   			button5.setBackgroundColor(Color.TRANSPARENT);
+   			button5.setOnClickListener(new View.OnClickListener() {
+   				@Override
+   				public void onClick(View v) {
+   					Intent i = new Intent();
+   					i.putExtra("name", "Others");
+   					i.setClass(Bios.this, Acknowledgements.class);
+   					startActivity(i);
+   				}
+   			});
+   	
+   			Button button6 = (Button) findViewById(R.id.member6);
+   			button6.setBackgroundColor(Color.TRANSPARENT);
+   			button6.setOnClickListener(new View.OnClickListener() {
+   				@Override
+  				public void onClick(View v) {
+  					Intent i = new Intent();
+  					i.putExtra("name", "Jon");
+  					i.setClass(Bios.this, BioPage.class);
+  					startActivity(i);
+  				}
+  			});
+  	
+  			Button button7 = (Button) findViewById(R.id.member7);
+  			button7.setBackgroundColor(Color.TRANSPARENT);
+  			button7.setOnClickListener(new View.OnClickListener() {
+  				@Override
+  				public void onClick(View v) {
+  					Intent i = new Intent();
+  					i.putExtra("name", "Sohail");
+  					i.setClass(Bios.this, BioPage.class);
+  					startActivity(i);
+  				}
+  			});
+  	
+  			Button button8 = (Button) findViewById(R.id.member8);
+  			button8.setBackgroundColor(Color.TRANSPARENT);
+  			button8.setOnClickListener(new View.OnClickListener() {
+  				@Override
+  				public void onClick(View v) {
+  					Intent i = new Intent();
+  					i.putExtra("name", "Nick");
+  					i.setClass(Bios.this, BioPage.class);
+  					startActivity(i);
+  				}
+  			});
+  	
+  			Button button9 = (Button) findViewById(R.id.member9);
+  			button9.setBackgroundColor(Color.TRANSPARENT);
+  			button9.setOnClickListener(new View.OnClickListener() {
+  				@Override
+  				public void onClick(View v) {
+  					Intent i = new Intent();
+  					i.putExtra("name", "Rick");
+  					i.setClass(Bios.this, BioPage.class);
+  					startActivity(i);
+  				}
+  			});
+  	
+  		}
+  	
+  		// @Override
+  		public boolean onPrepareOptionsMenu(Menu menu) {
+  			return super.onPrepareOptionsMenu((android.view.Menu) menu);
+  		}
+  	
+  		// @Override
+  		@Override
+  		public boolean onCreateOptionsMenu(android.view.Menu menu) {
+  			MenuInflater inflater = getMenuInflater();
+  			inflater.inflate(R.menu.menu, menu);
+  			return true;
+  		}
+  	
+  		@Override
+  		public boolean onOptionsItemSelected(MenuItem item) {
+  			switch (item.getItemId()) {
+  			case R.id.help:
+  				Intent i = new Intent();
+  				i.setClass(Bios.this, Help.class);
+  				startActivity(i);
+  				break;
+  	
+  			case R.id.info:
+  				Intent i2 = new Intent();
+  				i2.setClass(Bios.this, Information.class);
+  				startActivity(i2);
+  				break;
+  	
+  			case R.id.settings:
+  				Intent i3 = new Intent();
+  				i3.setClass(Bios.this, Settings.class);
+  				startActivity(i3);
+  				break;
+  	
+  			case R.id.quit:
+  				finish();
+  				break;
+  			}
+  			return true;
+  		}
+  	}

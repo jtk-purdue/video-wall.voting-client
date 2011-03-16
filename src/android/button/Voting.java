@@ -138,7 +138,7 @@ public class Voting extends ListActivity {
 		}// end of if
 		else
 			Toast.makeText(getApplicationContext(),
-					"No active internet connection", Toast.LENGTH_SHORT).show();
+					"No active internet connection.", Toast.LENGTH_SHORT).show();
 
 	}
 
@@ -204,7 +204,7 @@ public class Voting extends ListActivity {
 		// Handle exception if server was not found
 		catch (ConnectException e) {
 			Log.d("SERVER", "Server NOT FOUND");
-			Toast.makeText(getApplicationContext(), "Server not running",
+			Toast.makeText(getApplicationContext(), "Server Error!! Please try again later..",
 					Toast.LENGTH_LONG).show();
 		}
 
