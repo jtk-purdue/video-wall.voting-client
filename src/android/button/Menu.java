@@ -48,7 +48,7 @@ public class Menu extends TabActivity {
 		spec = tabHost
 				.newTabSpec("artists")
 				.setIndicator("Team",
-						res.getDrawable(R.drawable.ic_tab_artists))
+						res.getDrawable(R.drawable.team_tab))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
@@ -69,7 +69,7 @@ public class Menu extends TabActivity {
 		spec = tabHost
 				.newTabSpec("albums")
 				.setIndicator("Audio",
-						res.getDrawable(R.drawable.ic_tab_artists))
+						res.getDrawable(R.drawable.audio_tab))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
@@ -77,7 +77,7 @@ public class Menu extends TabActivity {
 		spec = tabHost
 				.newTabSpec("artists")
 				.setIndicator("Video",
-						res.getDrawable(R.drawable.ic_tab_artists))
+						res.getDrawable(R.drawable.video_tab))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
