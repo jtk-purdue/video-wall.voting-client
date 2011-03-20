@@ -1,22 +1,30 @@
 package android.button;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
+import android.net.ParseException;
 import android.os.Bundle;
 import java.util.Collections;
+import java.util.List;
+import java.util.Vector;
+
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemClickListener;
 import java.io.*;
 import java.net.*;
@@ -29,7 +37,9 @@ import android.view.animation.AnimationUtils;
  */
 
 public class Voting extends ListActivity {
-
+	private LayoutInflater mInflater;
+	private Vector<RowData> data;
+	RowData rd;
 	Socket requestSocket;
 	PrintWriter out;
 	BufferedReader in;
@@ -39,48 +49,50 @@ public class Voting extends ListActivity {
 	ProgressDialog myProgressDialog = null;
 	boolean internetcheck = false;
 
+	static final String[] title = new String[] {
+			"*New*Apple iPad Wi-Fi (16GB)",
+			"7 Touch Tablet -2GB Google Android",
+			"Apple iPad Wi-Fi (16GB) Rarely Used ",
+			"Apple iPad Wi-Fi (16GB) AppleCase" };
+
+	static final String[] detail = new String[] { "Number of Votes: ",
+			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
+			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
+			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
+			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
+			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
+			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
+			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
+			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
+			"Number of Votes: ", "Number of Votes: ", "Number of Votes: " };
+
+	private Integer[] imgid = { R.drawable.voteicon, R.drawable.voteicon,
+			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
+			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
+			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
+			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
+			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
+			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
+			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
+			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
+			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon };
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		internetcheck = checkInternetConnection();// check if Internet
-													// connection is present and
-													// set to true if it is.
+		// connection is present and
+		// set to true if it is.
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		voteList = new ArrayList<String>();
 
-		/*
-		 * // Creating a custom dialog box Context mContext =
-		 * getApplicationContext(); Dialog dialog = new Dialog(mContext);
-		 * 
-		 * dialog.setContentView(R.layout.custom_dialog);
-		 * dialog.setTitle("Custom Dialog");
-		 * 
-		 * TextView text = (TextView) dialog.findViewById(R.id.text);
-		 * text.setText("Hello, this is a custom dialog!"); ImageView image =
-		 * (ImageView) dialog.findViewById(R.id.image);
-		 * image.setImageResource(R.drawable.icon3); //
-		 * setContentView(R.layout.custom_dialog);
-		 */
+		setContentView(R.layout.vote);
+		anim = AnimationUtils.loadAnimation(this, R.anim.shake); // Sets the
+																	// animation
+																	// to shake
+		mInflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+		data = new Vector<RowData>();
 		if (internetcheck) {
-			myProgressDialog = ProgressDialog.show(Voting.this,
-					"Please wait...", "Populating List...", true);
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-			voteList = new ArrayList<String>();
-
-			new Thread() {
-				@Override
-				public void run() {
-
-					try {
-						sleep(1700);
-
-					} catch (Exception e) {
-					}
-
-					// Dismiss the Dialog
-					myProgressDialog.dismiss();
-				}
-
-			}.start();
-
 			try {
 				connect("GET");
 			} catch (ConnectException e) {
@@ -96,53 +108,144 @@ public class Voting extends ListActivity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} // Contacts server and gets list of available shows
-			setListAdapter(new ArrayAdapter<String>(this, R.layout.vote,
-					voteList));// Sets vote list as layout
-			anim = AnimationUtils.loadAnimation(this, R.anim.shake); // Sets the
-																		// animation
-																		// to
-																		// shake
-			ListView lv = getListView();
-			lv.setTextFilterEnabled(true);
 
-			lv.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
-					// When clicked, show a toast with the TextView text
-
-					Log.d("TOAST", "Before");
-					String vi = (String) ((TextView) view).getText();
-					Toast.makeText(getApplicationContext(), "Voted for " + vi,
-							Toast.LENGTH_SHORT).show();// Show the item which
-														// has been voted for
-														// through a toast
-					view.startAnimation(anim); // Show animation when clicked
-					try {
-						connect(vi);
-					} catch (ConnectException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (UnknownHostException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} // Sends server information on what was voted for
+			for (int i = 0; i < voteList.size(); i++) {
+				try {
+					rd = new RowData(i, voteList.get(i), detail[i]);
+				} catch (ParseException e) {
+					e.printStackTrace();
 				}
-			});
-		}// end of if
-		else
+				data.add(rd);
+			}
+			CustomAdapter adapter = new CustomAdapter(this, R.layout.list,
+					R.id.title, data);
+			setListAdapter(adapter);
+			getListView().setTextFilterEnabled(true);
+		} else {
 			Toast.makeText(getApplicationContext(),
-					"No active internet connection.", Toast.LENGTH_SHORT).show();
+					"No active internet connection.", Toast.LENGTH_SHORT)
+					.show();
+
+		}
 
 	}
 
-	// Checks for Internet connection through Wifi or 3g
+	public void onListItemClick(ListView parent, View v, int position, long id) {
+		TextView title = (TextView) v.findViewById(R.id.title);
+		String vi = (String) ((TextView) title).getText();
+
+		if (internetcheck) {
+			try {
+				connect(vi);
+			} catch (ConnectException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} // Contacts server and gets list of available shows
+
+			Toast.makeText(getApplicationContext(), "Voted for " + vi,
+					Toast.LENGTH_SHORT).show();// Show the item which
+			// has been voted for
+			// through a toast
+			v.startAnimation(anim); // Show animation when clicked
+
+		}// end if
+
+		else {
+			Toast.makeText(getApplicationContext(),
+					"No active internet connection.", Toast.LENGTH_SHORT)
+					.show();
+		}
+
+	}
+
+	private class RowData {
+		protected int mId;
+		protected String mTitle;
+		protected String mDetail;
+
+		RowData(int id, String title, String detail) {
+			mId = id;
+			mTitle = title;
+			mDetail = detail;
+		}
+
+		@Override
+		public String toString() {
+			return mId + " " + mTitle + " " + mDetail;
+		}
+	}
+
+	private class CustomAdapter extends ArrayAdapter<RowData> {
+		public CustomAdapter(Context context, int resource,
+				int textViewResourceId, List<RowData> objects) {
+			super(context, resource, textViewResourceId, objects);
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder holder = null;
+			TextView title = null;
+			TextView detail = null;
+			ImageView i11 = null;
+			RowData rowData = getItem(position);
+			if (null == convertView) {
+				convertView = mInflater.inflate(R.layout.list, null);
+				holder = new ViewHolder(convertView);
+				convertView.setTag(holder);
+			}
+			holder = (ViewHolder) convertView.getTag();
+			title = holder.gettitle();
+			title.setText(rowData.mTitle);
+			detail = holder.getdetail();
+			detail.setText(rowData.mDetail);
+			i11 = holder.getImage();
+			i11.setImageResource(imgid[rowData.mId]);
+			return convertView;
+		}
+
+		public class ViewHolder {
+			private View mRow;
+			private TextView title = null;
+			private TextView detail = null;
+			private ImageView i11 = null;
+
+			public ViewHolder(View row) {
+				mRow = row;
+			}
+
+			public TextView gettitle() {
+				if (null == title) {
+					title = (TextView) mRow.findViewById(R.id.title);
+				}
+				return title;
+			}
+
+			public TextView getdetail() {
+				if (null == detail) {
+					detail = (TextView) mRow.findViewById(R.id.detail);
+				}
+				return detail;
+			}
+
+			public ImageView getImage() {
+				if (null == i11) {
+					i11 = (ImageView) mRow.findViewById(R.id.img);
+				}
+				return i11;
+			}
+
+		}
+	}
+
 	private boolean checkInternetConnection() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		// test for connection
@@ -194,7 +297,7 @@ public class Voting extends ListActivity {
 					if (check == true && !message.equals("END"))
 						voteList.add(message);
 					Collections.sort(voteList);// Sorting Array List in Alpha
-												// order
+					// order
 
 				} while (!message.equals("END"));
 			} while (!message.equals("END"));
@@ -204,7 +307,8 @@ public class Voting extends ListActivity {
 		// Handle exception if server was not found
 		catch (ConnectException e) {
 			Log.d("SERVER", "Server NOT FOUND");
-			Toast.makeText(getApplicationContext(), "Server Error!! Please try again later..",
+			Toast.makeText(getApplicationContext(),
+					"Server Error!! Please try again later..",
 					Toast.LENGTH_LONG).show();
 		}
 
