@@ -60,7 +60,7 @@ public class Menu extends TabActivity {
 		spec = tabHost
 				.newTabSpec("artists")
 				.setIndicator("Vote",
-						res.getDrawable(R.drawable.ic_tab_artists))
+						res.getDrawable(R.drawable.vote_tab))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
