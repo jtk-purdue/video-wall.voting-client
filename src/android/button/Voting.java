@@ -39,6 +39,7 @@ import android.view.animation.AnimationUtils;
 public class Voting extends ListActivity {
 	private LayoutInflater mInflater;
 	private Vector<RowData> data;
+	CustomAdapter adapter;
 	RowData rd;
 	Socket requestSocket;
 	PrintWriter out;
@@ -120,10 +121,11 @@ public class Voting extends ListActivity {
 				}
 				data.add(rd);
 			}
-			CustomAdapter adapter = new CustomAdapter(this, R.layout.list,
-					R.id.title, data);
+			adapter = new CustomAdapter(this, R.layout.list, R.id.title, data);
 			setListAdapter(adapter);
+			
 			getListView().setTextFilterEnabled(true);
+			
 		} else {
 			Toast.makeText(getApplicationContext(),
 					"No active internet connection.", Toast.LENGTH_SHORT)
@@ -136,11 +138,11 @@ public class Voting extends ListActivity {
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		TextView title = (TextView) v.findViewById(R.id.title);
 		String vi = (String) ((TextView) title).getText();
-
 		if (internetcheck) {
 			try {
 				connect("VOTE", vi);
-				
+				votes.clear();
+				connect("GETCOUNT", "");
 			} catch (ConnectException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -159,8 +161,21 @@ public class Voting extends ListActivity {
 					Toast.LENGTH_SHORT).show();// Show the item which
 			// has been voted for
 			// through a toast
-			v.startAnimation(anim); // Show animation when clicked
-
+			//v.startAnimation(anim); // Show animation when clicked
+			//Update vote on display			
+			RowData r = null;
+			
+			try {
+					r = new RowData(position, voteList.get(position), "Number of votes: " + votes.get(position));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				data.set(position ,r);
+				
+				//adapter = new CustomAdapter(this, R.layout.list, R.id.title, data);
+				//setListAdapter(adapter);
+				adapter.notifyDataSetChanged();
+			
 		}// end if
 
 		else {
@@ -168,7 +183,6 @@ public class Voting extends ListActivity {
 					"No active internet connection.", Toast.LENGTH_SHORT)
 					.show();
 		}
-
 	}
 
 	private class RowData {
@@ -262,7 +276,8 @@ public class Voting extends ListActivity {
 			return false;
 		}
 	}
-
+	
+	
 	public void connect(String voteitem, String option) throws UnknownHostException,
 			IOException, ConnectException, Exception {
 		
