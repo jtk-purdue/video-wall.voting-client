@@ -45,6 +45,7 @@ public class Voting extends ListActivity {
 	BufferedReader in;
 	String message;
 	ArrayList<String> voteList;
+	ArrayList<String> votes;
 	Animation anim = null;
 	ProgressDialog myProgressDialog = null;
 	boolean internetcheck = false;
@@ -85,6 +86,7 @@ public class Voting extends ListActivity {
 		// set to true if it is.
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		voteList = new ArrayList<String>();
+		votes = new ArrayList<String>();
 
 		setContentView(R.layout.vote);
 		anim = AnimationUtils.loadAnimation(this, R.anim.shake); // Sets the
@@ -94,7 +96,8 @@ public class Voting extends ListActivity {
 		data = new Vector<RowData>();
 		if (internetcheck) {
 			try {
-				connect("GET");
+				connect("GET", "");
+				connect("GETCOUNT", "");
 			} catch (ConnectException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -111,7 +114,7 @@ public class Voting extends ListActivity {
 
 			for (int i = 0; i < voteList.size(); i++) {
 				try {
-					rd = new RowData(i, voteList.get(i), detail[i]);
+					rd = new RowData(i, voteList.get(i), "Number of votes: " + votes.get(i));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -136,7 +139,8 @@ public class Voting extends ListActivity {
 
 		if (internetcheck) {
 			try {
-				connect(vi);
+				connect("VOTE", vi);
+				
 			} catch (ConnectException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -259,14 +263,9 @@ public class Voting extends ListActivity {
 		}
 	}
 
-	public void connect(String voteitem) throws UnknownHostException,
+	public void connect(String voteitem, String option) throws UnknownHostException,
 			IOException, ConnectException, Exception {
-		boolean check = false;
-
-		if (voteitem.equals("GET")) {
-			check = true;
-		}
-
+		
 		try {
 			// 1. creating a socket to connect to the server
 			requestSocket = new Socket("lore.cs.purdue.edu", 4500);
@@ -289,13 +288,24 @@ public class Voting extends ListActivity {
 				System.out.println("server>" + message);
 				message = "END";
 				sendMessage(voteitem);
+				
+				if (voteitem.equals("VOTE"))
+						sendMessage(option);
+				
 				sendMessage("END");
 				do {
 					message = in.readLine();
 					Log.d("server>", message);
 
-					if (check == true && !message.equals("END"))
+					if (voteitem.equals("GET") && !message.equals("END"))
 						voteList.add(message);
+					
+					else if (voteitem.equals("GETCOUNT") && !message.equals("END"))
+					{
+						String temp = message.substring(0, message.indexOf('.'));
+						votes.add(temp);
+					}
+					
 					Collections.sort(voteList);// Sorting Array List in Alpha
 					// order
 
