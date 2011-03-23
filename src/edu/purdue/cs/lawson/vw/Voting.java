@@ -5,10 +5,13 @@ import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.ParseException;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -31,7 +34,6 @@ import java.net.*;
 import java.util.ArrayList;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import edu.purdue.cs.lawson.vw.R;
 
 /*When this activity starts, it pulls a list of available shows that can be voted on. 
  * When a vote is cast it makes a connection with the server and send across what was voted for.
@@ -50,6 +52,8 @@ public class Voting extends ListActivity {
 	ArrayList<String> votes;
 	Animation anim = null;
 	ProgressDialog myProgressDialog = null;
+	String editTextPreference;
+	int portnum;
 	boolean internetcheck = false;
 
 	static final String[] title = new String[] {
@@ -89,7 +93,22 @@ public class Voting extends ListActivity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		voteList = new ArrayList<String>();
 		votes = new ArrayList<String>();
-
+		
+		portnum = 4242;
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		editTextPreference = prefs.getString("editTextPref", "Nothing has been entered");
+		
+		if(!editTextPreference.equals("4242"))
+		{
+			portnum = Integer.parseInt(editTextPreference);
+			
+			if(portnum < 0 || portnum > 65536)
+				portnum = 4242;
+		}
+		
+		Log.d("PORT NUMBER", editTextPreference);
+		
 		setContentView(R.layout.vote);
 		anim = AnimationUtils.loadAnimation(this, R.anim.shake); // Sets the
 																	// animation
@@ -284,8 +303,8 @@ public class Voting extends ListActivity {
 		
 		try {
 			// 1. creating a socket to connect to the server
-			requestSocket = new Socket("lore.cs.purdue.edu", 4242);
-			Log.d("Connection", "Connected to localhost in port 4242");
+			requestSocket = new Socket("lore.cs.purdue.edu", portnum);
+			Log.d("Connection", "Connected to localhost in port " + portnum);
 
 			if (requestSocket == null) {
 				Log.d("REQUEST SOCKET DID NOT WORK", "NULL");

@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
   xmlns:android="http://schemas.android.com/apk/res/android">
+  <EditTextPreference
+  android:name="Port Preference"
+  android:inputType="number"
+  android:summary="Default port: 4242"
+  android:defaultValue="4242"
+  android:title="Enter a port number:"
+  android:key="editTextPref" />
   <CheckBoxPreference
   android:key="music"
   android:title="@string/music_title"
   android:summary="@string/music_description"
   android:defaultValue="true"/>
   <CheckBoxPreference
-  android:key="sample"
-  android:title="@string/sample_title"
-  android:summary="@string/sample_description"
+  android:key="vibrate"
+  android:title="Vibrate"
+  android:summary="Toggle phone vibration"
   android:defaultValue="true"/>
   <CheckBoxPreference
   android:key="sample2"
