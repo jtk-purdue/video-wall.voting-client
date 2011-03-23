@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="android.button"
+      package="edu.purdue.cs.lawson.vw"
       android:versionCode="1"
       android:versionName="1.0">
       <uses-permission android:name="android.permission.CAMERA" />
@@ -17,7 +17,7 @@
     <uses-feature android:name="android.hardware.microphone" android:required="true" />
       
     <application android:icon="@drawable/icon3" android:label="@string/app_name">
-        <activity android:name=".Splash"
+        <activity android:name="android.button.Splash"
         android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,34 +25,34 @@
             </intent-filter>
         </activity>
 
-    <activity android:name="Menu">
+    <activity android:name="android.button.Menu">
               </activity>
    
-<activity android:name="Information"
+<activity android:name="android.button.Information"
 		  android:gravity="center_horizontal"
 		  android:label="@string/info_title"
 		  android:theme="@android:style/Theme.Dialog">
 </activity>
 
-<activity android:name="Settings"></activity>
-<activity android:name="Bios"></activity>
+<activity android:name="android.button.Settings"></activity>
+<activity android:name="android.button.Bios"></activity>
 
-<activity android:name="BioPage"
+<activity android:name="android.button.BioPage"
 		  android:theme="@android:style/Theme.NoTitleBar"></activity>
 
-<activity android:name="CameraPreview"></activity>
-<activity android:name="Acknowledgements"></activity>
+<activity android:name="android.button.CameraPreview"></activity>
+<activity android:name="android.button.Acknowledgements"></activity>
 
-<activity android:name="Help"
+<activity android:name="android.button.Help"
 		  android:gravity="center_horizontal"
 		  android:label="@string/help_title"
 		  android:theme="@android:style/Theme.Dialog">
 </activity>
 
-<activity android:name="Video"></activity>
-<activity android:name="Voting"></activity>
-<activity android:name="Welcome"></activity>
-<activity android:name="Audio"></activity>
+<activity android:name="android.button.Video"></activity>
+<activity android:name="android.button.Voting"></activity>
+<activity android:name="android.button.Welcome"></activity>
+<activity android:name="android.button.Audio"></activity>
 </application>
     <uses-sdk android:minSdkVersion="2" />
 
