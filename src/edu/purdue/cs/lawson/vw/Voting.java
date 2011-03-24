@@ -97,7 +97,7 @@ public class Voting extends ListActivity {
 		portnum = 4242;
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		editTextPreference = prefs.getString("editTextPref", "Nothing has been entered");
+		editTextPreference = prefs.getString("editTextPref", "4242");
 		
 		if(!editTextPreference.equals("4242"))
 		{
