@@ -2,7 +2,6 @@ syntax: glob
 *.apk
 *.dex
 *.ap_
-
 syntax: regexp
 ^tests/bin$
 syntax: regexp
