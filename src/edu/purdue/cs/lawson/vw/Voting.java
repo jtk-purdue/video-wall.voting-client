@@ -337,8 +337,8 @@ public class Voting extends ListActivity {
 					
 					else if (voteitem.equals("GETCOUNT") && !message.equals("END"))
 					{
-						String temp = message.substring(0, message.indexOf('.'));
-						votes.add(temp);
+						//String temp = message.substring(0, message.indexOf('.'));
+						votes.add(message);
 					}
 					
 					Collections.sort(voteList);// Sorting Array List in Alpha
