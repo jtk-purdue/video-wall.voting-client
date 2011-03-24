@@ -1,6 +1,7 @@
 package edu.purdue.cs.lawson.vw;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -21,23 +22,18 @@ public class Acknowledgements extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		nameList = new ArrayList<String>();
-		nameList.add("SPECIAL THANKS TO:");
-		nameList.add("X");
-		nameList.add("Y");
-		nameList.add("Z");
+		//nameList.add("SPECIAL THANKS TO:");
+		nameList.add("Jim Clamons, Harris Corporation");
+		nameList.add("Don Hewitt, Harris Corporation");
+		nameList.add("Jim Smith, Purdue Carpenter Shop");
 		nameList.add("Dr. John Tim Korb, Course Instructor");
-		nameList.add("A");
-		nameList.add("B");
-		nameList.add("C");
-		nameList.add("P");
-		nameList.add("Q");
-		nameList.add("R");
-		nameList.add("L");
-		nameList.add("M");
-		nameList.add("N");
-		nameList.add("I");
-		nameList.add("J");
-		nameList.add("K");
+		nameList.add("Scott Cochran, Purdue Carpenter Shop");
+		nameList.add("Tim Korb, CS Assistant Head");
+		nameList.add("Brian Board, CS Hardware Engineer");
+		nameList.add("Ron Castongia, CS Facilities Manager");
+		nameList.add("Mike Motuliak, CS Hardware Engineer");
+		nameList.add("Melanie Church, CS Windows Administrator");
+		Collections.sort(nameList);
 		setListAdapter(new ArrayAdapter<String>(this,
 				R.layout.acknowledgements, nameList));
 
