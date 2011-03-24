@@ -186,11 +186,17 @@ public class Voting extends ListActivity {
 			RowData r = null;
 			
 			try {
-					r = new RowData(position, voteList.get(position), "Number of votes: " + votes.get(position));
+					for(int i=0; i<voteList.size(); i++)
+					{	
+						//r = new RowData(position, voteList.get(position), "Number of votes: " + votes.get(position));
+						r = (RowData) data.elementAt(i);
+						String temp = "Number of votes: " + votes.get(i);
+						r.setDetail(temp);
+					}
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
-				data.set(position ,r);
+				//data.set(position, r);
 				
 				//adapter = new CustomAdapter(this, R.layout.list, R.id.title, data);
 				//setListAdapter(adapter);
@@ -220,6 +226,11 @@ public class Voting extends ListActivity {
 		public String toString() {
 			return mId + " " + mTitle + " " + mDetail;
 		}
+		
+		public void setDetail(String item) {
+			mDetail = item;
+		}
+		
 	}
 
 	private class CustomAdapter extends ArrayAdapter<RowData> {
