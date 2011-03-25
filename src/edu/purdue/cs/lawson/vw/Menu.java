@@ -46,10 +46,8 @@ public class Menu extends TabActivity {
 		 */
 
 		intent = new Intent().setClass(this, Bios.class);
-		spec = tabHost
-				.newTabSpec("artists")
-				.setIndicator("Team",
-						res.getDrawable(R.drawable.team_tab))
+		spec = tabHost.newTabSpec("artists")
+				.setIndicator("Team", res.getDrawable(R.drawable.team_tab))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
@@ -58,27 +56,21 @@ public class Menu extends TabActivity {
 		// Initialize a TabSpec for each tab and add it to the TabHost
 
 		// Create a tab with name Vote and image ic_table_artists
-		spec = tabHost
-				.newTabSpec("artists")
-				.setIndicator("Vote",
-						res.getDrawable(R.drawable.vote_tab))
+		spec = tabHost.newTabSpec("artists")
+				.setIndicator("Vote", res.getDrawable(R.drawable.vote_tab))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
 		// Do the same for the other tabs
 		intent = new Intent().setClass(this, Audio.class);
-		spec = tabHost
-				.newTabSpec("albums")
-				.setIndicator("Audio",
-						res.getDrawable(R.drawable.audio_tab))
+		spec = tabHost.newTabSpec("albums")
+				.setIndicator("Audio", res.getDrawable(R.drawable.audio_tab))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
 		intent = new Intent().setClass(this, Video.class);
-		spec = tabHost
-				.newTabSpec("artists")
-				.setIndicator("Video",
-						res.getDrawable(R.drawable.video_tab))
+		spec = tabHost.newTabSpec("artists")
+				.setIndicator("Video", res.getDrawable(R.drawable.video_tab))
 				.setContent(intent);
 		tabHost.addTab(spec);
 
