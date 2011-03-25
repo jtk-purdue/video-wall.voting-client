@@ -22,7 +22,7 @@ public class Acknowledgements extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		nameList = new ArrayList<String>();
-		//nameList.add("SPECIAL THANKS TO:");
+		// nameList.add("SPECIAL THANKS TO:");
 		nameList.add("Jim Clamons, Harris Corporation");
 		nameList.add("Don Hewitt, Harris Corporation");
 		nameList.add("Jim Smith, Purdue Carpenter Shop");
