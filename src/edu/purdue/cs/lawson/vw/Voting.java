@@ -53,6 +53,7 @@ public class Voting extends ListActivity {
 	String message;
 	ArrayList<String> voteList;
 	ArrayList<String> votes;
+	Runnable update;
 	Animation anim = null;
 	ProgressDialog myProgressDialog = null;
 	String editTextPreference;
@@ -168,7 +169,7 @@ public class Voting extends ListActivity {
 		 * updateThread.start();
 		 */
 		
-		Runnable update = new Runnable() {
+		 update = new Runnable() {
 
 			
 			@Override
@@ -216,7 +217,7 @@ public class Voting extends ListActivity {
 					}
 					//Log.d("Got YOU", "I'm not doing shit!!!");
 					adapter.notifyDataSetChanged();
-					mHandler.postDelayed(this,6500);
+					mHandler.postDelayed(this,7500);
 				}
 
 				catch (Exception e) {
@@ -232,6 +233,37 @@ public class Voting extends ListActivity {
 		mHandler.postDelayed(update,5000);
 
 	}
+		@Override
+		public void onPause()
+		{
+			super.onPause();
+			Log.d("On PAUSE", "TRUE");
+			mHandler.removeCallbacks(update);
+	}
+	
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		Log.d("On RESUME", "TRUE");
+		mHandler = new Handler();
+		mHandler.postDelayed(update,5000);
+
+	}
+	@Override
+	public void onStop()
+	{
+	super.onStop();
+	Log.d("On STOP", "TRUE");
+	mHandler.removeCallbacks(update);
+	}
+	@Override
+	public void onDestroy()
+	{
+		Log.d("On DESTROY", "TRUE");
+		mHandler.removeCallbacks(update);
+	}
+	
 
 	/*
 	private class Update extends AsyncTask<Void, Void, Void> {
