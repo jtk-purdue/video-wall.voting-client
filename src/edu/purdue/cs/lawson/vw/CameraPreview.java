@@ -24,7 +24,6 @@ import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.Window;
-import edu.purdue.cs.lawson.vw.R;
 import java.io.IOException;
 
 /*This file sets up the video preview on the phone.

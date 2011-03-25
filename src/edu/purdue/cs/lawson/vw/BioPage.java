@@ -1,30 +1,23 @@
 package edu.purdue.cs.lawson.vw;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 import edu.purdue.cs.lawson.vw.R;
 
 public class BioPage extends Activity {
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		Intent i = getIntent();
-		String n = (String) i.getStringExtra("name");
+		String n = i.getStringExtra("name");
 		Log.d("NAME", n);
 
 		if (n.equals("TylerH"))
@@ -59,6 +52,7 @@ public class BioPage extends Activity {
 	}
 
 	// @Override
+	@Override
 	public boolean onCreateOptionsMenu(android.view.Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu, menu);

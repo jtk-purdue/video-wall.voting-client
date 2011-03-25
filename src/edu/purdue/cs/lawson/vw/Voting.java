@@ -9,17 +9,14 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.ParseException;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -31,7 +28,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView.OnItemClickListener;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -118,7 +114,7 @@ public class Voting extends ListActivity {
 		anim = AnimationUtils.loadAnimation(this, R.anim.shake); // Sets the
 																	// animation
 																	// to shake
-		mInflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+		mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		data = new Vector<RowData>();
 		if (internetcheck) {
 			try {
@@ -159,23 +155,12 @@ public class Voting extends ListActivity {
 					.show();
 
 		}
-		/*
-		 * Thread updateThread = new Thread() {
-		 * 
-		 * @Override public void run() { Looper.prepare(); try { sleep(10); new
-		 * Update().execute(); }
-		 * 
-		 * catch (InterruptedException e) { // do nothing } } };
-		 * updateThread.start();
-		 */
 		
 		 update = new Runnable() {
-
-			
+		
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				Log.d("CHECK IF SOHAILS IS RIGHT","WRONGGGGG!!");
 				try {
 					RowData r = null;
 					if (internetcheck) {
@@ -202,7 +187,7 @@ public class Voting extends ListActivity {
 					for (int i = 0; i < voteList.size(); i++) {
 
 						try {
-							r = (RowData) data.elementAt(i);
+							r = data.elementAt(i);
 							String temp = "Number of votes: " + votes.get(i);
 							r.setDetail(temp);
 
@@ -215,13 +200,11 @@ public class Voting extends ListActivity {
 						}
 
 					}
-					//Log.d("Got YOU", "I'm not doing shit!!!");
 					adapter.notifyDataSetChanged();
 					mHandler.postDelayed(this,7500);
 				}
 
 				catch (Exception e) {
-					// do nothing
 				}
 
 			}
@@ -265,63 +248,11 @@ public class Voting extends ListActivity {
 	}
 	
 
-	/*
-	private class Update extends AsyncTask<Void, Void, Void> {
-
-		@Override
-		protected Void doInBackground(Void... arg0) {
-			RowData r = null;
-			if (internetcheck) {
-				try {
-					voteList.clear();
-					votes.clear();
-					connect("GET", "");
-					connect("GETCOUNT", "");
-				} catch (ConnectException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (UnknownHostException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} // Contacts server and gets list of available shows
-			}
-
-			for (int i = 0; i < voteList.size(); i++) {
-
-				try {
-					r = (RowData) data.elementAt(i);
-					String temp = "Number of votes: " + votes.get(i);
-					r.setDetail(temp);
-
-				}
-
-				catch (ParseException e) {
-					e.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-			}
-			Log.d("Got YOU", "I'm not doing shit!!!");
-			return null;
-		}
-
-		protected void onPostExecute() {
-			adapter.notifyDataSetChanged();
-			Log.d("Update", "Done!!!");
-		}
-
-	}
-*/
+	
+	@Override
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		TextView title = (TextView) v.findViewById(R.id.title);
-		String vi = (String) ((TextView) title).getText();
+		String vi = (String) (title).getText();
 		if (internetcheck) {
 			try {
 				connect("VOTE", vi);
@@ -343,28 +274,19 @@ public class Voting extends ListActivity {
 
 			Toast.makeText(getApplicationContext(), "Voted for " + vi,
 					Toast.LENGTH_SHORT).show();// Show the item which
-			// has been voted for
-			// through a toast
-			// v.startAnimation(anim); // Show animation when clicked
-			// Update vote on display
 			RowData r = null;
 
 			try {
 				for (int i = 0; i < voteList.size(); i++) {
 					// r = new RowData(position, voteList.get(position),
 					// "Number of votes: " + votes.get(position));
-					r = (RowData) data.elementAt(i);
+					r = data.elementAt(i);
 					String temp = "Number of votes: " + votes.get(i);
 					r.setDetail(temp);
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			// data.set(position, r);
-
-			// adapter = new CustomAdapter(this, R.layout.list, R.id.title,
-			// data);
-			// setListAdapter(adapter);
 			adapter.notifyDataSetChanged();
 
 		}// end if
@@ -513,8 +435,7 @@ public class Voting extends ListActivity {
 
 					else if (voteitem.equals("GETCOUNT")
 							&& !message.equals("END")) {
-						// String temp = message.substring(0,
-						// message.indexOf('.'));
+						
 						votes.add(message);
 					}
 
