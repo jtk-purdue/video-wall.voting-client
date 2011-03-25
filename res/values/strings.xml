@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, button!</string>
-    <string name="app_name">Harris Corporation Video Wall Demo</string>
+    <string name="app_name">Video Wall</string>
 <string name="information">Developed at Purdue University (2011) by:\nMaaz Humayun\nSohail Mehra</string>
 <string name="help">Team Tab: Allows you to view developers\' profiles.\n\nVote Tab: Allows you to vote for what you want to see on the video wall.\n\nAudio Tab: Allows you to select audio channel for something playing on the screen.\n\nVideo Tab: Allows you to stream video from your Android phone camera to the video wall.\n</string>
 <string name="help_title">\t\t\t\t\t\tHelp</string>
