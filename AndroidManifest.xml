@@ -38,6 +38,12 @@
 <activity android:name="Settings"></activity>
 <activity android:name="Bios"></activity>
 
+<activity android:name="Information"
+		  android:gravity="center_horizontal"
+		  android:label="@string/info_title"
+		  android:theme="@android:style/Theme.Dialog">
+</activity>
+
 <activity android:name="BioPage"
 		  android:theme="@android:style/Theme.NoTitleBar"></activity>
 
