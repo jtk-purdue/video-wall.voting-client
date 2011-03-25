@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,18 @@ public class Audio extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.audio);
+		//String url = "http://live.wx5fwd.net/voipwx.mp3";
+		 //MediaPlayer mp = new MediaPlayer();
+		 try
+		 {
+		 //mp.setDataSource(url);
+		 //mp.prepare();
+		// mp.start();
+		 }
+		 catch(Exception e)
+		 {
+			// Log.i("Exception", "Exception in streaming mediaplayer e = " + e);
+		 }
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		// boolean internet=checkInternetConnection();
 	}
