@@ -159,11 +159,8 @@ public class Voting extends ListActivity {
 					.show();
 
 		}
-		
-		
-		 update = new Runnable() {
 
-			
+		update = new Runnable() {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
@@ -207,56 +204,49 @@ public class Voting extends ListActivity {
 
 					}
 					adapter.notifyDataSetChanged();
-					mHandler.postDelayed(this,7500);
+					mHandler.postDelayed(this, 7500);
 				}
 
 				catch (Exception e) {
 					// do nothing
 				}
-
 			}
-
 		};
-		
-		mHandler = new Handler();
-		//mHandler.removeCallbacks(update);
-		mHandler.postDelayed(update,5000);
 
+		mHandler = new Handler();
+		// mHandler.removeCallbacks(update);
+		mHandler.postDelayed(update, 5000);
 	}
-		@Override
-		public void onPause()
-		{
-			super.onPause();
-			Log.d("On PAUSE", "TRUE");
-			mHandler.removeCallbacks(update);
-	}
-	
+
 	@Override
-	public void onResume()
-	{
+	public void onPause() {
+		super.onPause();
+		Log.d("On PAUSE", "TRUE");
+		mHandler.removeCallbacks(update);
+	}
+
+	@Override
+	public void onResume() {
 		super.onResume();
 		Log.d("On RESUME", "TRUE");
 		mHandler = new Handler();
-		mHandler.postDelayed(update,5000);
+		mHandler.postDelayed(update, 5000);
+	}
 
-	}
 	@Override
-	public void onStop()
-	{
-	super.onStop();
-	Log.d("On STOP", "TRUE");
-	mHandler.removeCallbacks(update);
+	public void onStop() {
+		super.onStop();
+		Log.d("On STOP", "TRUE");
+		mHandler.removeCallbacks(update);
 	}
+
 	@Override
-	public void onDestroy()
-	{
+	public void onDestroy() {
 		super.onDestroy();
 		Log.d("On DESTROY", "TRUE");
 		mHandler.removeCallbacks(update);
 	}
-	
 
-	
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		TextView title = (TextView) v.findViewById(R.id.title);
 		String vi = (String) ((TextView) title).getText();
@@ -298,7 +288,7 @@ public class Voting extends ListActivity {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			
+
 			adapter.notifyDataSetChanged();
 
 		}// end if
