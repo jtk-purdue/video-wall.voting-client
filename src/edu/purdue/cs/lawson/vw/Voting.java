@@ -9,14 +9,17 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.ParseException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -28,6 +31,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView.OnItemClickListener;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -114,7 +118,7 @@ public class Voting extends ListActivity {
 		anim = AnimationUtils.loadAnimation(this, R.anim.shake); // Sets the
 																	// animation
 																	// to shake
-		mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		mInflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 		data = new Vector<RowData>();
 		if (internetcheck) {
 			try {
@@ -156,8 +160,10 @@ public class Voting extends ListActivity {
 
 		}
 		
-		 update = new Runnable() {
 		
+		 update = new Runnable() {
+
+			
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
@@ -187,7 +193,7 @@ public class Voting extends ListActivity {
 					for (int i = 0; i < voteList.size(); i++) {
 
 						try {
-							r = data.elementAt(i);
+							r = (RowData) data.elementAt(i);
 							String temp = "Number of votes: " + votes.get(i);
 							r.setDetail(temp);
 
@@ -205,6 +211,7 @@ public class Voting extends ListActivity {
 				}
 
 				catch (Exception e) {
+					// do nothing
 				}
 
 			}
@@ -243,16 +250,16 @@ public class Voting extends ListActivity {
 	@Override
 	public void onDestroy()
 	{
+		super.onDestroy();
 		Log.d("On DESTROY", "TRUE");
 		mHandler.removeCallbacks(update);
 	}
 	
 
 	
-	@Override
 	public void onListItemClick(ListView parent, View v, int position, long id) {
 		TextView title = (TextView) v.findViewById(R.id.title);
-		String vi = (String) (title).getText();
+		String vi = (String) ((TextView) title).getText();
 		if (internetcheck) {
 			try {
 				connect("VOTE", vi);
@@ -274,19 +281,24 @@ public class Voting extends ListActivity {
 
 			Toast.makeText(getApplicationContext(), "Voted for " + vi,
 					Toast.LENGTH_SHORT).show();// Show the item which
+			// has been voted for
+			// through a toast
+			// v.startAnimation(anim); // Show animation when clicked
+			// Update vote on display
 			RowData r = null;
 
 			try {
 				for (int i = 0; i < voteList.size(); i++) {
 					// r = new RowData(position, voteList.get(position),
 					// "Number of votes: " + votes.get(position));
-					r = data.elementAt(i);
+					r = (RowData) data.elementAt(i);
 					String temp = "Number of votes: " + votes.get(i);
 					r.setDetail(temp);
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
+			
 			adapter.notifyDataSetChanged();
 
 		}// end if
@@ -435,7 +447,8 @@ public class Voting extends ListActivity {
 
 					else if (voteitem.equals("GETCOUNT")
 							&& !message.equals("END")) {
-						
+						// String temp = message.substring(0,
+						// message.indexOf('.'));
 						votes.add(message);
 					}
 
