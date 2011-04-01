@@ -22,7 +22,6 @@ import java.util.Vector;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import java.util.Date;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,10 +59,7 @@ public class Voting extends ListActivity {
 	String editTextPreference;
 	int portnum;
 	boolean internetcheck = false;
-	Date lastUpdated = null;
 	Handler mHandler;
-	boolean updateField = false;//Do not update if false, update if true
-
 
 	static final String[] title = new String[] {
 			"*New*Apple iPad Wi-Fi (16GB)",
@@ -129,7 +125,6 @@ public class Voting extends ListActivity {
 				voteList.clear();
 				connect("GET", "");
 				connect("GETCOUNT", "");
-				lastUpdated = new Date();
 			} catch (ConnectException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -167,26 +162,16 @@ public class Voting extends ListActivity {
 
 		update = new Runnable() {
 			@Override
-			public void run() 
-			{
+			public void run() {
 				// TODO Auto-generated method stub
 				try {
 					RowData r = null;
-					if (internetcheck)
-					{
-						connect("JCHECKUPDATE",lastUpdated.toString());
-						Log.d("LAST UPDATED",lastUpdated.toString());
-						if(updateField)
-						{
+					if (internetcheck) {
 						try {
 							//voteList.clear();
-							
 							votes.clear();
 							//connect("GET", "");
 							connect("GETCOUNT", "");
-							updateField = false;
-							//lastUpdated = new Date();
-							
 						} catch (ConnectException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -200,30 +185,26 @@ public class Voting extends ListActivity {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} // Contacts server and gets list of available shows
-						for (int i = 0; i < voteList.size(); i++) 
-						{
+					}
 
-							try {
-								r = (RowData) data.elementAt(i);
-								String temp = "Number of votes: " + votes.get(i);
-								r.setDetail(temp);
+					for (int i = 0; i < voteList.size(); i++) {
 
-							}
-
-							catch (ParseException e) {
-								e.printStackTrace();
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
+						try {
+							r = (RowData) data.elementAt(i);
+							String temp = "Number of votes: " + votes.get(i);
+							r.setDetail(temp);
 
 						}
-						adapter.notifyDataSetChanged();
-						mHandler.postDelayed(this, 7500);
-						}
-					}//end of ifinternet
 
-					
-					
+						catch (ParseException e) {
+							e.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
+					}
+					adapter.notifyDataSetChanged();
+					mHandler.postDelayed(this, 3000);
 				}
 
 				catch (Exception e) {
@@ -459,14 +440,6 @@ public class Voting extends ListActivity {
 						// String temp = message.substring(0,
 						// message.indexOf('.'));
 						votes.add(message);
-					}
-					else if(voteitem.equals("JCHECKUPDATE")&& !message.equals("END"))
-					{
-						Log.d("MESSAGE", message);
-						if(message.equals("update"))
-						{
-							updateField = true;
-						}
 					}
 
 					Collections.sort(voteList);// Sorting Array List in Alpha
