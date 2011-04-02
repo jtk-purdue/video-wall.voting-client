@@ -23,15 +23,15 @@ public class Audio extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.audio);
-		// String url = "http://live.wx5fwd.net/voipwx.mp3";
-		// MediaPlayer mp = new MediaPlayer();
+		 String url = "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3";
+		 MediaPlayer mp = new MediaPlayer();
 		try {
-			// mp.setDataSource(url);
-			// mp.prepare();
-			// mp.start();
+			 mp.setDataSource(url);
+			 mp.prepare();
+			 mp.start();
 		} catch (Exception e) {
-			// Log.i("Exception", "Exception in streaming mediaplayer e = " +
-			// e);
+			 Log.i("Exception", "Exception in streaming mediaplayer e = " +
+			 e);
 		}
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		// boolean internet=checkInternetConnection();

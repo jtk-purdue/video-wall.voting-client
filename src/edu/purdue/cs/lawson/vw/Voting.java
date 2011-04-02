@@ -52,6 +52,7 @@ public class Voting extends ListActivity {
 	BufferedReader in;
 	String message;
 	ArrayList<String> voteList;
+	ArrayList<String> tempVoteList;
 	ArrayList<String> votes;
 	Runnable update;
 	Animation anim = null;
@@ -437,8 +438,6 @@ public class Voting extends ListActivity {
 
 					else if (voteitem.equals("GETCOUNT")
 							&& !message.equals("END")) {
-						// String temp = message.substring(0,
-						// message.indexOf('.'));
 						votes.add(message);
 					}
 
