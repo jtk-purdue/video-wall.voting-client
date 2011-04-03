@@ -46,6 +46,7 @@ public class Acknowledgements extends ListActivity {
 		nameList.add("Nick Hirschberg, CS Webmaster");
 		nameList.add("Randy Copas, Purdue Crew Chief");
 		nameList.add("Tom Barbour, Purdue Electronics Shop");
+		nameList.add("Peter Tsangaye, Harris Technical Support");
 		nameList.add("Brian Board, CS Hardware Engineer");
 		nameList.add("Ron Castongia, CS Facilities Manager");
 		nameList.add("Mike Motuliak, CS Hardware Engineer");
