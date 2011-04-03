@@ -11,14 +11,12 @@
         android:layout_height="wrap_content"       
         /> 
         
-    <ImageSwitcher 
-        android:id="@+id/switcher1" 
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"                 
-        android:layout_alignParentLeft="true" 
-        android:layout_alignParentRight="true" 
-        android:layout_alignParentBottom="true"      
+	<TextView android:text="\nClick to Play\nClick again to Pause.."
+        android:id="@+id/audio_instructions" 
+        android:gravity="center_horizontal|center_vertical"
+		android:layout_width="fill_parent"
+		android:textSize="25sp"
+		android:layout_height="wrap_content"   
         /> 
-    
  
 </LinearLayout>

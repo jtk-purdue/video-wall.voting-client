@@ -2,42 +2,98 @@ package edu.purdue.cs.lawson.vw;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
+import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import edu.purdue.cs.lawson.vw.R;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Gallery;
+import android.widget.Gallery.LayoutParams;
+import android.widget.TextView;
+import android.widget.ViewSwitcher.ViewFactory;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
+import android.widget.AdapterView.OnItemClickListener;
 
-/*This activity will allow the user to stream audio from a screen (or a set of screens) 
- * to his/her phone. 
- */
+public class Audio extends Activity implements ViewFactory {
+	Animation anim = null;
+	MediaPlayer mp;
 
-public class Audio extends Activity {
+	// ---the images to display---
+	Integer[] imageIDs = { R.drawable.icon, R.drawable.icon, R.drawable.icon,
+			R.drawable.icon, R.drawable.icon, R.drawable.icon, R.drawable.icon,
+			R.drawable.icon, R.drawable.icon };
+
+	private Integer[] thumbnails = { R.drawable.audio, R.drawable.audio,
+			R.drawable.audio, R.drawable.audio, R.drawable.audio, R.drawable.audio,
+			R.drawable.audio, R.drawable.audio, R.drawable.audio };
+
+	//private ImageSwitcher imageSwitcher;
+	private TextView ins;
+	private boolean internetcheck;
+	
+	private String[] songUrls = { "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3"};;
+
 	private static final String TAG = null;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.audio);
-		 String url = "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3";
-		 MediaPlayer mp = new MediaPlayer();
-		try {
-			 mp.setDataSource(url);
-			 mp.prepare();
-			 mp.start();
-		} catch (Exception e) {
-			 Log.i("Exception", "Exception in streaming mediaplayer e = " +
-			 e);
-		}
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		// boolean internet=checkInternetConnection();
-	}
+		setContentView(R.layout.gallery);
 
-	// Will check if the phone is connected to the internet through Wifi or 3g
+		ins = (TextView) findViewById(R.id.audio_instructions);
+		internetcheck = checkInternetConnection();
+		mp = new MediaPlayer();
+		
+		Gallery gallery = (Gallery) findViewById(R.id.gallery1);
+		gallery.setAdapter(new ImageAdapter(this));
+		gallery.setSelection(4);
+		//ins.setImageResource(R.drawable.icon);
+
+		gallery.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView parent, View v, int position,
+					long id) {
+				
+			   String url = songUrls[position];
+			   //String url = "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3";
+			   mp.stop();
+			   mp.reset();
+		       if (internetcheck) {
+		       try {
+		            mp.setDataSource(url);
+		            mp.prepare();
+		            mp.start();
+		       } catch (Exception e) {
+		            Log.i("Exception", "Exception in streaming mediaplayer e = " +
+		            e);
+		       }
+		      }	//imageSwitcher.setImageResource(imageIDs[position]);
+			}
+		});
+
+	}
+	
 	private boolean checkInternetConnection() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		// test for connection
@@ -50,48 +106,78 @@ public class Audio extends Activity {
 			return false;
 		}
 	}
+	
+	public void onPause()
+	{
+		super.onPause();
+		mp.stop();
+	}
+	
+	public void onStop()
+	{
+		super.onStop();
+		mp.stop();
+	}
+	
+	public void onDestroy()
+	{
+		super.onDestroy();
+		mp.start();
+	}
+	
+	public void onResume()
+	{
+		super.onResume();
+		//mp = new MediaPlayer();
+		mp.reset();
+	}
+	
 
-	// @Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		return super.onPrepareOptionsMenu((android.view.Menu) menu);
+	public View makeView() {
+		ImageView imageView = new ImageView(this);
+		imageView.setBackgroundColor(0xFF000000);
+		imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+		imageView.setLayoutParams(new ImageSwitcher.LayoutParams(
+				LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		return imageView;
 	}
 
-	// @Override
-	@Override
-	public boolean onCreateOptionsMenu(android.view.Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu, menu);
-		return true;
-	}
+	public class ImageAdapter extends BaseAdapter {
+		private Context context;
+		private int itemBackground;
 
-	// Performs appropriate action when Menu option is selected.
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.help:
-			Intent i = new Intent();
-			i.setClass(Audio.this, Help.class); // Switch to help activity
-			startActivity(i);
-			break;
+		public ImageAdapter(Context c) {
+			context = c;
 
-		case R.id.info:
-			Intent i2 = new Intent();
-			i2.setClass(Audio.this, Information.class); // Switch to info
-														// activity
-			startActivity(i2);
-			break;
-
-		case R.id.settings:
-			Intent i3 = new Intent();
-			i3.setClass(Audio.this, Settings.class); // Switch to settings
-														// activity
-			startActivity(i3);
-			break;
-
-		case R.id.quit:
-			finish(); // Finish the current activity
-			break;
+			// ---setting the style---
+			TypedArray a = obtainStyledAttributes(R.styleable.GalleryTheme);
+			itemBackground = a.getResourceId(
+					R.styleable.GalleryTheme_android_galleryItemBackground, 0);
+			a.recycle();
 		}
-		return true;
+
+		// ---returns the number of images---
+		public int getCount() {
+			return imageIDs.length;
+		}
+
+		// ---returns the ID of an item---
+		public Object getItem(int position) {
+			return position;
+		}
+
+		public long getItemId(int position) {
+			return position;
+		}
+
+		// ---returns an ImageView view---
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ImageView imageView = new ImageView(context);
+			imageView.setImageResource(thumbnails[position]);
+			imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+			imageView.setLayoutParams(new Gallery.LayoutParams(270, 275));
+			imageView.setBackgroundResource(itemBackground);
+			return imageView;
+		}
 	}
 }

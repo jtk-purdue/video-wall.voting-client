@@ -35,10 +35,17 @@ public class Acknowledgements extends ListActivity {
 		nameList = new ArrayList<String>();
 		// nameList.add("SPECIAL THANKS TO:");
 		nameList.add("Jim Clamons, Harris Corporation");
+		nameList.add("Dan Trinkle, CS Technical Systems Administrator");
+		nameList.add("Dave Burford, Purdue Electronics Shop");
+		nameList.add("Jeremy Mullenberg, Purdue Electronics Shop");
 		nameList.add("Don Hewitt, Harris Corporation");
+		nameList.add("John Steinhauer, Purdue Electronics Shop");
 		nameList.add("Jim Smith, Purdue Carpenter Shop");
 		nameList.add("Scott Cochran, Purdue Carpenter Shop");
 		nameList.add("Tim Korb, CS Assistant Head");
+		nameList.add("Nick Hirschberg, CS Webmaster");
+		nameList.add("Randy Copas, Purdue Crew Chief");
+		nameList.add("Tom Barbour, Purdue Electronics Shop");
 		nameList.add("Brian Board, CS Hardware Engineer");
 		nameList.add("Ron Castongia, CS Facilities Manager");
 		nameList.add("Mike Motuliak, CS Hardware Engineer");
