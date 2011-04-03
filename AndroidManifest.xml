@@ -29,12 +29,6 @@
            android:label="Harris Corporation Video Wall Demo">
  </activity>
    
-<activity android:name="android.button.Information"
-		  android:gravity="center_horizontal"
-		  android:label="@string/info_title"
-		  android:theme="@android:style/Theme.Dialog">
-</activity>
-
 <activity android:name="Settings"></activity>
 <activity android:name="Bios"></activity>
 
