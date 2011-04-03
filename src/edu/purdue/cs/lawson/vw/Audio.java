@@ -21,7 +21,7 @@ import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class Audio extends Activity implements ViewFactory {
+public class Audio extends Activity {
 	Animation anim = null;
 	MediaPlayer mp;
 
@@ -39,8 +39,8 @@ public class Audio extends Activity implements ViewFactory {
 	private boolean internetcheck;
 	
 	private String[] songUrls = { "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
-								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
-								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
+								  "http://sound21.mp3pk.com/indian/patialahouse/patialahouse01(www.songs.pk).mp3",
+								  "http://creamteam.info/wp-content/uploads/2010/08/01-Club-Cant-Handle-Me-Feat.-David-Guetta.mp3",
 								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
 								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
 								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
@@ -60,15 +60,15 @@ public class Audio extends Activity implements ViewFactory {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.gallery);
+		setContentView(R.layout.audio);
 
 		ins = (TextView) findViewById(R.id.audio_instructions);
 		internetcheck = checkInternetConnection();
 		mp = new MediaPlayer();
-		
-		Gallery gallery = (Gallery) findViewById(R.id.gallery1);
-		gallery.setAdapter(new ImageAdapter(this));
-		gallery.setSelection(4);
+		/*
+		//Gallery gallery = (Gallery) findViewById(R.id.gallery1);
+		//gallery.setAdapter(new ImageAdapter(this));
+		//gallery.setSelection(4);
 		//ins.setImageResource(R.drawable.icon);
 
 		gallery.setOnItemClickListener(new OnItemClickListener() {
@@ -90,7 +90,7 @@ public class Audio extends Activity implements ViewFactory {
 		       }
 		      }	//imageSwitcher.setImageResource(imageIDs[position]);
 			}
-		});
+		});*/
 
 	}
 	
@@ -133,7 +133,7 @@ public class Audio extends Activity implements ViewFactory {
 	}
 	
 
-	public View makeView() {
+	/*public View makeView() {
 		ImageView imageView = new ImageView(this);
 		imageView.setBackgroundColor(0xFF000000);
 		imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -179,5 +179,5 @@ public class Audio extends Activity implements ViewFactory {
 			imageView.setBackgroundResource(itemBackground);
 			return imageView;
 		}
-	}
+	}*/
 }
