@@ -2,28 +2,24 @@ package edu.purdue.cs.lawson.vw;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.Gallery;
-import android.widget.Gallery.LayoutParams;
+import android.widget.GridView;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
-import android.widget.ViewSwitcher.ViewFactory;
-import android.widget.ImageSwitcher;
-import android.widget.ImageView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class Audio extends Activity  {
 	Animation anim = null;
@@ -42,22 +38,24 @@ public class Audio extends Activity  {
 	private TextView ins;
 	private boolean internetcheck;
 	
-	private String[] songUrls = { "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
-								  "http://sound21.mp3pk.com/indian/patialahouse/patialahouse01(www.songs.pk).mp3",
-								  "http://creamteam.info/wp-content/uploads/2010/08/01-Club-Cant-Handle-Me-Feat.-David-Guetta.mp3",
-								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
-								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
-								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
-								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
-								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
-								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
-								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
-								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
-								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
-								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
-								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
-								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3",
-								  "http://sound17.mp3pk.com/indian/dummaarodum/dummaardum01%28www.songs.pk%29.mp3"};;
+	private String[] songUrls = { "http://www.eoezone.com/Update/2009/MUSICHEAVEN/MV/MV_56_Nickelback_Gotta_Be_Somebody.mp3",
+			 "http://vukwap.comli.com/upload/Katy_Perry_-_Firework.mp3",
+			 "http://creamteam.info/wp-content/uploads/2010/08/01-Club-Cant-Handle-Me-Feat.-David-Guetta.mp3",
+			 "http://davidfoucaud.free.fr/Sons/Questionnaire/LINKIN_PARK___IN_THE_END_2_.mp3",
+			 "http://www.shtyle.fm/dynimg/usrsng/D0/6C/10972368_Taio_Cruz_Break_Your_Heart.mp3",
+			 "http://statdevices.com/pdtprojects/Metallica/Live-January26-2009-Allstate_Arena/met090126d2_17_Enter_Sandman.mp3",
+			 "http://www.fillmorefiredepartment.com/01_-_Let_It_Rock.mp3",
+			 "http://decedope.com/wp-content/uploads/2010/08/Tinie-Tempah-Written-In-The-Stars-decentlydope.mp3",
+			 "http://www.freewebs.com/demymonsters/Red%20hot%20chili%20peppers%20-%20Californification.mp3",		
+			 "http://freshmp3music.ru/music/02.2011/Lady_Gaga_-_Born_This_Way_(www.freshmp3music.ru).mp3",
+			 "http://fwap.ru/d/mp3/big/eng/l/Led_Zeppelin/Led_zeppelin-rock_n_roll.mp3",
+			 "http://www.freewebs.com/itsall4freeitsthebest/01-r_kelly-ignition_(remix)-cms.mp3",
+			 "http://www.freewebs.com/rtkkd/Jimmy_Hendrix_-_Purple_Haze.mp3",
+			 "http://thedockingstation.ca/audio/2009-07/We_Be_Steady_Mobbin.mp3",
+			 "http://user-dak.moskva.com/data/uf/9980163/18/64/12/18641241_Sting_-_02_-_Desert_Rose.mp3",
+			 "http://pds3.egloos.com/pds/200708/22/13/lifehouse_01_Hanging_By_A_Moment.mp3"};;
+
+
 
 	private static final String TAG = null;
 	
@@ -71,143 +69,15 @@ public class Audio extends Activity  {
 		mp = new MediaPlayer();
 		
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-		Button button = (Button) findViewById(R.id.screen1);// Creating a button
-		button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(0);
-			}
-		});
-
-		// Above process is repeated for each audio track.
-		Button button2 = (Button) findViewById(R.id.screen2);
-		button2.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(1);
-			}
-		});
-
-		Button button3 = (Button) findViewById(R.id.screen3);
-		button3.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(2);
-			}
-		});
 		
-		Button button4 = (Button) findViewById(R.id.screen4);// Creating a button
-		button4.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(3);
-			}
-		});
+		GridView gridview = (GridView) findViewById(R.id.gridview);  
+		gridview.setAdapter(new ButtonAdapter(this)); 
+	    gridview.setOnItemClickListener(new OnItemClickListener() {
+	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+	            Toast.makeText(Audio.this, "" + position, Toast.LENGTH_SHORT).show();
+	        }
+	    });
 
-		// Above process is repeated for each audio track.
-		Button button5 = (Button) findViewById(R.id.screen5);
-		button5.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(4);
-			}
-		});
-
-		Button button6 = (Button) findViewById(R.id.screen6);
-		button6.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(5);
-			}
-		});
-
-		Button button7 = (Button) findViewById(R.id.screen7);// Creating a button
-		button7.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(6);
-			}
-		});
-
-		// Above process is repeated for each audio track.
-		Button button8 = (Button) findViewById(R.id.screen8);
-		button8.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(7);
-			}
-		});
-
-		Button button9 = (Button) findViewById(R.id.screen9);
-		button9.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(8);
-			}
-		});
-
-		Button button10 = (Button) findViewById(R.id.screen10);// Creating a button
-		button10.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(9);
-			}
-		});
-
-		// Above process is repeated for each audio track.
-		Button button11 = (Button) findViewById(R.id.screen11);
-		button11.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(10);
-			}
-		});
-
-		Button button12 = (Button) findViewById(R.id.screen12);
-		button12.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(11);
-			}
-		});
-
-		Button button13 = (Button) findViewById(R.id.screen13);// Creating a button
-		button13.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(12);
-			}
-		});
-
-		// Above process is repeated for each audio track.
-		Button button14 = (Button) findViewById(R.id.screen14);
-		button14.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(13);
-			}
-		});
-
-		Button button15 = (Button) findViewById(R.id.screen15);
-		button15.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(14);
-			}
-		});
-		
-		Button button16 = (Button) findViewById(R.id.screen16);
-		button16.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				playSong(15);
-			}
-		});
-
-
-		
-		
 		
 		
 		/*
@@ -342,4 +212,93 @@ public class Audio extends Activity  {
 			return imageView;
 		}
 	}*/
+	
+	class ButtonAdapter extends BaseAdapter {  
+	    private Context mContext; 
+	    
+	    View  prev = null;
+	    int check=-1;
+	     
+	    // Gets the context so it can be used later  
+	    public ButtonAdapter(Context c) {  
+	     mContext = c;  
+	    }  
+	     
+	    // Total number of things contained within the adapter  
+	    public int getCount() {  
+	     return 16;  
+	    }  
+	     
+	     // Require for structure, not really used in my code.  
+	    public Object getItem(int position) {  
+	     return null;  
+	    }  
+	     
+	    // Require for structure, not really used in my code. Can  
+	    // be used to get the id of an item in the adapter for  
+	    // manual control.  
+	    public long getItemId(int position) {  
+	     return position;  
+	    }  
+	     
+	    public View getView(final int position,  
+	                              View convertView, ViewGroup parent) {  
+	     Button btn;  
+	     if (convertView == null) {  
+	      // if it's not recycled, initialize some attributes  
+	      btn = new Button(mContext);  
+	      btn.setLayoutParams(new GridView.LayoutParams(67, 75));  
+	      btn.setPadding(8, 8, 8, 8);  
+	      }  
+	     else {  
+	      btn = (Button) convertView;  
+	     }  
+	     //exus  
+	     btn.setText(position+1 + "");  
+	     // filenames is an array of strings  
+	     btn.setTextColor(Color.WHITE);  
+	     btn.setBackgroundColor(Color.argb(100, 100, 100, 255));
+	     //btn.setBackgroundResource(R.drawable.button);  
+	     btn.setId(position);  
+	     btn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+	            //Toast.makeText(v.getContext(), "" + ((Button)v).getText(), Toast.LENGTH_SHORT).show();
+				if(check!=position)
+				{
+	            //Toast.makeText(v.getContext(), "" + ((Button)v).getText(), Toast.LENGTH_SHORT).show();
+	            v.setBackgroundColor(Color.argb(100, 124, 252, 0));
+	            
+	            if(prev != null)
+	            	{
+	            		prev.setBackgroundColor(Color.argb(100, 100, 100, 255));
+	            		
+	            	}
+	            prev=v;
+	            playSong(position);
+	            check=position;
+	 
+				}
+				else
+				{
+					check=-1;
+            		prev.setBackgroundColor(Color.argb(100, 100, 100, 255));
+					prev=null;
+					mp.stop();
+					mp.reset();
+
+				}
+			}
+				
+	    	 
+	     });
+	     
+	     return btn;  
+	    }  
+	   } 
+	
 }
+
+ 
