@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.ParseException;
 import android.os.AsyncTask;
@@ -341,7 +344,7 @@ public class Voting extends ListActivity {
 				holder = new ViewHolder(convertView);
 				convertView.setTag(holder);
 			}
-			holder = (ViewHolder) convertView.getTag();
+			holder = (ViewHolder)convertView.getTag();
 			title = holder.gettitle();
 			title.setText(rowData.mTitle);
 			detail = holder.getdetail();
@@ -510,7 +513,9 @@ public class Voting extends ListActivity {
 
 		case R.id.stats:
 			Intent i2 = new Intent();
-			i2.setClass(Voting.this, Information.class);
+			i2.putExtra("votes", voteList);
+			i2.putExtra("votesint", votes);
+			i2.setClass(Voting.this, Stats.class);
 			startActivity(i2);
 			break;
 
