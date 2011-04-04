@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -34,6 +35,10 @@ public class Stats extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+		
 		setContentView(R.layout.stats);
 		image = (ImageView) findViewById(R.id.image);
 		
@@ -45,7 +50,7 @@ public class Stats extends Activity {
 		if(list == null || intvalues == null){
 			get=false;
 		}else{
-			Toast.makeText(this, list.toString()+" \n  "+intvalues.toString(), Toast.LENGTH_LONG).show();
+			//Toast.makeText(this, list.toString()+" \n  "+intvalues.toString(), Toast.LENGTH_LONG).show();
 		}
 		
 	}
