@@ -91,7 +91,7 @@ public class Stats extends Activity {
 					
 					chart+=list.get(i);
 					
-					chart+="&chco=000000|0000FF|FFEAC0|00FF00|E8E8E8|FF9900|EB00C8|FF00FF|FF0000|FFFF88";
+					chart+="&chco=000000|0000FF|FFEAC0|00FF00|E8E8E8|FF9900|FF00FF|FF0000";
 					
 					Log.d("Stats", chart);
 					
