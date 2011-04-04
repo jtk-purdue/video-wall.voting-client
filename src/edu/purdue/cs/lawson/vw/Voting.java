@@ -51,7 +51,7 @@ public class Voting extends ListActivity {
 	CustomAdapter adapter;
 	RowData rd;
 	Socket requestSocket;
-	PrintWriter out;
+ 	PrintWriter out;
 	BufferedReader in;
 	String message;
 	ArrayList<String> voteList;
@@ -126,6 +126,7 @@ public class Voting extends ListActivity {
 		data = new Vector<RowData>();
 		if (internetcheck) {
 			try {
+				
 				voteList.clear();
 				connect("GET", "");
 				connect("GETCOUNT", "");
