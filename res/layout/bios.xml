@@ -13,8 +13,8 @@ xmlns:android="http://schemas.android.com/apk/res/android"
       
 <TableLayout
 android:id="@+id/widget92"
-android:layout_width="304px"
-android:layout_height="320px"
+android:layout_width="1004px"
+android:layout_height="620px"
 android:orientation="vertical"
 android:layout_centerVertical="true"
 android:layout_centerHorizontal="true"
@@ -22,27 +22,27 @@ android:layout_centerHorizontal="true"
 <TableRow
 android:id="@+id/widget93"
 android:layout_width="fill_parent"
-android:layout_height="60px"
+android:layout_height="280px"
 android:orientation="horizontal"
 >
 <Button
  	android:id="@+id/member1"
- 	android:layout_width="100px"
-	android:layout_height="100px"
+ 	android:layout_width="185px"
+	android:layout_height="195px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
  <Button
  	android:id="@+id/member2"
- 	android:layout_width="100px"
-	android:layout_height="100px"
+ 	android:layout_width="185px"
+	android:layout_height="195px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
  <Button
  	android:id="@+id/member3"
- 	android:layout_width="100px"
-	android:layout_height="100px"
+ 	android:layout_width="185px"
+	android:layout_height="195px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
@@ -52,28 +52,28 @@ android:orientation="horizontal"
 <TableRow
 android:id="@+id/widget94"
 android:layout_width="fill_parent"
-android:layout_height="64px"
+android:layout_height="280px"
 android:orientation="horizontal"
 >
 
 <Button
  	android:id="@+id/member4"
- 	android:layout_width="100px"
-	android:layout_height="100px"
+ 	android:layout_width="185px"
+	android:layout_height="195px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
  <Button
  	android:id="@+id/member5"
- 	android:layout_width="100px"
-	android:layout_height="100px"
+ 	android:layout_width="185px"
+	android:layout_height="195px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
  <Button
  	android:id="@+id/member6"
- 	android:layout_width="100px"
-	android:layout_height="100px"
+ 	android:layout_width="185px"
+	android:layout_height="195px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
@@ -83,28 +83,28 @@ android:orientation="horizontal"
 <TableRow
 android:id="@+id/widget95"
 android:layout_width="fill_parent"
-android:layout_height="72px"
+android:layout_height="280px"
 android:orientation="horizontal"
 >
 
 <Button
  	android:id="@+id/member7"
- 	android:layout_width="100px"
-	android:layout_height="100px"
+ 	android:layout_width="185px"
+	android:layout_height="195px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
  <Button
  	android:id="@+id/member8"
- 	android:layout_width="100px"
-	android:layout_height="100px"
+ 	android:layout_width="185px"
+	android:layout_height="195px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>
  <Button
  	android:id="@+id/member9"
- 	android:layout_width="100px"
-	android:layout_height="100px"
+ 	android:layout_width="185px"
+	android:layout_height="195px"
 	android:layout_centerVertical="true"
 	android:layout_centerHorizontal="true"
  	android:textSize="20px"/>

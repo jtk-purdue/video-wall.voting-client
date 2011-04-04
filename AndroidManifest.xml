@@ -43,6 +43,7 @@
 
 <activity android:name="CameraPreview"></activity>
 <activity android:name="Acknowledgements"></activity>
+<activity android:name="Stats"></activity>
 
 <activity android:name="Help"
 		  android:gravity="center_horizontal"
