@@ -277,18 +277,25 @@ public class Audio extends Activity  {
 	            		
 	            	}
 	            prev=v;
-	            playSong(position);
+	            Toast.makeText(Audio.this, "Now Loading Song...", Toast.LENGTH_SHORT).show();
+	            new Thread(new Runnable(){
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+			            playSong(position);
+					}
+	            }).start();
 	            check=position;
 	 
 				}
 				else
 				{
+		            Toast.makeText(Audio.this, "Stopping Song...", Toast.LENGTH_SHORT).show();
 					check=-1;
             		prev.setBackgroundColor(Color.argb(100, 100, 100, 255));
 					prev=null;
 					mp.stop();
 					mp.reset();
-
 				}
 			}
 				
