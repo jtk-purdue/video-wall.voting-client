@@ -1,15 +1,11 @@
 package edu.purdue.cs.lawson.vw;
 
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import android.app.ListActivity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.net.ParseException;
 import android.os.Bundle;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -46,11 +42,12 @@ public class Acknowledgements extends ListActivity {
 		nameList.add("Nick Hirschberg, CS Webmaster");
 		nameList.add("Randy Copas, Purdue Crew Chief");
 		nameList.add("Tom Barbour, Purdue Electronics Shop");
-		nameList.add("Peter Tsangaye, Harris Technical Support");
+		nameList.add("Peter Tsegaye, Harris Technical Support");
 		nameList.add("Brian Board, CS Hardware Engineer");
 		nameList.add("Ron Castongia, CS Facilities Manager");
 		nameList.add("Mike Motuliak, CS Hardware Engineer");
 		nameList.add("Melanie Church, CS Windows Administrator");
+		nameList.add("Bruce Townsend, Harris Technical Support");
 		Collections.sort(nameList);
 		setListAdapter(new ArrayAdapter<String>(this,
 				R.layout.acknowledgements, nameList));
