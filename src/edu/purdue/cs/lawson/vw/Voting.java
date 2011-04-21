@@ -1,9 +1,23 @@
 package edu.purdue.cs.lawson.vw;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ConnectException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Vector;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -12,27 +26,19 @@ import android.net.ParseException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Vector;
-
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import java.io.*;
-import java.net.*;
-import java.util.ArrayList;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /*When this activity starts, it pulls a list of available shows that can be voted on. 
  * When a vote is cast it makes a connection with the server and send across what was voted for.
@@ -57,12 +63,8 @@ public class Voting extends ListActivity {
 	int portnum;
 	boolean internetcheck = false;
 	Handler mHandler;
-
-	static final String[] title = new String[] {
-			"*New*Apple iPad Wi-Fi (16GB)",
-			"7 Touch Tablet -2GB Google Android",
-			"Apple iPad Wi-Fi (16GB) Rarely Used ",
-			"Apple iPad Wi-Fi (16GB) AppleCase" };
+	boolean voted = false;
+	int lastPosition = -1;
 
 	static final String[] detail = new String[] { "Number of Votes: ",
 			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
@@ -75,16 +77,6 @@ public class Voting extends ListActivity {
 			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
 			"Number of Votes: ", "Number of Votes: ", "Number of Votes: " };
 
-	private Integer[] imgid = { R.drawable.voteicon, R.drawable.voteicon,
-			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
-			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
-			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
-			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
-			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
-			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
-			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
-			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon,
-			R.drawable.voteicon, R.drawable.voteicon, R.drawable.voteicon };
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -245,14 +237,65 @@ public class Voting extends ListActivity {
 		mHandler.removeCallbacks(update);
 	}
 
-	public void onListItemClick(ListView parent, View v, int position, long id) {
+	public void onListItemClick(ListView parent, View v, final int position, long id) {
 		TextView title = (TextView) v.findViewById(R.id.title);
-		String vi = (String) ((TextView) title).getText();
+		final String vi = (String) ((TextView) title).getText();
 		if (internetcheck) {
 			try {
+				
+				if(voted)
+				{
+					// Pop up dialog box asking to change vote
+					AlertDialog.Builder builder = new AlertDialog.Builder(this);
+					builder.setMessage("Are you sure you want to change your vote from " + voteList.get(lastPosition)+ " to " + voteList.get(position)+ "?")
+					       .setCancelable(false)
+					       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					           public void onClick(DialogInterface dialog, int id) {
+					        	  try {
+					        	   connect("VOTE", vi);
+									voted = true;
+									votes.clear();
+									connect("GETCOUNT", "");
+									lastPosition = position;
+									Toast.makeText(getApplicationContext(), "Voted for " + vi,
+											Toast.LENGTH_SHORT).show();
+					        	  }
+					        	  
+					        	  catch (ConnectException e) {
+					  				// TODO Auto-generated catch block
+					  				e.printStackTrace();
+					  			} catch (UnknownHostException e) {
+					  				// TODO Auto-generated catch block
+					  				e.printStackTrace();
+					  			} catch (IOException e) {
+					  				// TODO Auto-generated catch block
+					  				e.printStackTrace();
+					  			} catch (Exception e) {
+					  				// TODO Auto-generated catch block
+					  				e.printStackTrace();
+					  			} // Contacts server and gets list of available shows
+
+					           }
+					       })
+					       .setNegativeButton("No", new DialogInterface.OnClickListener() {
+					           public void onClick(DialogInterface dialog, int id) {
+					                dialog.cancel();
+					           }
+					       });
+					AlertDialog alert = builder.create();
+					alert.show();
+				}
+				
+			else{
 				connect("VOTE", vi);
+				voted = true;
 				votes.clear();
 				connect("GETCOUNT", "");
+				lastPosition = position;
+				Toast.makeText(getApplicationContext(), "Voted for " + vi,
+						Toast.LENGTH_SHORT).show();
+			}
+				
 			} catch (ConnectException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -267,8 +310,7 @@ public class Voting extends ListActivity {
 				e.printStackTrace();
 			} // Contacts server and gets list of available shows
 
-			Toast.makeText(getApplicationContext(), "Voted for " + vi,
-					Toast.LENGTH_SHORT).show();// Show the item which
+			// Show the item which
 			// has been voted for
 			// through a toast
 			// v.startAnimation(anim); // Show animation when clicked
@@ -344,7 +386,7 @@ public class Voting extends ListActivity {
 			detail = holder.getdetail();
 			detail.setText(rowData.mDetail);
 			i11 = holder.getImage();
-			i11.setImageResource(imgid[rowData.mId]);
+			i11.setImageResource(R.drawable.voteicon);
 			return convertView;
 		}
 

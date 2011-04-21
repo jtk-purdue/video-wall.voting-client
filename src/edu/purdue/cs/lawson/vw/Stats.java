@@ -69,8 +69,8 @@ public class Stats extends Activity {
 			Bitmap b = null;
 			
 			protected Object doInBackground(Object[] params) {
-				
-				if(online=isOnline())
+				online = isOnline();
+				if(online)
 				try {
 					
 					String chart = "https://chart.googleapis.com/chart?cht=pc&chd=t:";
