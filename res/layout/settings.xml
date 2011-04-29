@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
   xmlns:android="http://schemas.android.com/apk/res/android">
+  <ListPreference
+  android:title="Choose Server Location:"
+  android:summary="Select a server location or enter one of your own"
+  android:key="serverPref"
+  android:entries="@array/serverList"
+  android:entryValues="@array/serverReturnValue" />
   <EditTextPreference
   android:name="Port Preference"
-  android:inputType="number"
+  android:numeric="integer"
   android:summary="Default port: 4242"
   android:defaultValue="4242"
+  android:maxLength="5"
   android:title="Enter a port number:"
   android:key="editTextPref" />
   <CheckBoxPreference
@@ -17,20 +24,5 @@
   android:key="vibrate"
   android:title="Vibrate"
   android:summary="Toggle phone vibration"
-  android:defaultValue="true"/>
-  <CheckBoxPreference
-  android:key="sample2"
-  android:title="@string/sample_title"
-  android:summary="@string/sample_description"
-  android:defaultValue="true"/>
-  <CheckBoxPreference
-  android:key="sample3"
-  android:title="@string/sample_title"
-  android:summary="@string/sample_description"
-  android:defaultValue="true"/>
-  <CheckBoxPreference
-  android:key="sample4"
-  android:title="@string/sample_title"
-  android:summary="@string/sample_description"
   android:defaultValue="true"/>
   </PreferenceScreen>

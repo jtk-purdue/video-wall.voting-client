@@ -61,21 +61,11 @@ public class Voting extends ListActivity {
 	ProgressDialog myProgressDialog = null;
 	String editTextPreference;
 	int portnum;
+	String serverLocation;
 	boolean internetcheck = false;
 	Handler mHandler;
 	boolean voted = false;
 	int lastPosition = -1;
-
-	static final String[] detail = new String[] { "Number of Votes: ",
-			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
-			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
-			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
-			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
-			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
-			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
-			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
-			"Number of Votes: ", "Number of Votes: ", "Number of Votes: ",
-			"Number of Votes: ", "Number of Votes: ", "Number of Votes: " };
 
 
 	@Override
@@ -87,21 +77,19 @@ public class Voting extends ListActivity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		voteList = new ArrayList<String>();
 		votes = new ArrayList<String>();
+		
+		SharedPreferences myPreference=PreferenceManager.getDefaultSharedPreferences(this);
+		  serverLocation = myPreference.getString("serverPref", "pc2.cs.purdue.edu");
+		  Log.d("Server Preference in onCreate",""+serverLocation);
 
 		portnum = 4242;
-
+		
+		
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(getBaseContext());
 		editTextPreference = prefs.getString("editTextPref", "4242");
-
-		if (!editTextPreference.equals("4242")) {
-			portnum = Integer.parseInt(editTextPreference);
-
-			if (portnum < 0 || portnum > 65536)
-				portnum = 4242;
-		}
-
-		Log.d("PORT NUMBER", editTextPreference);
+		portnum=Integer.parseInt(editTextPreference);
+		Log.d("PORT NUMBER in onCreate", editTextPreference);
 
 		setContentView(R.layout.vote);
 		anim = AnimationUtils.loadAnimation(this, R.anim.shake); // Sets the
@@ -128,22 +116,10 @@ public class Voting extends ListActivity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} // Contacts server and gets list of available shows
-
-			for (int i = 0; i < voteList.size(); i++) {
-				try {
-					rd = new RowData(i, voteList.get(i), "Number of votes: "
-							+ votes.get(i));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				data.add(rd);
-			}
-			adapter = new CustomAdapter(this, R.layout.list, R.id.title, data);
-			setListAdapter(adapter);
-
-			getListView().setTextFilterEnabled(true);
-
-		} else {
+			updateData();
+		}
+			
+		else {
 			Toast.makeText(getApplicationContext(),
 					"No active internet connection.", Toast.LENGTH_SHORT)
 					.show();
@@ -218,9 +194,56 @@ public class Voting extends ListActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
+		SharedPreferences myPreference=PreferenceManager.getDefaultSharedPreferences(this);
+		   String temp_serverLocation = myPreference.getString("serverPref", "pc2.cs.purdue.edu");
+		  Log.d("Server Preference",""+temp_serverLocation);
+
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(getBaseContext());
+			String temp_editTextPreference = prefs.getString("editTextPref", "4242");
+
+			Log.d("PORT NUMBER", temp_editTextPreference);
+			
+			if(!(temp_serverLocation.equals(serverLocation)) || !(temp_editTextPreference).equals(editTextPreference) )
+			{
+				serverLocation=temp_serverLocation;
+				editTextPreference=temp_editTextPreference;
+				portnum=Integer.parseInt(editTextPreference);
+				removeData();
+				voteList.clear();
+				votes.clear();
+				try {
+					connect("GET","");
+					connect("GETCOUNT","");
+					updateData();
+				} catch (ConnectException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (UnknownHostException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				finally
+				{
+					updateData();
+					adapter.notifyDataSetChanged();
+				}
+	
+			
+			}
+	
+			
+			
+			
 		Log.d("On RESUME", "TRUE");
 		mHandler = new Handler();
-		mHandler.postDelayed(update, 5000);
+		mHandler.postDelayed(update, 1000);
 	}
 
 	@Override
@@ -242,7 +265,7 @@ public class Voting extends ListActivity {
 		final String vi = (String) ((TextView) title).getText();
 		if (internetcheck) {
 			try {
-				
+				/*
 				if(voted)
 				{
 					// Pop up dialog box asking to change vote
@@ -287,6 +310,7 @@ public class Voting extends ListActivity {
 				}
 				
 			else{
+			*/
 				connect("VOTE", vi);
 				voted = true;
 				votes.clear();
@@ -294,7 +318,7 @@ public class Voting extends ListActivity {
 				lastPosition = position;
 				Toast.makeText(getApplicationContext(), "Voted for " + vi,
 						Toast.LENGTH_SHORT).show();
-			}
+			//}
 				
 			} catch (ConnectException e) {
 				// TODO Auto-generated catch block
@@ -339,7 +363,28 @@ public class Voting extends ListActivity {
 					.show();
 		}
 	}
+	
+	public void removeData()
+	{
+		data.clear();
+	}
+	public void updateData()
+	{
+		Log.d("Number of votable Items",""+voteList.size());
+		for (int i = 0; i < voteList.size(); i++) {
+			try {
+				rd = new RowData(i, voteList.get(i), "Number of votes: "
+						+ votes.get(i));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			data.add(rd);
+		}
+		adapter = new CustomAdapter(this, R.layout.list, R.id.title, data);
+		setListAdapter(adapter);
 
+		getListView().setTextFilterEnabled(true);
+	}
 	private class RowData {
 		protected int mId;
 		protected String mTitle;
@@ -443,7 +488,7 @@ public class Voting extends ListActivity {
 
 		try {
 			// 1. creating a socket to connect to the server
-			requestSocket = new Socket("pc2.cs.purdue.edu", portnum);
+			requestSocket = new Socket(serverLocation, portnum);
 			Log.d("Connection", "Connected to localhost in port " + portnum);
 
 			if (requestSocket == null) {
@@ -493,7 +538,7 @@ public class Voting extends ListActivity {
 			Log.d("SERVER", "Server NOT FOUND");
 			Toast.makeText(getApplicationContext(),
 					"Server Error!! Please try again later..",
-					Toast.LENGTH_LONG).show();
+					Toast.LENGTH_SHORT).show();
 		}
 
 		// Handles unknown host exception
