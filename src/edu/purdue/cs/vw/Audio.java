@@ -1,5 +1,6 @@
-package edu.purdue.cs.lawson.vw;
+package edu.purdue.cs.vw;
 
+import edu.purdue.cs.lawson.vw.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;

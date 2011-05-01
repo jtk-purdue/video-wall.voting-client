@@ -1,4 +1,4 @@
-package edu.purdue.cs.lawson.vw;
+package edu.purdue.cs.vw;
 
 import java.io.BufferedInputStream;
 import java.io.FilterInputStream;
@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+
+import edu.purdue.cs.lawson.vw.R;
 
 import android.app.Activity;
 import android.content.Context;

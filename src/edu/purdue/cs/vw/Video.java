@@ -1,4 +1,4 @@
-package edu.purdue.cs.lawson.vw;
+package edu.purdue.cs.vw;
 
 import android.app.Activity;
 import android.content.Intent;
