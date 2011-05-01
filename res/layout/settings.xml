@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
   xmlns:android="http://schemas.android.com/apk/res/android">
-<!--   <ListPreference
+<ListPreference
   android:title="Choose Server Location:"
   android:summary="Select a server location or enter one of your own"
   android:key="serverPref"
   android:entries="@array/serverList"
-  android:entryValues="@array/serverReturnValue" /> -->
+  android:entryValues="@array/serverReturnValue" />
   <EditTextPreference
   android:name="Port Preference"
   android:numeric="integer"

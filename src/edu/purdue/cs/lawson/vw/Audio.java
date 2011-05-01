@@ -29,10 +29,6 @@ public class Audio extends Activity  {
 			R.drawable.icon, R.drawable.icon, R.drawable.icon, R.drawable.icon,
 			R.drawable.icon, R.drawable.icon };
 
-	private Integer[] thumbnails = { R.drawable.audio, R.drawable.audio,
-			R.drawable.audio, R.drawable.audio, R.drawable.audio, R.drawable.audio,
-			R.drawable.audio, R.drawable.audio, R.drawable.audio };
-
 	//private ImageSwitcher imageSwitcher;
 	private TextView ins;
 	private boolean internetcheck;
