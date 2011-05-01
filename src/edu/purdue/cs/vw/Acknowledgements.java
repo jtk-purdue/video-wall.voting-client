@@ -1,4 +1,4 @@
-package edu.purdue.cs.lawson.vw;
+package edu.purdue.cs.vw;
 
 import java.util.ArrayList;
 import java.util.Collections;
