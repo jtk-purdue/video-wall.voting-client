@@ -13,11 +13,9 @@ import java.util.List;
 import java.util.Vector;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -40,7 +38,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/*When this activity starts, it pulls a list of available shows that can be voted on. 
+/*
+ * When this activity starts, it pulls a list of available shows that can be voted on. 
  * When a vote is cast it makes a connection with the server and send across what was voted for.
  */
 
@@ -50,7 +49,7 @@ public class Voting extends ListActivity {
 	CustomAdapter adapter;
 	RowData rd;
 	Socket requestSocket;
- 	PrintWriter out;
+	PrintWriter out;
 	BufferedReader in;
 	String message;
 	ArrayList<String> voteList;
@@ -67,39 +66,31 @@ public class Voting extends ListActivity {
 	boolean voted = false;
 	int lastPosition = -1;
 
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		internetcheck = checkInternetConnection();// check if Internet
-		// connection is present and
-		// set to true if it is.
+		internetcheck = checkInternetConnection();  // check if Internet connection is present and set to true if it is.
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		voteList = new ArrayList<String>();
 		votes = new ArrayList<String>();
-		
-		SharedPreferences myPreference=PreferenceManager.getDefaultSharedPreferences(this);
-		  serverLocation = myPreference.getString("serverPref", "pc2.cs.purdue.edu");
-		  Log.d("Server Preference in onCreate",""+serverLocation);
+
+		SharedPreferences myPreference = PreferenceManager.getDefaultSharedPreferences(this);
+		serverLocation = myPreference.getString("serverPref", "pc2.cs.purdue.edu");
+		Log.d("Server Preference in onCreate", "" + serverLocation);
 
 		portnum = 4242;
-		
-		
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(getBaseContext());
+
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		editTextPreference = prefs.getString("editTextPref", "4242");
-		portnum=Integer.parseInt(editTextPreference);
+		portnum = Integer.parseInt(editTextPreference);
 		Log.d("PORT NUMBER in onCreate", editTextPreference);
 
 		setContentView(R.layout.vote);
-		anim = AnimationUtils.loadAnimation(this, R.anim.shake); // Sets the
-																	// animation
-																	// to shake
+		anim = AnimationUtils.loadAnimation(this, R.anim.shake); // Sets the animation to shake
 		mInflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 		data = new Vector<RowData>();
 		if (internetcheck) {
 			try {
-				
 				voteList.clear();
 				connect("GET", "");
 				connect("GETCOUNT", "");
@@ -117,13 +108,8 @@ public class Voting extends ListActivity {
 				e.printStackTrace();
 			} // Contacts server and gets list of available shows
 			updateData();
-		}
-			
-		else {
-			Toast.makeText(getApplicationContext(),
-					"No active internet connection.", Toast.LENGTH_SHORT)
-					.show();
-
+		} else {
+			Toast.makeText(getApplicationContext(), "No active internet connection.", Toast.LENGTH_SHORT).show();
 		}
 
 		update = new Runnable() {
@@ -134,9 +120,9 @@ public class Voting extends ListActivity {
 					RowData r = null;
 					if (internetcheck) {
 						try {
-							//voteList.clear();
+							// voteList.clear();
 							votes.clear();
-							//connect("GET", "");
+							// connect("GET", "");
 							connect("GETCOUNT", "");
 						} catch (ConnectException e) {
 							// TODO Auto-generated catch block
@@ -194,53 +180,45 @@ public class Voting extends ListActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		SharedPreferences myPreference=PreferenceManager.getDefaultSharedPreferences(this);
-		   String temp_serverLocation = myPreference.getString("serverPref", "pc2.cs.purdue.edu");
-		  Log.d("Server Preference",""+temp_serverLocation);
+		SharedPreferences myPreference = PreferenceManager.getDefaultSharedPreferences(this);
+		String temp_serverLocation = myPreference.getString("serverPref", "pc2.cs.purdue.edu");
+		Log.d("Server Preference", "" + temp_serverLocation);
 
-			SharedPreferences prefs = PreferenceManager
-					.getDefaultSharedPreferences(getBaseContext());
-			String temp_editTextPreference = prefs.getString("editTextPref", "4242");
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		String temp_editTextPreference = prefs.getString("editTextPref", "4242");
 
-			Log.d("PORT NUMBER", temp_editTextPreference);
-			
-			if(!(temp_serverLocation.equals(serverLocation)) || !(temp_editTextPreference).equals(editTextPreference) )
-			{
-				serverLocation=temp_serverLocation;
-				editTextPreference=temp_editTextPreference;
-				portnum=Integer.parseInt(editTextPreference);
-				removeData();
-				voteList.clear();
-				votes.clear();
-				try {
-					connect("GET","");
-					connect("GETCOUNT","");
-					updateData();
-				} catch (ConnectException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (UnknownHostException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				finally
-				{
-					updateData();
-					adapter.notifyDataSetChanged();
-				}
-	
-			
+		Log.d("PORT NUMBER", temp_editTextPreference);
+
+		if (!(temp_serverLocation.equals(serverLocation)) || !(temp_editTextPreference).equals(editTextPreference)) {
+			serverLocation = temp_serverLocation;
+			editTextPreference = temp_editTextPreference;
+			portnum = Integer.parseInt(editTextPreference);
+			removeData();
+			voteList.clear();
+			votes.clear();
+			try {
+				connect("GET", "");
+				connect("GETCOUNT", "");
+				updateData();
+			} catch (ConnectException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				updateData();
+				adapter.notifyDataSetChanged();
 			}
-	
-			
-			
-			
+
+		}
+
 		Log.d("On RESUME", "TRUE");
 		mHandler = new Handler();
 		mHandler.postDelayed(update, 1000);
@@ -266,60 +244,34 @@ public class Voting extends ListActivity {
 		if (internetcheck) {
 			try {
 				/*
-				if(voted)
-				{
-					// Pop up dialog box asking to change vote
-					AlertDialog.Builder builder = new AlertDialog.Builder(this);
-					builder.setMessage("Are you sure you want to change your vote from " + voteList.get(lastPosition)+ " to " + voteList.get(position)+ "?")
-					       .setCancelable(false)
-					       .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-					           public void onClick(DialogInterface dialog, int id) {
-					        	  try {
-					        	   connect("VOTE", vi);
-									voted = true;
-									votes.clear();
-									connect("GETCOUNT", "");
-									lastPosition = position;
-									Toast.makeText(getApplicationContext(), "Voted for " + vi,
-											Toast.LENGTH_SHORT).show();
-					        	  }
-					        	  
-					        	  catch (ConnectException e) {
-					  				// TODO Auto-generated catch block
-					  				e.printStackTrace();
-					  			} catch (UnknownHostException e) {
-					  				// TODO Auto-generated catch block
-					  				e.printStackTrace();
-					  			} catch (IOException e) {
-					  				// TODO Auto-generated catch block
-					  				e.printStackTrace();
-					  			} catch (Exception e) {
-					  				// TODO Auto-generated catch block
-					  				e.printStackTrace();
-					  			} // Contacts server and gets list of available shows
-
-					           }
-					       })
-					       .setNegativeButton("No", new DialogInterface.OnClickListener() {
-					           public void onClick(DialogInterface dialog, int id) {
-					                dialog.cancel();
-					           }
-					       });
-					AlertDialog alert = builder.create();
-					alert.show();
-				}
-				
-			else{
-			*/
+				 * if(voted) { // Pop up dialog box asking to change vote AlertDialog.Builder builder = new
+				 * AlertDialog.Builder(this); builder .setMessage("Are you sure you want to change your vote from " +
+				 * voteList.get(lastPosition)+ " to " + voteList.get(position)+ "?") .setCancelable(false)
+				 * .setPositiveButton("Yes", new DialogInterface.OnClickListener() { public void onClick(DialogInterface
+				 * dialog, int id) { try { connect("VOTE", vi); voted = true; votes.clear(); connect("GETCOUNT", "");
+				 * lastPosition = position; Toast.makeText(getApplicationContext(), "Voted for " + vi,
+				 * Toast.LENGTH_SHORT).show(); }
+				 * 
+				 * catch (ConnectException e) { // TODO Auto-generated catch block e.printStackTrace(); } catch
+				 * (UnknownHostException e) { // TODO Auto-generated catch block e.printStackTrace(); } catch
+				 * (IOException e) { // TODO Auto-generated catch block e.printStackTrace(); } catch (Exception e) { //
+				 * TODO Auto-generated catch block e.printStackTrace(); } // Contacts server and gets list of available
+				 * shows
+				 * 
+				 * } }) .setNegativeButton("No", new DialogInterface.OnClickListener() { public void
+				 * onClick(DialogInterface dialog, int id) { dialog.cancel(); } }); AlertDialog alert =
+				 * builder.create(); alert.show(); }
+				 * 
+				 * else{
+				 */
 				connect("VOTE", vi);
 				voted = true;
 				votes.clear();
 				connect("GETCOUNT", "");
 				lastPosition = position;
-				Toast.makeText(getApplicationContext(), "Voted for " + vi,
-						Toast.LENGTH_SHORT).show();
-			//}
-				
+				Toast.makeText(getApplicationContext(), "Voted for " + vi, Toast.LENGTH_SHORT).show();
+				// }
+
 			} catch (ConnectException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -358,23 +310,19 @@ public class Voting extends ListActivity {
 		}// end if
 
 		else {
-			Toast.makeText(getApplicationContext(),
-					"No active internet connection.", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(getApplicationContext(), "No active internet connection.", Toast.LENGTH_SHORT).show();
 		}
 	}
-	
-	public void removeData()
-	{
+
+	public void removeData() {
 		data.clear();
 	}
-	public void updateData()
-	{
-		Log.d("Number of votable Items",""+voteList.size());
+
+	public void updateData() {
+		Log.d("Number of votable Items", "" + voteList.size());
 		for (int i = 0; i < voteList.size(); i++) {
 			try {
-				rd = new RowData(i, voteList.get(i), "Number of votes: "
-						+ votes.get(i));
+				rd = new RowData(i, voteList.get(i), "Number of votes: " + votes.get(i));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -385,6 +333,7 @@ public class Voting extends ListActivity {
 
 		getListView().setTextFilterEnabled(true);
 	}
+
 	private class RowData {
 		protected int mId;
 		protected String mTitle;
@@ -408,8 +357,7 @@ public class Voting extends ListActivity {
 	}
 
 	private class CustomAdapter extends ArrayAdapter<RowData> {
-		public CustomAdapter(Context context, int resource,
-				int textViewResourceId, List<RowData> objects) {
+		public CustomAdapter(Context context, int resource, int textViewResourceId, List<RowData> objects) {
 			super(context, resource, textViewResourceId, objects);
 		}
 
@@ -425,7 +373,7 @@ public class Voting extends ListActivity {
 				holder = new ViewHolder(convertView);
 				convertView.setTag(holder);
 			}
-			holder = (ViewHolder)convertView.getTag();
+			holder = (ViewHolder) convertView.getTag();
 			title = holder.gettitle();
 			title.setText(rowData.mTitle);
 			detail = holder.getdetail();
@@ -472,8 +420,7 @@ public class Voting extends ListActivity {
 	private boolean checkInternetConnection() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		// test for connection
-		if (cm.getActiveNetworkInfo() != null
-				&& cm.getActiveNetworkInfo().isAvailable()
+		if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable()
 				&& cm.getActiveNetworkInfo().isConnected()) {
 			return true;
 		} else {
@@ -482,8 +429,7 @@ public class Voting extends ListActivity {
 		}
 	}
 
-	public void connect(String voteitem, String option)
-			throws UnknownHostException, IOException, ConnectException,
+	public void connect(String voteitem, String option) throws UnknownHostException, IOException, ConnectException,
 			Exception {
 
 		try {
@@ -498,8 +444,7 @@ public class Voting extends ListActivity {
 			// 2. get Input and Output streams
 			out = new PrintWriter(requestSocket.getOutputStream(), true);
 			out.flush();
-			in = new BufferedReader(new InputStreamReader(
-					requestSocket.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(requestSocket.getInputStream()));
 
 			// 3: Communicating with the server
 			Log.d("DO", "Test1");
@@ -520,8 +465,7 @@ public class Voting extends ListActivity {
 					if (voteitem.equals("GET") && !message.equals("END"))
 						voteList.add(message);
 
-					else if (voteitem.equals("GETCOUNT")
-							&& !message.equals("END")) {
+					else if (voteitem.equals("GETCOUNT") && !message.equals("END")) {
 						votes.add(message);
 					}
 
@@ -536,9 +480,8 @@ public class Voting extends ListActivity {
 		// Handle exception if server was not found
 		catch (ConnectException e) {
 			Log.d("SERVER", "Server NOT FOUND");
-			Toast.makeText(getApplicationContext(),
-					"Server Error!! Please try again later..",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), "Server Error!! Please try again later..", Toast.LENGTH_SHORT)
+					.show();
 		}
 
 		// Handles unknown host exception

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="serverList">
+ <item>pc2.cs.purdue.edu</item>
+ <item>lore.cs.purdue.edu</item>
+ <item>Other location</item>
+</string-array>
+<string-array name="serverReturnValue">
+ <item>pc2.cs.purdue.edu</item>
+ <item>lore.cs.purdue.edu</item>
+ <item>openTextBox</item>
+</string-array>
+</resources>
