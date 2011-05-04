@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TabHost;
-import edu.purdue.cs.lawson.vw.R;
+import edu.purdue.cs.vw.R;
 
 /*This file sets up the tab view that the application uses.
  */

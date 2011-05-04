@@ -16,7 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import edu.purdue.cs.lawson.vw.R;
+import edu.purdue.cs.vw.R;
 
 public class Acknowledgements extends ListActivity {
 
