@@ -1,6 +1,6 @@
 package edu.purdue.cs.vw;
 
-import edu.purdue.cs.lawson.vw.R;
+import edu.purdue.cs.vw.R;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;

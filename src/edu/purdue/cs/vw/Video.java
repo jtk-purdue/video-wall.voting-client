@@ -8,7 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import edu.purdue.cs.lawson.vw.R;
+import edu.purdue.cs.vw.R;
 
 /*This tab allows users to start video streaming from their phone to the video wall. 
  * When the “Start Video” button is clicked it jumps to the CameraPreview Activity.

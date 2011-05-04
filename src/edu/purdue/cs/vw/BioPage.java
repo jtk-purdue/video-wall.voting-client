@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import edu.purdue.cs.lawson.vw.R;
+import edu.purdue.cs.vw.R;
 
 public class BioPage extends Activity {
 

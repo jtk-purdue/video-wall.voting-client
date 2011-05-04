@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import edu.purdue.cs.lawson.vw.R;
+import edu.purdue.cs.vw.R;
 
 /*This file sets up the splash screen when the application starts.
  */

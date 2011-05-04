@@ -42,7 +42,7 @@ public class ServerReal implements Server {
 		}
 	}
 
-	public void finalizer() throws IOException {
+	public void closeSocket() throws IOException {
 		in.close();
 		out.close();
 		requestSocket.close();
@@ -55,13 +55,22 @@ public class ServerReal implements Server {
 	}
 
 	public void vote(String name) {
+		openSocket();
 		sendMessage("VOTE");
 		sendMessage(name);
 		sendMessage("END");
 		flushEnd();
+		try {
+			closeSocket();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
+	// TODO: should be named getList
 	public void get(ArrayList<String> voteList) throws IOException {
+		openSocket();
 		sendMessage("GET");
 		sendMessage("END");
 		String message = in.readLine();
@@ -69,10 +78,12 @@ public class ServerReal implements Server {
 			voteList.add(message);
 			message = in.readLine();
 		}
+		closeSocket();
 		Collections.sort(voteList);
 	}
 
 	public void getCount(ArrayList<String> votes) throws IOException {
+		openSocket();
 		sendMessage("GETCOUNT");
 		sendMessage("END");
 		String message = in.readLine();
@@ -80,6 +91,7 @@ public class ServerReal implements Server {
 			votes.add(message);
 			message = in.readLine();
 		}
+		closeSocket();
 	}
 
 	void flushEnd() {

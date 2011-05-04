@@ -9,7 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
-import edu.purdue.cs.lawson.vw.R;
+import edu.purdue.cs.vw.R;
 
 import android.app.Activity;
 import android.content.Context;

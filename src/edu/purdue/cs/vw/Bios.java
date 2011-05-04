@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.Button;
-import edu.purdue.cs.lawson.vw.R;
+import edu.purdue.cs.vw.R;
 
 /*This activity sets up the tab that allows the user to view the bio-pages of team members. Contains invisible buttons overlaid on the images. 
  * Switches to an activity called BioPage, which sets the appropriate layout depending on which button is clicked. Each layout represents an individiual's Bio. 
