@@ -42,7 +42,7 @@ import android.widget.Toast;
 
 /*
  * When this activity starts, it pulls a list of available shows that can be voted on. 
- * When a vote is cast it makes a connection with the server and send across what was voted for.
+ * When a vote is cast it makes a connection with the server and sends across what was voted for.
  */
 
 public class Voting extends ListActivity {
@@ -50,10 +50,6 @@ public class Voting extends ListActivity {
 	private Vector<RowData> data;
 	CustomAdapter adapter;
 	RowData rd;
-	Socket requestSocket;
-	PrintWriter out;
-	BufferedReader in;
-	String message;
 	ArrayList<String> voteList;
 	ArrayList<String> votes;
 	Runnable update;
@@ -102,7 +98,7 @@ public class Voting extends ListActivity {
 		}
 		updateData();
 
-		update = new Runnable() {
+/*		update = new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -143,7 +139,7 @@ public class Voting extends ListActivity {
 
 		mHandler = new Handler();
 		// mHandler.removeCallbacks(update);
-		mHandler.postDelayed(update, 5000);
+		mHandler.postDelayed(update, 5000);*/
 	}
 
 	@Override
