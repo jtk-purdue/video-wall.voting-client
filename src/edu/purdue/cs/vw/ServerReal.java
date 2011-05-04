@@ -4,11 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.util.Log;
 
 public class ServerReal implements Server {
@@ -17,14 +20,20 @@ public class ServerReal implements Server {
 	BufferedReader in;
 	String serverLocation;
 	int portnum;
+	ConnectivityManager cm;
 
-	ServerReal(String serverLocation, int portnum) {
+	ServerReal(String serverLocation, int portnum, ConnectivityManager cm) {
 		requestSocket = null;
 		this.serverLocation = serverLocation;
 		this.portnum = portnum;
+		this.cm = cm;
 	}
 
-	void openSocket() {
+	void openSocket() throws ConnectException {
+		if (!haveInternetConnection()) {
+			Log.d("ServerReal", "No Internet connection");
+			throw new ConnectException("No Internet");
+		}
 		try {
 			requestSocket = new Socket(serverLocation, portnum);
 			Log.d("Connection", "Connected to localhost in port " + portnum);
@@ -42,6 +51,10 @@ public class ServerReal implements Server {
 		}
 	}
 
+	boolean haveInternetConnection() {
+		return (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable() && cm.getActiveNetworkInfo().isConnected());
+	}
+
 	public void closeSocket() throws IOException {
 		in.close();
 		out.close();
@@ -54,18 +67,13 @@ public class ServerReal implements Server {
 		Log.d("client>", msg);
 	}
 
-	public void vote(String name) {
+	public void vote(String name) throws IOException {
 		openSocket();
 		sendMessage("VOTE");
 		sendMessage(name);
 		sendMessage("END");
 		flushEnd();
-		try {
-			closeSocket();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		closeSocket();
 	}
 
 	// TODO: should be named getList
