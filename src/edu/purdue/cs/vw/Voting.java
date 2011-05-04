@@ -62,7 +62,6 @@ public class Voting extends ListActivity {
 	String editTextPreference;
 	int portnum;
 	String serverLocation;
-	boolean internetcheck = false;
 	Handler mHandler;
 	boolean voted = false;
 	int lastPosition = -1;
@@ -71,10 +70,7 @@ public class Voting extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		// TODO: remove internetcheck...
-		internetcheck = checkInternetConnection();  // check if Internet connection is present and set to true if it is.
-		
+
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		voteList = new ArrayList<String>();
 		votes = new ArrayList<String>();
@@ -82,9 +78,6 @@ public class Voting extends ListActivity {
 		SharedPreferences myPreference = PreferenceManager.getDefaultSharedPreferences(this);
 		serverLocation = myPreference.getString("serverPref", "pc.cs.purdue.edu");
 		Log.d("Server Preference in onCreate", "" + serverLocation);
-
-		// TODO: Is this really needed?  It is reset a few lines below...
-		portnum = 4242;
 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		editTextPreference = prefs.getString("editTextPref", "4242");
@@ -95,73 +88,31 @@ public class Voting extends ListActivity {
 		anim = AnimationUtils.loadAnimation(this, R.anim.shake); // Sets the animation to shake
 		mInflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 		data = new Vector<RowData>();
-		
-		// TODO: added...
-		
-		server = new ServerReal(serverLocation, portnum);
-		
-		// TODO: remove internetcheck...
-		if (internetcheck) {
-			try {
-				voteList.clear();
-				/* TODO: was...
-				connect("GET", "");
-				connect("GETCOUNT", "");
-				*/
-				server.get(voteList);
-				server.getCount(votes);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			/* TODO: was...
-			} catch (ConnectException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} // Contacts server and gets list of available shows
-			*/
-			updateData();
-		} else {
-			Toast.makeText(getApplicationContext(), "No active internet connection.", Toast.LENGTH_SHORT).show();
+
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		server = new ServerReal(serverLocation, portnum, cm);
+
+		try {
+			voteList.clear();
+			server.get(voteList);
+			server.getCount(votes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		updateData();
 
 		update = new Runnable() {
 			@Override
 			public void run() {
 				try {
 					RowData r = null;
-					// TODO: remove internetcheck...
-					if (internetcheck) {
-						try {
-							// voteList.clear();
-							votes.clear();
-							// connect("GET", "");
-							// TODO: was...
-							// connect("GETCOUNT", "");
-							server.getCount(votes);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						/*
-						 * TODO: was...
-						} catch (ConnectException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (UnknownHostException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} // Contacts server and gets list of available shows
-						*/
+					try {
+						votes.clear();
+						server.getCount(votes);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 
 					for (int i = 0; i < voteList.size(); i++) {
@@ -222,10 +173,6 @@ public class Voting extends ListActivity {
 			voteList.clear();
 			votes.clear();
 			try {
-				/* TODO: remove connect calls...
-				connect("GET", "");
-				connect("GETCOUNT", "");
-				*/
 				server.get(voteList);
 				server.getCount(votes);
 				updateData();
@@ -260,50 +207,39 @@ public class Voting extends ListActivity {
 	public void onListItemClick(ListView parent, View v, final int position, long id) {
 		TextView title = (TextView) v.findViewById(R.id.title);
 		final String vi = (String) ((TextView) title).getText();
-		// TODO: remove internetcheck...
-		if (internetcheck) {
-			try {
-				// TODO: was...  connect("VOTE", vi);
-				server.vote(vi);
-				
-				voted = true;
-				votes.clear();
-				// TODO: was...  connect("GETCOUNT", "");
-				server.getCount(votes);
-				lastPosition = position;
-				Toast.makeText(getApplicationContext(), "Voted for " + vi, Toast.LENGTH_SHORT).show();
-				// }
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} // Contacts server and gets list of available shows
+		try {
+			server.vote(vi);
 
-			// Show the item which
-			// has been voted for
-			// through a toast
-			// v.startAnimation(anim); // Show animation when clicked
-			// Update vote on display
-			RowData r = null;
+			voted = true;
+			votes.clear();
+			server.getCount(votes);
+			lastPosition = position;
+			Toast.makeText(getApplicationContext(), "Voted for " + vi, Toast.LENGTH_SHORT).show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // Contacts server and gets list of available shows
 
-			try {
-				for (int i = 0; i < voteList.size(); i++) {
-					// r = new RowData(position, voteList.get(position),
-					// "Number of votes: " + votes.get(position));
-					r = (RowData) data.elementAt(i);
-					String temp = "Number of votes: " + votes.get(i);
-					r.setDetail(temp);
-				}
-			} catch (ParseException e) {
-				e.printStackTrace();
+		// Show the item which
+		// has been voted for
+		// through a toast
+		// v.startAnimation(anim); // Show animation when clicked
+		// Update vote on display
+		RowData r = null;
+
+		try {
+			for (int i = 0; i < voteList.size(); i++) {
+				// r = new RowData(position, voteList.get(position),
+				// "Number of votes: " + votes.get(position));
+				r = (RowData) data.elementAt(i);
+				String temp = "Number of votes: " + votes.get(i);
+				r.setDetail(temp);
 			}
-
-			adapter.notifyDataSetChanged();
-
-		}// end if
-
-		else {
-			Toast.makeText(getApplicationContext(), "No active internet connection.", Toast.LENGTH_SHORT).show();
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
+
+		adapter.notifyDataSetChanged();
 	}
 
 	public void removeData() {
@@ -409,105 +345,6 @@ public class Voting extends ListActivity {
 		}
 	}
 
-	private boolean checkInternetConnection() {
-		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		// test for connection
-		if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable()
-				&& cm.getActiveNetworkInfo().isConnected()) {
-			return true;
-		} else {
-			Log.d("Connection State", "Internet Connection Not Present");
-			return false;
-		}
-	}
-
-	/* TODO: remove connect...
-	public void connect(String voteitem, String option) throws UnknownHostException, IOException, ConnectException,
-			Exception {
-
-		try {
-			// 1. creating a socket to connect to the server
-			requestSocket = new Socket(serverLocation, portnum);
-			Log.d("Connection", "Connected to localhost in port " + portnum);
-
-			if (requestSocket == null) {
-				Log.d("REQUEST SOCKET DID NOT WORK", "NULL");
-			}
-
-			// 2. get Input and Output streams
-			out = new PrintWriter(requestSocket.getOutputStream(), true);
-			out.flush();
-			in = new BufferedReader(new InputStreamReader(requestSocket.getInputStream()));
-
-			// 3: Communicating with the server
-			Log.d("DO", "Test1");
-			do {
-				message = in.readLine();
-				System.out.println("server>" + message);
-				message = "END";
-				sendMessage(voteitem);
-
-				if (voteitem.equals("VOTE"))
-					sendMessage(option);
-
-				sendMessage("END");
-				do {
-					message = in.readLine();
-					Log.d("server>", message);
-
-					if (voteitem.equals("GET") && !message.equals("END"))
-						voteList.add(message);
-
-					else if (voteitem.equals("GETCOUNT") && !message.equals("END")) {
-						votes.add(message);
-					}
-
-					Collections.sort(voteList);// Sorting Array List in Alpha
-					// order
-
-				} while (!message.equals("END"));
-			} while (!message.equals("END"));
-
-		}
-
-		// Handle exception if server was not found
-		catch (ConnectException e) {
-			Log.d("SERVER", "Server NOT FOUND");
-			Toast.makeText(getApplicationContext(), "Server Error!! Please try again later..", Toast.LENGTH_SHORT)
-					.show();
-		}
-
-		// Handles unknown host exception
-		catch (UnknownHostException unknownHost) {
-			Log.d("Error", "You are trying to connect to an unknown host!");
-		}
-		// Catch Input Output exception
-		catch (IOException ioException) {
-			ioException.printStackTrace();
-		}
-		// Catch general exception
-		catch (Exception e) {
-			Log.d("Error", e.getMessage());
-		} finally {
-			// 4: Closing connection
-			try {
-				in.close();
-				out.close();
-				requestSocket.close();
-			} catch (IOException ioException) {
-				ioException.printStackTrace();
-			}
-		}
-	}
-	*/
-
-	/* TODO: remove sendMessage...
-	public void sendMessage(String msg) {
-		out.println(msg);
-		out.flush();
-		Log.d("client>", msg);
-	}
-    */
 	// @Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		return super.onPrepareOptionsMenu((android.view.Menu) menu);
