@@ -165,7 +165,7 @@ public class Voting extends ListActivity {
 			votes.clear();
 			server.getCount(votes);
 			lastPosition = position;
-			toast("Voted for " + vi);
+			toast("Voted for " + vi + " (" + voteList.size() + " items)");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			toast("onListItemClick Exception: " + e.toString());
