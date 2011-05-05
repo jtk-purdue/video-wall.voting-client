@@ -45,12 +45,11 @@ public class Voting extends ListActivity {
 	RowData rd;
 	ArrayList<String> voteList;
 	ArrayList<String> votes;
-	Runnable update;
 	Animation anim = null;
 	ProgressDialog myProgressDialog = null;
 	String editTextPreference;
-	int portnum;
-	String serverLocation;
+	int portNumber;
+	String serverName;
 	Handler mHandler;
 	boolean voted = false;
 	int lastPosition = -1;
@@ -65,12 +64,12 @@ public class Voting extends ListActivity {
 		votes = new ArrayList<String>();
 
 		SharedPreferences myPreference = PreferenceManager.getDefaultSharedPreferences(this);
-		serverLocation = myPreference.getString("serverPref", "pc.cs.purdue.edu");
-		Log.d("Server Preference in onCreate", "" + serverLocation);
+		serverName = myPreference.getString("serverPref", "pc.cs.purdue.edu");
+		Log.d("Server Preference in onCreate", "" + serverName);
 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		editTextPreference = prefs.getString("editTextPref", "4242");
-		portnum = Integer.parseInt(editTextPreference);
+		portNumber = Integer.parseInt(editTextPreference);
 		Log.d("PORT NUMBER in onCreate", editTextPreference);
 
 		setContentView(R.layout.vote);
@@ -79,7 +78,7 @@ public class Voting extends ListActivity {
 		data = new Vector<RowData>();
 
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		server = new ServerReal(serverLocation, portnum, cm);
+		server = new ServerReal(serverName, portNumber, cm);
 
 		try {
 			voteList.clear();
@@ -100,26 +99,23 @@ public class Voting extends ListActivity {
 	@Override
 	public void onPause() {
 		super.onPause();
-		Log.d("On PAUSE", "TRUE");
-		mHandler.removeCallbacks(update);
+		Log.d("Voting", "onPause");
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		SharedPreferences myPreference = PreferenceManager.getDefaultSharedPreferences(this);
-		String temp_serverLocation = myPreference.getString("serverPref", "pc.cs.purdue.edu");
-		Log.d("Server Preference", "" + temp_serverLocation);
+		SharedPreferences serverPref = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences portPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		String temp_editTextPreference = prefs.getString("editTextPref", "4242");
+		String serverNamePref = serverPref.getString("serverPref", "pc.cs.purdue.edu");
+		String portNumberPref = portPref.getString("editTextPref", "4242");
 
-		Log.d("PORT NUMBER", temp_editTextPreference);
-
-		if (!(temp_serverLocation.equals(serverLocation)) || !(temp_editTextPreference).equals(editTextPreference)) {
-			serverLocation = temp_serverLocation;
-			editTextPreference = temp_editTextPreference;
-			portnum = Integer.parseInt(editTextPreference);
+		if (!(serverNamePref.equals(serverName)) || !(portNumberPref).equals(editTextPreference)) {
+			serverName = serverNamePref;
+			editTextPreference = portNumberPref;
+			portNumber = Integer.parseInt(editTextPreference);
+			
 			removeData();
 			voteList.clear();
 			votes.clear();
@@ -137,23 +133,19 @@ public class Voting extends ListActivity {
 			}
 		}
 
-		Log.d("On RESUME", "TRUE");
-		mHandler = new Handler();
-		mHandler.postDelayed(update, 1000);
+		Log.d("Voting", "OnResume");
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
-		Log.d("On STOP", "TRUE");
-		mHandler.removeCallbacks(update);
+		Log.d("Voting", "onStop");
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		Log.d("On DESTROY", "TRUE");
-		mHandler.removeCallbacks(update);
+		Log.d("Voting", "onDestroy");
 	}
 
 	public void onListItemClick(ListView parent, View v, final int position, long id) {
