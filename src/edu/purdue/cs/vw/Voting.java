@@ -83,7 +83,7 @@ public class Voting extends ListActivity {
 
 		try {
 			voteList.clear();
-			server.get(voteList);
+			server.getList(voteList);
 			server.getCount(votes);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -124,7 +124,7 @@ public class Voting extends ListActivity {
 			voteList.clear();
 			votes.clear();
 			try {
-				server.get(voteList);
+				server.getList(voteList);
 				server.getCount(votes);
 				updateData();
 			} catch (IOException e) {

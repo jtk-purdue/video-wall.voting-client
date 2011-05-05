@@ -22,7 +22,7 @@ public class ServerTest implements Server {
 	}
 
 	@Override
-	public void get(ArrayList<String> voteList) {
+	public void getList(ArrayList<String> voteList) {
 		// TODO Auto-generated method stub
 		Log.d("ServerTest", "get");
 		voteList.add("Hello There");
