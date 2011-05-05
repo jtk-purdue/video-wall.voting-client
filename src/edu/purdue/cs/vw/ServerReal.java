@@ -45,6 +45,7 @@ public class ServerReal implements Server {
 		} catch (UnknownHostException e) {
 			Log.d("Server", "UnknownHostException: " + serverLocation + "@" + portnum);
 			requestSocket = null;
+			throw new ConnectException("Unknown host");
 		} catch (IOException e) {
 			Log.d("Server", "IOException: server down?");
 			requestSocket = null;
