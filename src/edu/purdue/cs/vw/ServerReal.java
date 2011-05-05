@@ -48,6 +48,7 @@ public class ServerReal implements Server {
 		} catch (IOException e) {
 			Log.d("Server", "IOException: server down?");
 			requestSocket = null;
+			throw new ConnectException("Server down?");
 		}
 	}
 
