@@ -1,14 +1,7 @@
 package edu.purdue.cs.vw;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ConnectException;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -94,52 +87,14 @@ public class Voting extends ListActivity {
 			server.getCount(votes);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			toast("onCreate Exception: " + e.toString());
 			e.printStackTrace();
 		}
 		updateData();
-
-/*		update = new Runnable() {
-			@Override
-			public void run() {
-				try {
-					RowData r = null;
-					try {
-						votes.clear();
-						server.getCount(votes);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					for (int i = 0; i < voteList.size(); i++) {
-
-						try {
-							r = (RowData) data.elementAt(i);
-							String temp = "Number of votes: " + votes.get(i);
-							r.setDetail(temp);
-
-						}
-
-						catch (ParseException e) {
-							e.printStackTrace();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-
-					}
-					adapter.notifyDataSetChanged();
-					mHandler.postDelayed(this, 3000);
-				}
-
-				catch (Exception e) {
-					// do nothing
-				}
-			}
-		};
-
-		mHandler = new Handler();
-		// mHandler.removeCallbacks(update);
-		mHandler.postDelayed(update, 5000);*/
+	}
+	
+	void toast(String message) {
+		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -174,6 +129,7 @@ public class Voting extends ListActivity {
 				updateData();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				toast("onResume Exception: " + e.toString());
 				e.printStackTrace();
 			} finally {
 				updateData();
@@ -205,28 +161,21 @@ public class Voting extends ListActivity {
 		final String vi = (String) ((TextView) title).getText();
 		try {
 			server.vote(vi);
-
 			voted = true;
 			votes.clear();
 			server.getCount(votes);
 			lastPosition = position;
-			Toast.makeText(getApplicationContext(), "Voted for " + vi, Toast.LENGTH_SHORT).show();
+			toast("Voted for " + vi);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			toast("onListItemClick Exception: " + e.toString());
 			e.printStackTrace();
-		} // Contacts server and gets list of available shows
+		}
 
-		// Show the item which
-		// has been voted for
-		// through a toast
-		// v.startAnimation(anim); // Show animation when clicked
-		// Update vote on display
 		RowData r = null;
 
 		try {
 			for (int i = 0; i < voteList.size(); i++) {
-				// r = new RowData(position, voteList.get(position),
-				// "Number of votes: " + votes.get(position));
 				r = (RowData) data.elementAt(i);
 				String temp = "Number of votes: " + votes.get(i);
 				r.setDetail(temp);
