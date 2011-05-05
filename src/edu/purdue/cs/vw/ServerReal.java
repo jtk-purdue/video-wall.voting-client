@@ -78,7 +78,7 @@ public class ServerReal implements Server {
 	}
 
 	// TODO: should be named getList
-	public void get(ArrayList<String> voteList) throws IOException {
+	public void getList(ArrayList<String> voteList) throws IOException {
 		openSocket();
 		sendMessage("GET");
 		sendMessage("END");
