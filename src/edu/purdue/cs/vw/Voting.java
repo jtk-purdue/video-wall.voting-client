@@ -108,7 +108,7 @@ public class Voting extends ListActivity {
 	public void onResume() {
 		super.onResume();
 		SharedPreferences myPreference = PreferenceManager.getDefaultSharedPreferences(this);
-		String temp_serverLocation = myPreference.getString("serverPref", "pc2.cs.purdue.edu");
+		String temp_serverLocation = myPreference.getString("serverPref", "pc.cs.purdue.edu");
 		Log.d("Server Preference", "" + temp_serverLocation);
 
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
