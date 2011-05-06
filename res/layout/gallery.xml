@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:orientation="vertical" 
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent" 
+    > 
+ 
+ <Gallery
+        android:id="@+id/gallery1"
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"       
+        /> 
+        
+	<TextView android:text="\nClick to Play\nClick again to Pause.."
+        android:id="@+id/audio_instructions" 
+        android:gravity="center_horizontal|center_vertical"
+		android:layout_width="fill_parent"
+		android:textSize="25sp"
+		android:layout_height="wrap_content"   
+        /> 
+ 
+</LinearLayout>
