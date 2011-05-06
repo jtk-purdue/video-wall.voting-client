@@ -26,77 +26,78 @@ import android.view.SurfaceView;
 import android.view.Window;
 import java.io.IOException;
 
-/*This file sets up the video preview on the phone.
+/*
+ * This file sets up the video preview on the phone.
  */
 
 public class CameraPreview extends Activity {
-	private Preview mPreview;
+    private Preview mPreview;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
 
-		// Hide the window title.
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+	// Hide the window title.
+	requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		// Create our Preview view and set it as the content of our activity.
-		mPreview = new Preview(this);
-		setContentView(mPreview);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	// Create our Preview view and set it as the content of our activity.
+	mPreview = new Preview(this);
+	setContentView(mPreview);
+	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-	}
+    }
 
 }
 
 // ----------------------------------------------------------------------
 
 class Preview extends SurfaceView implements SurfaceHolder.Callback {
-	SurfaceHolder mHolder;
-	Camera mCamera;
+    SurfaceHolder mHolder;
+    Camera mCamera;
 
-	Preview(Context context) {
-		super(context);
+    Preview(Context context) {
+	super(context);
 
-		// Install a SurfaceHolder.Callback so we get notified when the
-		// underlying surface is created and destroyed.
-		mHolder = getHolder();
-		mHolder.addCallback(this);
-		mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+	// Install a SurfaceHolder.Callback so we get notified when the
+	// underlying surface is created and destroyed.
+	mHolder = getHolder();
+	mHolder.addCallback(this);
+	mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+	// The Surface has been created, acquire the camera and tell it where
+	// to draw.
+	mCamera = Camera.open();
+	try {
+	    mCamera.setPreviewDisplay(holder);
+	} catch (IOException exception) {
+	    mCamera.release();
+	    mCamera = null;
+	    // TODO: add more exception handling logic here
 	}
+    }
 
-	@Override
-	public void surfaceCreated(SurfaceHolder holder) {
-		// The Surface has been created, acquire the camera and tell it where
-		// to draw.
-		mCamera = Camera.open();
-		try {
-			mCamera.setPreviewDisplay(holder);
-		} catch (IOException exception) {
-			mCamera.release();
-			mCamera = null;
-			// TODO: add more exception handling logic here
-		}
-	}
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+	// Surface will be destroyed when we return, so stop the preview.
+	// Because the CameraDevice object is not a shared resource, it's very
+	// important to release it when the activity is paused.
+	mCamera.stopPreview();
+	mCamera.release();
+	mCamera = null;
+    }
 
-	@Override
-	public void surfaceDestroyed(SurfaceHolder holder) {
-		// Surface will be destroyed when we return, so stop the preview.
-		// Because the CameraDevice object is not a shared resource, it's very
-		// important to release it when the activity is paused.
-		mCamera.stopPreview();
-		mCamera.release();
-		mCamera = null;
-	}
-
-	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-		// Now that the size is known, set up the camera parameters and begin
-		// the preview.
-		Camera.Parameters parameters = mCamera.getParameters();
-		parameters.setPreviewSize(w, h);
-		mCamera.setDisplayOrientation(90);
-		mCamera.setParameters(parameters);
-		mCamera.startPreview();
-	}
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
+	// Now that the size is known, set up the camera parameters and begin
+	// the preview.
+	Camera.Parameters parameters = mCamera.getParameters();
+	parameters.setPreviewSize(w, h);
+	mCamera.setDisplayOrientation(90);
+	mCamera.setParameters(parameters);
+	mCamera.startPreview();
+    }
 
 }
