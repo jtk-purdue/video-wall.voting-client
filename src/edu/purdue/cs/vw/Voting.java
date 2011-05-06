@@ -1,6 +1,7 @@
 package edu.purdue.cs.vw;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -45,13 +46,11 @@ public class Voting extends ListActivity {
 	RowData rd;
 	ArrayList<String> voteList;
 	ArrayList<String> votes;
-	Runnable update;
 	Animation anim = null;
 	ProgressDialog myProgressDialog = null;
 	String editTextPreference;
-	int portnum;
-	String serverLocation;
-	Handler mHandler;
+	int portNumber;
+	String serverName;
 	boolean voted = false;
 	int lastPosition = -1;
 	Server server;
@@ -61,36 +60,43 @@ public class Voting extends ListActivity {
 		super.onCreate(savedInstanceState);
 
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		voteList = new ArrayList<String>();
-		votes = new ArrayList<String>();
-
-		SharedPreferences myPreference = PreferenceManager.getDefaultSharedPreferences(this);
-		serverLocation = myPreference.getString("serverPref", "pc.cs.purdue.edu");
-		Log.d("Server Preference in onCreate", "" + serverLocation);
-
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		editTextPreference = prefs.getString("editTextPref", "4242");
-		portnum = Integer.parseInt(editTextPreference);
-		Log.d("PORT NUMBER in onCreate", editTextPreference);
-
 		setContentView(R.layout.vote);
 		anim = AnimationUtils.loadAnimation(this, R.anim.shake); // Sets the animation to shake
 		mInflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 		data = new Vector<RowData>();
 
-		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		server = new ServerReal(serverLocation, portnum, cm);
+		fetchPreferenceData();
+		updateVoteData();
+	}
+	
+	void fetchPreferenceData() {
+		SharedPreferences serverPref = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences portPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
+		String serverNamePref = serverPref.getString("serverPref", "pc.cs.purdue.edu");
+		String portNumberPref = portPref.getString("editTextPref", "4242");
+
+		if (!(serverNamePref.equals(serverName)) || !(portNumberPref).equals(editTextPreference)) {
+			serverName = serverNamePref;
+			editTextPreference = portNumberPref;
+			portNumber = Integer.parseInt(editTextPreference);
+
+			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			server = new ServerReal(serverName, portNumber, cm);
+		}
+	}
+
+	void updateVoteData() {
+		removeData();
 		try {
-			voteList.clear();
-			server.getList(voteList);
-			server.getCount(votes);
+			voteList = server.getList();
+			votes = server.getCount();
+			updateData();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			toast("onCreate Exception: " + e.toString());
 			e.printStackTrace();
 		}
-		updateData();
 	}
 	
 	void toast(String message) {
@@ -100,59 +106,27 @@ public class Voting extends ListActivity {
 	@Override
 	public void onPause() {
 		super.onPause();
-		Log.d("On PAUSE", "TRUE");
-		mHandler.removeCallbacks(update);
+		Log.d("Voting", "onPause");
 	}
-
+	
 	@Override
 	public void onResume() {
 		super.onResume();
-		SharedPreferences myPreference = PreferenceManager.getDefaultSharedPreferences(this);
-		String temp_serverLocation = myPreference.getString("serverPref", "pc.cs.purdue.edu");
-		Log.d("Server Preference", "" + temp_serverLocation);
-
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		String temp_editTextPreference = prefs.getString("editTextPref", "4242");
-
-		Log.d("PORT NUMBER", temp_editTextPreference);
-
-		if (!(temp_serverLocation.equals(serverLocation)) || !(temp_editTextPreference).equals(editTextPreference)) {
-			serverLocation = temp_serverLocation;
-			editTextPreference = temp_editTextPreference;
-			portnum = Integer.parseInt(editTextPreference);
-			removeData();
-			voteList.clear();
-			votes.clear();
-			try {
-				server.getList(voteList);
-				server.getCount(votes);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				toast("onResume Exception: " + e.toString());
-				e.printStackTrace();
-			} finally {
-				updateData();
-				adapter.notifyDataSetChanged();
-			}
-		}
-
-		Log.d("On RESUME", "TRUE");
-		mHandler = new Handler();
-		mHandler.postDelayed(update, 1000);
+		Log.d("Voting", "OnResume");
+		fetchPreferenceData();
+		updateVoteData();
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
-		Log.d("On STOP", "TRUE");
-		mHandler.removeCallbacks(update);
+		Log.d("Voting", "onStop");
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		Log.d("On DESTROY", "TRUE");
-		mHandler.removeCallbacks(update);
+		Log.d("Voting", "onDestroy");
 	}
 
 	public void onListItemClick(ListView parent, View v, final int position, long id) {
@@ -161,8 +135,7 @@ public class Voting extends ListActivity {
 		try {
 			server.vote(vi);
 			voted = true;
-			votes.clear();
-			server.getCount(votes);
+			votes = server.getCount();
 			lastPosition = position;
 			toast("Voted for " + vi + " (" + voteList.size() + " items)");
 		} catch (IOException e) {
