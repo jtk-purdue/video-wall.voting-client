@@ -68,7 +68,7 @@ public class Voting extends ListActivity {
 		fetchPreferenceData();
 		updateVoteData();
 	}
-	
+
 	void fetchPreferenceData() {
 		SharedPreferences serverPref = PreferenceManager.getDefaultSharedPreferences(this);
 		SharedPreferences portPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
@@ -87,18 +87,18 @@ public class Voting extends ListActivity {
 	}
 
 	void updateVoteData() {
-		removeData();
 		try {
 			voteList = server.getList();
 			votes = server.getCount();
-			updateData();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			voteList = null;  // set votes to null also?  bit of a kludge to indicate 
 			toast("onCreate Exception: " + e.toString());
 			e.printStackTrace();
 		}
+		updateData();
 	}
-	
+
 	void toast(String message) {
 		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 	}
@@ -108,7 +108,7 @@ public class Voting extends ListActivity {
 		super.onPause();
 		Log.d("Voting", "onPause");
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -137,6 +137,7 @@ public class Voting extends ListActivity {
 			voted = true;
 			votes = server.getCount();
 			lastPosition = position;
+			// TODO: if server is down, voteList might be null, but call to getCount above generates exception, skipping .size()
 			toast("Voted for " + vi + " (" + voteList.size() + " items)");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -146,6 +147,7 @@ public class Voting extends ListActivity {
 
 		RowData r = null;
 
+		// TODO: code assumes the voteList and data list are the same size (in sync)
 		try {
 			for (int i = 0; i < voteList.size(); i++) {
 				r = (RowData) data.elementAt(i);
@@ -159,23 +161,23 @@ public class Voting extends ListActivity {
 		adapter.notifyDataSetChanged();
 	}
 
-	public void removeData() {
-		data.clear();
-	}
-
 	public void updateData() {
-		Log.d("Number of votable Items", "" + voteList.size());
-		for (int i = 0; i < voteList.size(); i++) {
-			try {
-				rd = new RowData(i, voteList.get(i), "Number of votes: " + votes.get(i));
-			} catch (ParseException e) {
-				e.printStackTrace();
+		data.clear();
+		if (voteList == null)
+			Log.d("Voting", "voteList is null in updateData");
+		else {
+			Log.d("Number of votable Items", "" + voteList.size());
+			for (int i = 0; i < voteList.size(); i++) {
+				try {
+					rd = new RowData(i, voteList.get(i), "Number of votes: " + votes.get(i));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				data.add(rd);
 			}
-			data.add(rd);
 		}
 		adapter = new CustomAdapter(this, R.layout.list, R.id.title, data);
 		setListAdapter(adapter);
-
 		getListView().setTextFilterEnabled(true);
 	}
 
