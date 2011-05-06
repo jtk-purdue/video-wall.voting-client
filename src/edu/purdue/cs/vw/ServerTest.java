@@ -22,16 +22,18 @@ public class ServerTest implements Server {
 	}
 
 	@Override
-	public void getList(ArrayList<String> voteList) {
-		// TODO Auto-generated method stub
+	public ArrayList<String> getList() {
 		Log.d("ServerTest", "get");
+		ArrayList<String> voteList = new ArrayList<String>();
 		voteList.add("Hello There");
+		return voteList;
 	}
 
 	@Override
-	public void getCount(ArrayList<String> votes) {
-		// TODO Auto-generated method stub
+	public ArrayList<String> getCount() {
 		Log.d("ServerTest", "getCount");
+		ArrayList<String> votes= new ArrayList<String>();
 		votes.add("42");
+		return votes;
 	}
 }

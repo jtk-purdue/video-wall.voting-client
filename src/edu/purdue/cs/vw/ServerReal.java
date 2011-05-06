@@ -78,11 +78,13 @@ public class ServerReal implements Server {
 		closeSocket();
 	}
 
-	// TODO: should be named getList
-	public void getList(ArrayList<String> voteList) throws IOException {
+	public ArrayList<String> getList() throws IOException {
+		ArrayList<String> voteList = new ArrayList<String>();
+
 		openSocket();
 		sendMessage("GET");
 		sendMessage("END");
+		
 		String message = in.readLine();
 		while (!message.equals("END")) {
 			voteList.add(message);
@@ -90,18 +92,23 @@ public class ServerReal implements Server {
 		}
 		closeSocket();
 		Collections.sort(voteList);
+		return voteList;
 	}
 
-	public void getCount(ArrayList<String> votes) throws IOException {
+	public ArrayList<String> getCount() throws IOException {
+		ArrayList<String> votes = new ArrayList<String>();
+		
 		openSocket();
 		sendMessage("GETCOUNT");
 		sendMessage("END");
+		
 		String message = in.readLine();
 		while (!message.equals("END")) {
 			votes.add(message);
 			message = in.readLine();
 		}
 		closeSocket();
+		return votes;
 	}
 
 	void flushEnd() {
