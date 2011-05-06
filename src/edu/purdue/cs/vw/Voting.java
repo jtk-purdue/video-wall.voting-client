@@ -126,7 +126,6 @@ public class Voting extends ListActivity {
 			try {
 				server.getList(voteList);
 				server.getCount(votes);
-				updateData();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				toast("onResume Exception: " + e.toString());
