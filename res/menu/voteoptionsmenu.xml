@@ -8,10 +8,8 @@
         android:title="Statistics"/>
 	<item android:id="@+id/settings" 
 		  android:title="Settings" 
-		  android:icon="@drawable/settings_icon">
-	</item>
+		  android:icon="@drawable/settings_icon"/>
 	<item android:id="@+id/quit" 
 		  android:title="Quit" 
-		  android:icon="@drawable/quit_icon">
-	</item>
+		  android:icon="@drawable/quit_icon"/>
 </menu>
