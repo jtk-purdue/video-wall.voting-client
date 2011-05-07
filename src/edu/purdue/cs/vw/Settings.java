@@ -22,26 +22,18 @@ public class Settings extends PreferenceActivity {
 
 	OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
 	    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-		if ("editTextPref".equals(key)) {
+		if (key.equals("portPref")) {
 		    String valueString = prefs.getString(key, "");
 		    int value = Integer.parseInt(valueString);
-		    if (value > 65536) {
+		    if (value < 0 || value > 65536) {
 			EditTextPreference p = (EditTextPreference) findPreference(key);
-			p.setText("" + 4242);
-			display();
-		    }
-
-		    else if (value < 0) {
-			EditTextPreference p = (EditTextPreference) findPreference(key);
-			p.setText("" + 4242);
+			p.setText("4242");
 			display();
 		    }
 		}
 	    }
 	};
-
 	prefs.registerOnSharedPreferenceChangeListener(listener);
-
     }
 
     public void display() {

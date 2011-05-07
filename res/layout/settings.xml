@@ -1,28 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
-<ListPreference
-  android:title="Choose Server Location:"
-  android:summary="Select a server location or enter one of your own"
-  android:key="serverPref"
-  android:entries="@array/serverList"
-  android:entryValues="@array/serverReturnValue" />
-  <EditTextPreference
-  android:name="Port Preference"
-  android:numeric="integer"
-  android:summary="Default port: 4242"
-  android:defaultValue="4242"
-  android:maxLength="5"
-  android:title="Enter a port number:"
-  android:key="editTextPref" />
-  <CheckBoxPreference
-  android:key="music"
-  android:title="@string/music_title"
-  android:summary="@string/music_description"
-  android:defaultValue="true"/>
-  <CheckBoxPreference
-  android:key="vibrate"
-  android:title="Vibrate"
-  android:summary="Toggle phone vibration"
-  android:defaultValue="true"/>
-  </PreferenceScreen>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<ListPreference android:title="Server host name"
+		android:summary="Select a server host name or enter one of your own"
+		android:key="serverPref" android:entries="@array/serverList"
+		android:entryValues="@array/serverReturnValue" />
+	<EditTextPreference android:name="Port Preference"
+		android:numeric="integer" android:summary="Specify port number on server"
+		android:defaultValue="4242" android:maxLength="5" android:title="Server port number"
+		android:key="portPref" />
+	<CheckBoxPreference android:key="music"
+		android:title="@string/music_title" android:summary="@string/music_description"
+		android:defaultValue="true" />
+	<CheckBoxPreference android:key="vibrate"
+		android:title="Vibrate" android:summary="Toggle phone vibration"
+		android:defaultValue="true" />
+</PreferenceScreen>
