@@ -25,7 +25,10 @@ public class ServerTest implements Server {
     public ArrayList<String> getList() {
 	Log.d("ServerTest", "get");
 	ArrayList<String> voteList = new ArrayList<String>();
-	voteList.add("Hello There");
+	voteList.add("ABC");
+	voteList.add("CBS");
+	voteList.add("FOX");
+	voteList.add("NBC");
 	return voteList;
     }
 
@@ -33,7 +36,10 @@ public class ServerTest implements Server {
     public ArrayList<String> getCount() {
 	Log.d("ServerTest", "getCount");
 	ArrayList<String> votes = new ArrayList<String>();
-	votes.add("42");
+	votes.add("0");
+	votes.add("0");
+	votes.add("0");
+	votes.add("0");
 	return votes;
     }
 }
