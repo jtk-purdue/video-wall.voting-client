@@ -56,12 +56,18 @@ public class Voting extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
+	
+	Log.d("Voting", "onCreate");
 
 	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 	setContentView(R.layout.vote);
 	anim = AnimationUtils.loadAnimation(this, R.anim.shake); // Sets the animation to shake
 	mInflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+	
 	data = new Vector<RowData>();
+	adapter = new CustomAdapter(this, R.layout.list, R.id.title, data);
+	setListAdapter(adapter);
+	getListView().setTextFilterEnabled(true);
 
 	fetchPreferenceData();
 	updateVoteData();
@@ -80,7 +86,9 @@ public class Voting extends ListActivity {
 	    portNumber = Integer.parseInt(editTextPreference);
 
 	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    // TODO: Need to auto-choose between which server to use...
 	    server = new ServerReal(serverName, portNumber, cm);
+//	    server = new ServerTest();
 	}
     }
 
@@ -110,7 +118,7 @@ public class Voting extends ListActivity {
     @Override
     public void onResume() {
 	super.onResume();
-	Log.d("Voting", "OnResume");
+	Log.d("Voting", "onResume");
 	fetchPreferenceData();
 	updateVoteData();
     }
@@ -165,7 +173,7 @@ public class Voting extends ListActivity {
 	if (voteList == null)
 	    Log.d("Voting", "voteList is null in updateData");
 	else {
-	    Log.d("Number of votable Items", "" + voteList.size());
+	    Log.d("Voting", "updateData with " + voteList.size() + " votable items");
 	    for (int i = 0; i < voteList.size(); i++) {
 		try {
 		    rd = new RowData(i, voteList.get(i), "Number of votes: " + votes.get(i));
@@ -175,9 +183,13 @@ public class Voting extends ListActivity {
 		data.add(rd);
 	    }
 	}
-	adapter = new CustomAdapter(this, R.layout.list, R.id.title, data);
-	setListAdapter(adapter);
-	getListView().setTextFilterEnabled(true);
+	// TODO: Has adapter already been set? Was setting every time. Needed?
+	if (adapter == null) {
+	    Log.d("Voting", "RESETTING ADAPTER in updateData");
+	    adapter = new CustomAdapter(this, R.layout.list, R.id.title, data);
+	    setListAdapter(adapter);
+	    getListView().setTextFilterEnabled(true);
+	}
     }
 
     private class RowData {
