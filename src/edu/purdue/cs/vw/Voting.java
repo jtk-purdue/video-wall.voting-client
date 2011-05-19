@@ -185,7 +185,7 @@ public class Voting extends ListActivity {
 	}
 	// TODO: Has adapter already been set? Was setting every time. Needed?
 	if (adapter == null) {
-	    Log.d("Voting", "RESETTING ADAPTER in updateData");
+	    Log.w("Voting", "RESETTING ADAPTER in updateData");
 	    adapter = new CustomAdapter(this, R.layout.list, R.id.title, data);
 	    setListAdapter(adapter);
 	    getListView().setTextFilterEnabled(true);
