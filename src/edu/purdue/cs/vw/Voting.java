@@ -60,7 +60,6 @@ public class Voting extends ListActivity {
 	Log.d("Voting", "onCreate");
 
 	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-	setContentView(R.layout.vote);
 	anim = AnimationUtils.loadAnimation(this, R.anim.shake); // Sets the animation to shake
 	mInflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 	
