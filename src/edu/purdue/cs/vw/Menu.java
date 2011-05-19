@@ -28,29 +28,28 @@ public class Menu extends TabActivity {
 	TabHost.TabSpec spec; // Resusable TabSpec for each tab
 	Intent intent; // Reusable Intent for each tab
 
+	// Tab: Team photos and biographies
+
 	intent = new Intent().setClass(this, Bios.class);
-	spec = tabHost.newTabSpec("artists").setIndicator("Team", res.getDrawable(R.drawable.team_tab))
-		.setContent(intent);
+	spec = tabHost.newTabSpec("team").setIndicator("Team", res.getDrawable(R.drawable.team_tab)).setContent(intent);
 	tabHost.addTab(spec);
+
+	// Tab: Vote casting
 
 	intent = new Intent().setClass(this, Voting.class);
-
-	// Initialize a TabSpec for each tab and add it to the TabHost
-
-	// Create a tab with name Vote and image ic_table_artists
-	spec = tabHost.newTabSpec("artists").setIndicator("Vote", res.getDrawable(R.drawable.vote_tab))
-		.setContent(intent);
+	spec = tabHost.newTabSpec("vote").setIndicator("Vote", res.getDrawable(R.drawable.vote_tab)).setContent(intent);
 	tabHost.addTab(spec);
 
-	// Do the same for the other tabs
+	// Tab: Audio streaming from wall
+
 	intent = new Intent().setClass(this, Audio.class);
-	spec = tabHost.newTabSpec("albums").setIndicator("Audio", res.getDrawable(R.drawable.audio_tab))
-		.setContent(intent);
+	spec = tabHost.newTabSpec("audio").setIndicator("Audio", res.getDrawable(R.drawable.audio_tab)).setContent(intent);
 	tabHost.addTab(spec);
 
+	// Tab: Video streaming to wall
+	
 	intent = new Intent().setClass(this, Video.class);
-	spec = tabHost.newTabSpec("artists").setIndicator("Video", res.getDrawable(R.drawable.video_tab))
-		.setContent(intent);
+	spec = tabHost.newTabSpec("video").setIndicator("Video", res.getDrawable(R.drawable.video_tab)).setContent(intent);
 	tabHost.addTab(spec);
 
 	tabHost.setCurrentTab(0);
