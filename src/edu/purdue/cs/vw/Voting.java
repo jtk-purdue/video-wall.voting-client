@@ -64,7 +64,7 @@ public class Voting extends ListActivity {
 	mInflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 	
 	data = new Vector<RowData>();
-	adapter = new CustomAdapter(this, R.layout.list, R.id.title, data);
+	adapter = new CustomAdapter(this, R.layout.list, /* R.id.title, */ data);
 	setListAdapter(adapter);
 	getListView().setTextFilterEnabled(true);
 
@@ -137,6 +137,13 @@ public class Voting extends ListActivity {
     public void onListItemClick(ListView parent, View v, final int position, long id) {
 	TextView title = (TextView) v.findViewById(R.id.title);
 	final String vi = (String) ((TextView) title).getText();
+	
+	final String s = data.get(position).mTitle;
+	if (s.equals(vi))
+	    toast("s equals vi = " + s);
+	else 
+	    toast(String.format("s (%s) does not equal vi (%s)", s, vi));
+	
 	try {
 	    server.vote(vi);
 	    voted = true;
@@ -185,7 +192,7 @@ public class Voting extends ListActivity {
 	// TODO: Has adapter already been set? Was setting every time. Needed?
 	if (adapter == null) {
 	    Log.w("Voting", "RESETTING ADAPTER in updateData");
-	    adapter = new CustomAdapter(this, R.layout.list, R.id.title, data);
+	    adapter = new CustomAdapter(this, R.layout.list, /* R.id.title, */ data);
 	    setListAdapter(adapter);
 	    getListView().setTextFilterEnabled(true);
 	}
@@ -214,8 +221,8 @@ public class Voting extends ListActivity {
     }
 
     private class CustomAdapter extends ArrayAdapter<RowData> {
-	public CustomAdapter(Context context, int resource, int textViewResourceId, List<RowData> objects) {
-	    super(context, resource, textViewResourceId, objects);
+	public CustomAdapter(Context context, int resource, /* int textViewResourceId, */ List<RowData> objects) {
+	    super(context, resource, /* textViewResourceId, */ objects);
 	}
 
 	@Override
