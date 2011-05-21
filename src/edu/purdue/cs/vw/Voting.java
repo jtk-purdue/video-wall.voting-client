@@ -64,7 +64,7 @@ public class Voting extends ListActivity {
 	mInflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 	
 	data = new Vector<RowData>();
-	adapter = new CustomAdapter(this, R.layout.list, /* R.id.title, */ data);
+	adapter = new CustomAdapter(this, R.layout.list_item, /* R.id.title, */ data);
 	setListAdapter(adapter);
 	getListView().setTextFilterEnabled(true);
 
@@ -192,7 +192,7 @@ public class Voting extends ListActivity {
 	// TODO: Has adapter already been set? Was setting every time. Needed?
 	if (adapter == null) {
 	    Log.w("Voting", "RESETTING ADAPTER in updateData");
-	    adapter = new CustomAdapter(this, R.layout.list, /* R.id.title, */ data);
+	    adapter = new CustomAdapter(this, R.layout.list_item, /* R.id.title, */ data);
 	    setListAdapter(adapter);
 	    getListView().setTextFilterEnabled(true);
 	}
@@ -233,7 +233,7 @@ public class Voting extends ListActivity {
 	    ImageView i11 = null;
 	    RowData rowData = getItem(position);
 	    if (null == convertView) {
-		convertView = mInflater.inflate(R.layout.list, null);
+		convertView = mInflater.inflate(R.layout.list_item, null);
 		holder = new ViewHolder(convertView);
 		convertView.setTag(holder);
 	    }
