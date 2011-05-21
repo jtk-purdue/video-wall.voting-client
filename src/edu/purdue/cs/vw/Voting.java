@@ -135,14 +135,14 @@ public class Voting extends ListActivity {
     }
 
     public void onListItemClick(ListView parent, View v, final int position, long id) {
-	TextView title = (TextView) v.findViewById(R.id.title);
-	final String vi = (String) ((TextView) title).getText();
+//	TextView title = (TextView) v.findViewById(R.id.title);
+//	final String vi = (String) ((TextView) title).getText();
 	
-	final String s = data.get(position).mTitle;
-	if (s.equals(vi))
-	    toast("s equals vi = " + s);
-	else 
-	    toast(String.format("s (%s) does not equal vi (%s)", s, vi));
+	final String vi = data.get(position).mTitle;
+//	if (s.equals(vi))
+//	    toast("s equals vi = " + s);
+//	else 
+//	    toast(String.format("s (%s) does not equal vi (%s)", s, vi));
 	
 	try {
 	    server.vote(vi);
