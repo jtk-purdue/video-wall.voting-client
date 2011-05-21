@@ -35,7 +35,7 @@ public class ServerReal implements Server {
 	}
 	try {
 	    requestSocket = new Socket(serverLocation, portnum);
-	    Log.d("Connection", "Connected to localhost in port " + portnum);
+	    Log.d("Connection", "Connected to " + serverLocation + " in port " + portnum);
 	    out = new PrintWriter(requestSocket.getOutputStream(), true);
 	    out.flush();
 	    in = new BufferedReader(new InputStreamReader(requestSocket.getInputStream()));
