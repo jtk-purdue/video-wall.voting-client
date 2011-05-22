@@ -5,11 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import edu.purdue.cs.vw.R;
-
 import android.app.Activity;
 import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,8 +21,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -38,20 +33,15 @@ import android.widget.Toast;
  */
 
 public class Voting extends ListActivity {
-    private LayoutInflater mInflater;
-    private Vector<RowData> data;
-    CustomAdapter adapter;
-    RowData rd;
-    ArrayList<String> voteList;
-    ArrayList<String> votes;
-    Animation anim = null;
-    ProgressDialog myProgressDialog = null;
-    String editTextPreference;
-    int portNumber;
-    String serverName;
-    boolean voted = false;
-    int lastPosition = -1;
-    Server server;
+    private Vector<VoteData> data;
+    private VoteDataAdapter adapter;
+    private VoteData rd;
+    private ArrayList<String> voteList;
+    private ArrayList<String> votes;
+    private String editTextPreference;
+    private int portNumber;
+    private String serverName;
+    private Server server;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,15 +50,15 @@ public class Voting extends ListActivity {
 	Log.d("Voting", "onCreate");
 
 	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-	anim = AnimationUtils.loadAnimation(this, R.anim.shake); // Sets the animation to shake
-	mInflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 	
-	data = new Vector<RowData>();
-	adapter = new CustomAdapter(this, R.layout.list_item, /* R.id.title, */ data);
+	data = new Vector<VoteData>();
+	adapter = new VoteDataAdapter(this, R.layout.list_item, data);
 	setListAdapter(adapter);
 	getListView().setTextFilterEnabled(true);
 
 	fetchPreferenceData();
+	
+	// TODO: Rewrite to put in background task...
 	updateVoteData();
     }
 
@@ -135,20 +125,11 @@ public class Voting extends ListActivity {
     }
 
     public void onListItemClick(ListView parent, View v, final int position, long id) {
-//	TextView title = (TextView) v.findViewById(R.id.title);
-//	final String vi = (String) ((TextView) title).getText();
-	
 	final String vi = data.get(position).mTitle;
-//	if (s.equals(vi))
-//	    toast("s equals vi = " + s);
-//	else 
-//	    toast(String.format("s (%s) does not equal vi (%s)", s, vi));
 	
 	try {
 	    server.vote(vi);
-	    voted = true;
 	    votes = server.getCount();
-	    lastPosition = position;
 	    // TODO: if server is down, voteList might be null, but call to getCount above generates exception, skipping
 	    // .size()
 	    toast("Voted for " + vi);
@@ -158,12 +139,12 @@ public class Voting extends ListActivity {
 	    e.printStackTrace();
 	}
 
-	RowData r = null;
+	VoteData r = null;
 
 	// TODO: code assumes the voteList and data list are the same size (in sync)
 	try {
 	    for (int i = 0; i < voteList.size(); i++) {
-		r = (RowData) data.elementAt(i);
+		r = (VoteData) data.elementAt(i);
 		String temp = "Number of votes: " + votes.get(i);
 		r.setDetail(temp);
 	    }
@@ -182,28 +163,21 @@ public class Voting extends ListActivity {
 	    Log.d("Voting", "updateData with " + voteList.size() + " votable items");
 	    for (int i = 0; i < voteList.size(); i++) {
 		try {
-		    rd = new RowData(i, voteList.get(i), "Number of votes: " + votes.get(i));
+		    rd = new VoteData(i, voteList.get(i), "Number of votes: " + votes.get(i));
 		} catch (ParseException e) {
 		    e.printStackTrace();
 		}
 		data.add(rd);
 	    }
 	}
-	// TODO: Has adapter already been set? Was setting every time. Needed?
-	if (adapter == null) {
-	    Log.w("Voting", "RESETTING ADAPTER in updateData");
-	    adapter = new CustomAdapter(this, R.layout.list_item, /* R.id.title, */ data);
-	    setListAdapter(adapter);
-	    getListView().setTextFilterEnabled(true);
-	}
     }
 
-    private class RowData {
+    private class VoteData {
 	protected int mId;
 	protected String mTitle;
 	protected String mDetail;
 
-	RowData(int id, String title, String detail) {
+	VoteData(int id, String title, String detail) {
 	    mId = id;
 	    mTitle = title;
 	    mDetail = detail;
@@ -220,9 +194,12 @@ public class Voting extends ListActivity {
 
     }
 
-    private class CustomAdapter extends ArrayAdapter<RowData> {
-	public CustomAdapter(Context context, int resource, /* int textViewResourceId, */ List<RowData> objects) {
-	    super(context, resource, /* textViewResourceId, */ objects);
+    private class VoteDataAdapter extends ArrayAdapter<VoteData> {
+	LayoutInflater inflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+
+	
+	public VoteDataAdapter(Context context, int layoutId, List<VoteData> voteData) {
+	    super(context, layoutId, voteData);
 	}
 
 	@Override
@@ -231,9 +208,9 @@ public class Voting extends ListActivity {
 	    TextView title = null;
 	    TextView detail = null;
 	    ImageView i11 = null;
-	    RowData rowData = getItem(position);
+	    VoteData rowData = getItem(position);
 	    if (null == convertView) {
-		convertView = mInflater.inflate(R.layout.list_item, null);
+		convertView = inflater.inflate(R.layout.list_item, null);
 		holder = new ViewHolder(convertView);
 		convertView.setTag(holder);
 	    }
