@@ -12,7 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
-import android.net.ParseException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -37,10 +37,15 @@ public class Voting extends ListActivity {
     private VoteDataAdapter adapter;
     private ArrayList<String> voteList;
     private ArrayList<String> votes;
-    private String editTextPreference;
+    private String serverPort;
     private int portNumber;
     private String serverName;
     private Server server;
+    private TextView emptyMessage;
+    
+    public Server getServer() {
+	return server;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,58 +54,34 @@ public class Voting extends ListActivity {
 	Log.d("Voting", "onCreate");
 
 	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	setContentView(R.layout.list);
 
 	data = new Vector<VoteData>();
 	adapter = new VoteDataAdapter(this, R.layout.list_item, data);
 	setListAdapter(adapter);
 	getListView().setTextFilterEnabled(true);
 
-	fetchPreferenceData();
-
-	// TODO: Rewrite to put in background task...
-	updateVoteData();
+	emptyMessage = (TextView) findViewById(android.R.id.empty);
     }
 
     void fetchPreferenceData() {
+	emptyMessage.setText("Fetching preference data");
 	SharedPreferences serverPref = PreferenceManager.getDefaultSharedPreferences(this);
 	SharedPreferences portPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
 	String serverNamePref = serverPref.getString("serverPref", "pc.cs.purdue.edu");
 	String portNumberPref = portPref.getString("editTextPref", "4242");
 
-	if (!(serverNamePref.equals(serverName)) || !(portNumberPref).equals(editTextPreference)) {
+	if (!(serverNamePref.equals(serverName)) || !(portNumberPref).equals(serverPort)) {
 	    serverName = serverNamePref;
-	    editTextPreference = portNumberPref;
-	    portNumber = Integer.parseInt(editTextPreference);
+	    serverPort = portNumberPref;
+	    portNumber = Integer.parseInt(serverPort);
 
 	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	    // TODO: Need to auto-choose between which server to use...
 	    server = new ServerReal(serverName, portNumber, cm);
 	    // server = new ServerTest();
 	}
-    }
-
-    void updateVoteData() {
-	try {
-	    voteList = server.getList();
-	    votes = server.getCount();
-	} catch (IOException e) {
-	    // TODO Auto-generated catch block
-	    voteList = null; // set votes to null also? bit of a kludge to indicate
-	    doToast("onCreate Exception: " + e.toString());
-	    e.printStackTrace();
-	}
-
-	data.clear();
-	if (voteList == null)
-	    Log.e("Voting", "voteList is null in updateData");
-	else {
-	    Log.d("Voting", "updateData with " + voteList.size() + " votable items");
-	    for (int i = 0; i < voteList.size(); i++)
-		data.add(new VoteData(voteList.get(i), votes.get(i)));
-	}
-	
-	adapter.notifyDataSetChanged();
     }
 
     void doToast(String message) {
@@ -118,7 +99,65 @@ public class Voting extends ListActivity {
 	super.onResume();
 	Log.d("Voting", "onResume");
 	fetchPreferenceData();
-	updateVoteData();
+	fetchServerData();
+    }
+
+    private void fetchServerData() {
+	AsyncTask<Void, String, Boolean> handleServer = new AsyncTask<Void, String, Boolean>() {
+	    @Override
+	    protected Boolean doInBackground(Void... params) {
+		try {
+		    publishProgress("Contacting server");
+		    voteList = server.getList();
+		    publishProgress("Fetched vote list");
+		    votes = server.getCount();
+		    publishProgress("Fetched vote count");
+		} catch (IOException e) {
+		    voteList = null; // TODO: Set votes to null also? bit of a kludge to indicate
+		    publishProgress("Failed to connect to server");
+		    return false;
+		}
+		return true;
+	    }
+
+	    @Override
+	    protected void onCancelled() {
+		// TODO Auto-generated method stub
+		super.onCancelled();
+	    }
+
+	    @Override
+	    protected void onPostExecute(Boolean success) {
+		super.onPostExecute(success);
+		if (success) {
+		    data.clear();
+		    if (voteList == null)
+			Log.e("Voting", "voteList is null in updateData");
+		    else {
+			Log.d("Voting", "updateData with " + voteList.size() + " votable items");
+			for (int i = 0; i < voteList.size(); i++)
+			    data.add(new VoteData(voteList.get(i), votes.get(i)));
+		    }
+		    adapter.notifyDataSetChanged();
+		} else {
+		    Log.d("Voting", "failure in onPostExecute");
+		}
+	    }
+
+	    @Override
+	    protected void onPreExecute() {
+		// TODO Auto-generated method stub
+		super.onPreExecute();
+	    }
+
+	    @Override
+	    protected void onProgressUpdate(String... messages) {
+		emptyMessage.setText(messages[0]);
+		super.onProgressUpdate(messages);
+	    }
+	};
+
+	handleServer.execute();
     }
 
     @Override
@@ -135,29 +174,65 @@ public class Voting extends ListActivity {
 
     public void onListItemClick(ListView parent, View v, final int position, long id) {
 	String vote = data.get(position).title;
-
-	try {
-	    server.vote(vote);
-	    votes = server.getCount();
-	    // TODO: if server is down, voteList might be null, but call to getCount above generates exception, skipping
-	    // .size()
-	    doToast("Voted for " + vote);
-	} catch (IOException e) {
-	    // TODO Auto-generated catch block
-	    doToast("onListItemClick Exception: " + e.toString());
-	    e.printStackTrace();
-	}
-
-	// TODO: code assumes the voteList and data list are the same size (in sync)
-	for (int i = 0; i < voteList.size(); i++) {
-	    VoteData voteData = (VoteData) data.elementAt(i);
-	    voteData.setDetail(votes.get(i));
-	}
-
-	adapter.notifyDataSetChanged();
+	registerServerVote(vote);
     }
 
-    public void updateData() {
+    private void registerServerVote(final String vote) {
+	AsyncTask<Void, String, Boolean> handleServer = new AsyncTask<Void, String, Boolean>() {
+	    @Override
+	    protected Boolean doInBackground(Void... params) {
+		try {
+		    publishProgress("Registering vote");
+		    server.vote(vote);
+		    publishProgress("Getting counts");
+		    votes = server.getCount();
+		    // TODO: if server is down, voteList might be null, but call to getCount above generates exception,
+		    // skipping
+		    // .size()
+		    publishProgress("Voted for " + vote);
+		} catch (IOException e) {
+		    publishProgress("Voting failed");
+		    return false;
+		}
+		return true;
+	    }
+
+	    @Override
+	    protected void onCancelled() {
+		// TODO Auto-generated method stub
+		super.onCancelled();
+	    }
+
+	    @Override
+	    protected void onPostExecute(Boolean success) {
+		super.onPostExecute(success);
+		if (success) {
+		    // TODO: code assumes the voteList and data list are the same size (in sync)
+		    for (int i = 0; i < voteList.size(); i++) {
+			VoteData voteData = (VoteData) data.elementAt(i);
+			voteData.setDetail(votes.get(i));
+		    }
+		    adapter.notifyDataSetChanged();
+		} else {
+		    Log.d("Voting", "voting failure in onPostExecute");
+		}
+	    }
+
+	    @Override
+	    protected void onPreExecute() {
+		// TODO Auto-generated method stub
+		super.onPreExecute();
+	    }
+
+	    @Override
+	    protected void onProgressUpdate(String... messages) {
+//		emptyMessage.setText(messages[0]);
+		doToast(messages[0]);
+		super.onProgressUpdate(messages);
+	    }
+	};
+
+	handleServer.execute();
     }
 
     private class VoteData {

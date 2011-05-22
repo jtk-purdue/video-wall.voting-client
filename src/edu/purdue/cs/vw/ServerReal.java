@@ -20,6 +20,7 @@ public class ServerReal implements Server {
     String serverLocation;
     int portnum;
     ConnectivityManager cm;
+    private boolean haveData = false;
 
     ServerReal(String serverLocation, int portnum, ConnectivityManager cm) {
 	requestSocket = null;
@@ -57,19 +58,19 @@ public class ServerReal implements Server {
 		.getActiveNetworkInfo().isConnected());
     }
 
-    public void closeSocket() throws IOException {
+    void closeSocket() throws IOException {
 	in.close();
 	out.close();
 	requestSocket.close();
     }
 
-    public void sendMessage(String msg) {
+    void sendMessage(String msg) {
 	out.println(msg);
 	out.flush();
 	Log.d("client>", msg);
     }
 
-    public void vote(String name) throws IOException {
+    synchronized public void vote(String name) throws IOException {
 	openSocket();
 	sendMessage("VOTE");
 	sendMessage(name);
@@ -78,7 +79,7 @@ public class ServerReal implements Server {
 	closeSocket();
     }
 
-    public ArrayList<String> getList() throws IOException {
+    synchronized public ArrayList<String> getList() throws IOException {
 	ArrayList<String> voteList = new ArrayList<String>();
 
 	openSocket();
@@ -95,7 +96,7 @@ public class ServerReal implements Server {
 	return voteList;
     }
 
-    public ArrayList<String> getCount() throws IOException {
+    synchronized public ArrayList<String> getCount() throws IOException {
 	ArrayList<String> votes = new ArrayList<String>();
 
 	openSocket();
@@ -108,6 +109,17 @@ public class ServerReal implements Server {
 	    message = in.readLine();
 	}
 	closeSocket();
+
+	/*
+	 * For testing...  Ensure that vote counts have arrived for testing process.
+	 */
+	if (votes.size() == 0)
+	    haveData  = false;
+	else {
+	    haveData = true;
+	    notifyAll();
+	}
+
 	return votes;
     }
 
@@ -120,5 +132,16 @@ public class ServerReal implements Server {
 		message = "END";
 	    }
 	} while (!message.equals("END"));
+    }
+
+    @Override
+    synchronized public void waitForData() {
+	while (!haveData)
+	    try {
+		wait();
+	    } catch (InterruptedException e) {
+		Log.e("ServerReal", "exception while waiting for data");
+		e.printStackTrace();
+	    }
     }
 }

@@ -10,12 +10,6 @@ public class ServerTest implements Server {
     }
 
     @Override
-    public void sendMessage(String msg) {
-	// TODO Auto-generated method stub
-	Log.d("ServerTest", "sendMessage " + msg);
-    }
-
-    @Override
     public void vote(String name) {
 	// TODO Auto-generated method stub
 	Log.d("ServerTest", "vote " + name);
@@ -41,5 +35,11 @@ public class ServerTest implements Server {
 	votes.add("0");
 	votes.add("0");
 	return votes;
+    }
+
+    @Override
+    public void waitForData() {
+	// TODO Auto-generated method stub
+	return;
     }
 }
