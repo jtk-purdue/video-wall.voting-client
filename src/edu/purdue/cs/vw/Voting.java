@@ -87,13 +87,23 @@ public class Voting extends ListActivity {
 	} catch (IOException e) {
 	    // TODO Auto-generated catch block
 	    voteList = null; // set votes to null also? bit of a kludge to indicate
-	    toast("onCreate Exception: " + e.toString());
+	    doToast("onCreate Exception: " + e.toString());
 	    e.printStackTrace();
 	}
-	updateData();
+
+	data.clear();
+	if (voteList == null)
+	    Log.e("Voting", "voteList is null in updateData");
+	else {
+	    Log.d("Voting", "updateData with " + voteList.size() + " votable items");
+	    for (int i = 0; i < voteList.size(); i++)
+		data.add(new VoteData(voteList.get(i), votes.get(i)));
+	}
+	
+	adapter.notifyDataSetChanged();
     }
 
-    void toast(String message) {
+    void doToast(String message) {
 	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
@@ -124,69 +134,49 @@ public class Voting extends ListActivity {
     }
 
     public void onListItemClick(ListView parent, View v, final int position, long id) {
-	final String vi = data.get(position).title;
+	String vote = data.get(position).title;
 
 	try {
-	    server.vote(vi);
+	    server.vote(vote);
 	    votes = server.getCount();
 	    // TODO: if server is down, voteList might be null, but call to getCount above generates exception, skipping
 	    // .size()
-	    toast("Voted for " + vi);
+	    doToast("Voted for " + vote);
 	} catch (IOException e) {
 	    // TODO Auto-generated catch block
-	    toast("onListItemClick Exception: " + e.toString());
+	    doToast("onListItemClick Exception: " + e.toString());
 	    e.printStackTrace();
 	}
 
 	// TODO: code assumes the voteList and data list are the same size (in sync)
-	try {
-	    for (int i = 0; i < voteList.size(); i++) {
-		VoteData voteData = (VoteData) data.elementAt(i);
-		voteData.setDetail("Number of votes: " + votes.get(i));
-	    }
-	} catch (ParseException e) {
-	    e.printStackTrace();
+	for (int i = 0; i < voteList.size(); i++) {
+	    VoteData voteData = (VoteData) data.elementAt(i);
+	    voteData.setDetail(votes.get(i));
 	}
 
 	adapter.notifyDataSetChanged();
     }
 
     public void updateData() {
-	data.clear();
-	if (voteList == null)
-	    Log.d("Voting", "voteList is null in updateData");
-	else {
-	    Log.d("Voting", "updateData with " + voteList.size() + " votable items");
-	    for (int i = 0; i < voteList.size(); i++) {
-		try {
-		    data.add(new VoteData(i, voteList.get(i), "Number of votes: " + votes.get(i)));
-		} catch (ParseException e) {
-		    e.printStackTrace();
-		}
-	    }
-	}
     }
 
     private class VoteData {
-	protected int id;
 	protected String title;
 	protected String detail;
 
-	VoteData(int id, String title, String detail) {
-	    this.id = id;
+	VoteData(String title, String detail) {
 	    this.title = title;
 	    this.detail = detail;
 	}
 
 	@Override
 	public String toString() {
-	    return id + " " + title + " " + detail;
+	    return title + " " + detail;
 	}
 
 	public void setDetail(String item) {
 	    detail = item;
 	}
-
     }
 
     private class VoteDataAdapter extends ArrayAdapter<VoteData> {
@@ -224,7 +214,7 @@ public class Voting extends ListActivity {
 	    VoteData voteData = getItem(position);
 
 	    viewData.title.setText(voteData.title);
-	    viewData.detail.setText(voteData.detail);
+	    viewData.detail.setText("Number of votes: " + voteData.detail);
 	    viewData.icon.setImageResource(R.drawable.voteicon);
 
 	    return convertView;
