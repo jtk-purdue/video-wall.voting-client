@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TabHost;
+import android.widget.TextView;
 import edu.purdue.cs.vw.R;
 
 /*
@@ -15,14 +16,23 @@ import edu.purdue.cs.vw.R;
  */
 
 public class Tabs extends TabActivity {
+    static TextView status;
+    
+    public static void setStatus(String s) {
+	status.setText(s);
+    }
+    
     /** Called when the activity is first created. */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
-	setContentView(R.layout.main);
+	setContentView(R.layout.tabs);
 	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+	
+	status = (TextView) findViewById(R.id.status);
+	setStatus("Starting up...");
+	
 	Resources res = getResources(); // Resource object to get Drawables
 	TabHost tabHost = getTabHost(); // The activity TabHost
 	TabHost.TabSpec spec; // Resusable TabSpec for each tab
@@ -53,6 +63,7 @@ public class Tabs extends TabActivity {
 	tabHost.addTab(spec);
 
 	tabHost.setCurrentTab(0);
+	setStatus("");
     }
 
     // @Override

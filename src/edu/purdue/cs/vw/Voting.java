@@ -33,6 +33,7 @@ import android.widget.Toast;
  */
 
 public class Voting extends ListActivity {
+    private Server server = null;
     private Vector<VoteData> data;
     private VoteDataAdapter adapter;
     private ArrayList<String> voteList;
@@ -40,11 +41,13 @@ public class Voting extends ListActivity {
     private String serverPort;
     private int portNumber;
     private String serverName;
-    private Server server;
-    private TextView emptyMessage;
     
     public Server getServer() {
 	return server;
+    }
+    
+    public void setServer(Server server) {
+	this.server = server;
     }
 
     @Override
@@ -60,12 +63,11 @@ public class Voting extends ListActivity {
 	adapter = new VoteDataAdapter(this, R.layout.list_item, data);
 	setListAdapter(adapter);
 	getListView().setTextFilterEnabled(true);
-
-	emptyMessage = (TextView) findViewById(android.R.id.empty);
     }
 
     void fetchPreferenceData() {
-	emptyMessage.setText("Fetching preference data");
+	Tabs.setStatus("Fetching preference data...");
+	
 	SharedPreferences serverPref = PreferenceManager.getDefaultSharedPreferences(this);
 	SharedPreferences portPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
@@ -76,11 +78,12 @@ public class Voting extends ListActivity {
 	    serverName = serverNamePref;
 	    serverPort = portNumberPref;
 	    portNumber = Integer.parseInt(serverPort);
+	    server = null;  // force server reset below
+	}
 
+	if (server == null) { 
 	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	    // TODO: Need to auto-choose between which server to use...
-	    server = new ServerReal(serverName, portNumber, cm);
-	    // server = new ServerTest();
+	    server = new Server(serverName, portNumber, cm);
 	}
     }
 
@@ -107,14 +110,14 @@ public class Voting extends ListActivity {
 	    @Override
 	    protected Boolean doInBackground(Void... params) {
 		try {
-		    publishProgress("Contacting server");
+		    publishProgress("Contacting server...");
 		    voteList = server.getList();
-		    publishProgress("Fetched vote list");
+		    publishProgress("Fetched vote list...");
 		    votes = server.getCount();
-		    publishProgress("Fetched vote count");
+		    publishProgress("Fetched vote count...");
 		} catch (IOException e) {
 		    voteList = null; // TODO: Set votes to null also? bit of a kludge to indicate
-		    publishProgress("Failed to connect to server");
+		    publishProgress("Failed to connect to server...");
 		    return false;
 		}
 		return true;
@@ -142,6 +145,7 @@ public class Voting extends ListActivity {
 		} else {
 		    Log.d("Voting", "failure in onPostExecute");
 		}
+		publishProgress("");
 	    }
 
 	    @Override
@@ -152,7 +156,7 @@ public class Voting extends ListActivity {
 
 	    @Override
 	    protected void onProgressUpdate(String... messages) {
-		emptyMessage.setText(messages[0]);
+		Tabs.setStatus(messages[0]);
 		super.onProgressUpdate(messages);
 	    }
 	};
@@ -182,16 +186,16 @@ public class Voting extends ListActivity {
 	    @Override
 	    protected Boolean doInBackground(Void... params) {
 		try {
-		    publishProgress("Registering vote");
+		    publishProgress("Registering vote...");
 		    server.vote(vote);
-		    publishProgress("Getting counts");
+		    publishProgress("Getting counts...");
 		    votes = server.getCount();
 		    // TODO: if server is down, voteList might be null, but call to getCount above generates exception,
 		    // skipping
 		    // .size()
-		    publishProgress("Voted for " + vote);
+		    publishProgress("Voted for " + vote + ".");
 		} catch (IOException e) {
-		    publishProgress("Voting failed");
+		    publishProgress("Voting failed...");
 		    return false;
 		}
 		return true;
@@ -216,6 +220,7 @@ public class Voting extends ListActivity {
 		} else {
 		    Log.d("Voting", "voting failure in onPostExecute");
 		}
+		publishProgress("");
 	    }
 
 	    @Override
@@ -227,7 +232,7 @@ public class Voting extends ListActivity {
 	    @Override
 	    protected void onProgressUpdate(String... messages) {
 //		emptyMessage.setText(messages[0]);
-		doToast(messages[0]);
+		Tabs.setStatus(messages[0]);
 		super.onProgressUpdate(messages);
 	    }
 	};
