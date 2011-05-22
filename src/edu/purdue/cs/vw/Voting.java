@@ -45,18 +45,18 @@ public class Voting extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
-	
+
 	Log.d("Voting", "onCreate");
 
 	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-	
+
 	data = new Vector<VoteData>();
 	adapter = new VoteDataAdapter(this, R.layout.list_item, data);
 	setListAdapter(adapter);
 	getListView().setTextFilterEnabled(true);
 
 	fetchPreferenceData();
-	
+
 	// TODO: Rewrite to put in background task...
 	updateVoteData();
     }
@@ -76,7 +76,7 @@ public class Voting extends ListActivity {
 	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	    // TODO: Need to auto-choose between which server to use...
 	    server = new ServerReal(serverName, portNumber, cm);
-//	    server = new ServerTest();
+	    // server = new ServerTest();
 	}
     }
 
@@ -125,7 +125,7 @@ public class Voting extends ListActivity {
 
     public void onListItemClick(ListView parent, View v, final int position, long id) {
 	final String vi = data.get(position).title;
-	
+
 	try {
 	    server.vote(vi);
 	    votes = server.getCount();
@@ -192,7 +192,7 @@ public class Voting extends ListActivity {
     private class VoteDataAdapter extends ArrayAdapter<VoteData> {
 	LayoutInflater inflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 	int layoutId;
-	
+
 	public VoteDataAdapter(Context context, int layoutId, List<VoteData> voteData) {
 	    super(context, layoutId, voteData);
 	    this.layoutId = layoutId;
@@ -200,53 +200,34 @@ public class Voting extends ListActivity {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-	    ViewData viewData = null;
-	    
+	    class ViewData {
+		TextView title;
+		TextView detail;
+		ImageView icon;
+
+		ViewData(View row) {
+		    title = (TextView) row.findViewById(R.id.title);
+		    detail = (TextView) row.findViewById(R.id.detail);
+		    icon = (ImageView) row.findViewById(R.id.img);
+		}
+	    }
+	    ViewData viewData;
+
 	    if (convertView != null)
 		viewData = (ViewData) convertView.getTag();
 	    else {
 		convertView = inflater.inflate(layoutId, null);
 		viewData = new ViewData(convertView);
 		convertView.setTag(viewData);
-	    	}
+	    }
 
 	    VoteData voteData = getItem(position);
 
-	    viewData.getTitle().setText(voteData.title);
-	    viewData.getDetail().setText(voteData.detail);
-	    viewData.getImage().setImageResource(R.drawable.voteicon);
-	    
+	    viewData.title.setText(voteData.title);
+	    viewData.detail.setText(voteData.detail);
+	    viewData.icon.setImageResource(R.drawable.voteicon);
+
 	    return convertView;
-	}
-
-	private class ViewData {
-	    private View row;
-	    private TextView title = null;
-	    private TextView detail = null;
-	    private ImageView icon = null;
-
-	    public ViewData(View row) {
-		this.row = row;
-	    }
-
-	    public TextView getTitle() {
-		if (title == null)
-		    title = (TextView) row.findViewById(R.id.title);
-		return title;
-	    }
-
-	    public TextView getDetail() {
-		if (detail == null)
-		    detail = (TextView) row.findViewById(R.id.detail);
-		return detail;
-	    }
-
-	    public ImageView getImage() {
-		if (icon == null)
-		    icon = (ImageView) row.findViewById(R.id.img);
-		return icon;
-	    }
-
 	}
     }
 
