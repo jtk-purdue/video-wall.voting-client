@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
 
- <activity android:name="Menu"
+ <activity android:name="Tabs"
            android:label="Harris Corporation Video Wall Demo">
  </activity>
    

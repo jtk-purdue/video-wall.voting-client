@@ -14,7 +14,7 @@ import edu.purdue.cs.vw.R;
  * This file sets up the tab view that the application uses.
  */
 
-public class Menu extends TabActivity {
+public class Tabs extends TabActivity {
     /** Called when the activity is first created. */
 
     @Override
@@ -56,7 +56,7 @@ public class Menu extends TabActivity {
     }
 
     // @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(Tabs menu) {
 	return super.onPrepareOptionsMenu((android.view.Menu) menu);
     }
 
@@ -73,19 +73,19 @@ public class Menu extends TabActivity {
 	switch (item.getItemId()) {
 	case R.id.help:
 	    Intent i = new Intent();
-	    i.setClass(Menu.this, Help.class);
+	    i.setClass(Tabs.this, Help.class);
 	    startActivity(i);
 	    break;
 
 	case R.id.info:
 	    Intent i2 = new Intent();
-	    i2.setClass(Menu.this, Information.class);
+	    i2.setClass(Tabs.this, Information.class);
 	    startActivity(i2);
 	    break;
 
 	case R.id.settings:
 	    Intent i3 = new Intent();
-	    i3.setClass(Menu.this, Settings.class);
+	    i3.setClass(Tabs.this, Settings.class);
 	    startActivity(i3);
 	    break;
 

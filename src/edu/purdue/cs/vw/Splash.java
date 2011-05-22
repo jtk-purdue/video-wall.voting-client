@@ -36,7 +36,7 @@ public class Splash extends Activity {
 		    finish();
 
 		    Intent i = new Intent();
-		    i.setClass(Splash.this, Menu.class);
+		    i.setClass(Splash.this, Tabs.class);
 		    Splash.this.startActivity(i);
 
 		}
