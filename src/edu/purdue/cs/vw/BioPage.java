@@ -47,7 +47,7 @@ public class BioPage extends Activity {
     }
 
     // @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(Tabs menu) {
 	return super.onPrepareOptionsMenu((android.view.Menu) menu);
     }
 
