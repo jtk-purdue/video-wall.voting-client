@@ -35,7 +35,6 @@ import android.widget.Toast;
 public class Voting extends ListActivity {
     private Vector<VoteData> data;
     private VoteDataAdapter adapter;
-    private VoteData rd;
     private ArrayList<String> voteList;
     private ArrayList<String> votes;
     private String editTextPreference;
@@ -125,7 +124,7 @@ public class Voting extends ListActivity {
     }
 
     public void onListItemClick(ListView parent, View v, final int position, long id) {
-	final String vi = data.get(position).mTitle;
+	final String vi = data.get(position).title;
 	
 	try {
 	    server.vote(vi);
@@ -139,14 +138,11 @@ public class Voting extends ListActivity {
 	    e.printStackTrace();
 	}
 
-	VoteData r = null;
-
 	// TODO: code assumes the voteList and data list are the same size (in sync)
 	try {
 	    for (int i = 0; i < voteList.size(); i++) {
-		r = (VoteData) data.elementAt(i);
-		String temp = "Number of votes: " + votes.get(i);
-		r.setDetail(temp);
+		VoteData voteData = (VoteData) data.elementAt(i);
+		voteData.setDetail("Number of votes: " + votes.get(i));
 	    }
 	} catch (ParseException e) {
 	    e.printStackTrace();
@@ -163,96 +159,92 @@ public class Voting extends ListActivity {
 	    Log.d("Voting", "updateData with " + voteList.size() + " votable items");
 	    for (int i = 0; i < voteList.size(); i++) {
 		try {
-		    rd = new VoteData(i, voteList.get(i), "Number of votes: " + votes.get(i));
+		    data.add(new VoteData(i, voteList.get(i), "Number of votes: " + votes.get(i)));
 		} catch (ParseException e) {
 		    e.printStackTrace();
 		}
-		data.add(rd);
 	    }
 	}
     }
 
     private class VoteData {
-	protected int mId;
-	protected String mTitle;
-	protected String mDetail;
+	protected int id;
+	protected String title;
+	protected String detail;
 
 	VoteData(int id, String title, String detail) {
-	    mId = id;
-	    mTitle = title;
-	    mDetail = detail;
+	    this.id = id;
+	    this.title = title;
+	    this.detail = detail;
 	}
 
 	@Override
 	public String toString() {
-	    return mId + " " + mTitle + " " + mDetail;
+	    return id + " " + title + " " + detail;
 	}
 
 	public void setDetail(String item) {
-	    mDetail = item;
+	    detail = item;
 	}
 
     }
 
     private class VoteDataAdapter extends ArrayAdapter<VoteData> {
 	LayoutInflater inflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-
+	int layoutId;
 	
 	public VoteDataAdapter(Context context, int layoutId, List<VoteData> voteData) {
 	    super(context, layoutId, voteData);
+	    this.layoutId = layoutId;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-	    ViewHolder holder = null;
-	    TextView title = null;
-	    TextView detail = null;
-	    ImageView i11 = null;
-	    VoteData rowData = getItem(position);
-	    if (null == convertView) {
-		convertView = inflater.inflate(R.layout.list_item, null);
-		holder = new ViewHolder(convertView);
-		convertView.setTag(holder);
-	    }
-	    holder = (ViewHolder) convertView.getTag();
-	    title = holder.gettitle();
-	    title.setText(rowData.mTitle);
-	    detail = holder.getdetail();
-	    detail.setText(rowData.mDetail);
-	    i11 = holder.getImage();
-	    i11.setImageResource(R.drawable.voteicon);
+	    ViewData viewData = null;
+	    
+	    if (convertView != null)
+		viewData = (ViewData) convertView.getTag();
+	    else {
+		convertView = inflater.inflate(layoutId, null);
+		viewData = new ViewData(convertView);
+		convertView.setTag(viewData);
+	    	}
+
+	    VoteData voteData = getItem(position);
+
+	    viewData.getTitle().setText(voteData.title);
+	    viewData.getDetail().setText(voteData.detail);
+	    viewData.getImage().setImageResource(R.drawable.voteicon);
+	    
 	    return convertView;
 	}
 
-	public class ViewHolder {
-	    private View mRow;
+	private class ViewData {
+	    private View row;
 	    private TextView title = null;
 	    private TextView detail = null;
-	    private ImageView i11 = null;
+	    private ImageView icon = null;
 
-	    public ViewHolder(View row) {
-		mRow = row;
+	    public ViewData(View row) {
+		this.row = row;
 	    }
 
-	    public TextView gettitle() {
-		if (null == title) {
-		    title = (TextView) mRow.findViewById(R.id.title);
-		}
+	    public TextView getTitle() {
+		if (title == null)
+		    title = (TextView) row.findViewById(R.id.title);
 		return title;
 	    }
 
-	    public TextView getdetail() {
-		if (null == detail) {
-		    detail = (TextView) mRow.findViewById(R.id.detail);
-		}
+	    public TextView getDetail() {
+		if (detail == null)
+		    detail = (TextView) row.findViewById(R.id.detail);
 		return detail;
 	    }
 
 	    public ImageView getImage() {
-		if (null == i11) {
-		    i11 = (ImageView) mRow.findViewById(R.id.img);
-		}
-		return i11;
+		if (icon == null)
+		    icon = (ImageView) row.findViewById(R.id.img);
+		return icon;
 	    }
 
 	}
