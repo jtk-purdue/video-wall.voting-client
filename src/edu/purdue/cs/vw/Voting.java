@@ -8,7 +8,6 @@ import java.util.Vector;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
@@ -33,11 +32,12 @@ import android.widget.Toast;
  */
 
 public class Voting extends ListActivity {
+    public static ArrayList<String> voteList;
+    public static ArrayList<String> votes;
+
     private Server server = null;
     private Vector<VoteData> data;
     private VoteDataAdapter adapter;
-    private ArrayList<String> voteList;
-    private ArrayList<String> votes;
     private String serverPort;
     private int portNumber;
     private String serverName;
@@ -310,37 +310,44 @@ public class Voting extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
 	MenuInflater inflater = getMenuInflater();
-	inflater.inflate(R.menu.voteoptionsmenu, menu);
+	inflater.inflate(R.menu.menu, menu);
 	return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-	switch (item.getItemId()) {
-	case R.id.help:
-	    Intent i = new Intent();
-	    i.setClass(Voting.this, Help.class);
-	    startActivity(i);
-	    break;
-
-	case R.id.stats:
-	    Intent i2 = new Intent();
-	    i2.putExtra("votes", voteList);
-	    i2.putExtra("votesint", votes);
-	    i2.setClass(Voting.this, Stats.class);
-	    startActivity(i2);
-	    break;
-
-	case R.id.settings:
-	    Intent i3 = new Intent();
-	    i3.setClass(Voting.this, Settings.class);
-	    startActivity(i3);
-	    break;
-
-	case R.id.quit:
-	    finish();
-	    break;
-	}
-	return true;
+	return Tabs.doOptionsItemSelected(this, item);
+	
+//	Intent i = new Intent();
+//	switch (item.getItemId()) {
+//	case R.id.help:
+//	    i.setClass(Voting.this, Help.class);
+//	    startActivity(i);
+//	    break;
+//
+//	case R.id.info:
+//	    i.setClass(Voting.this, Information.class);
+//	    startActivity(i);
+//	    break;
+//
+//	case R.id.stats:
+//	    Intent i2 = new Intent();
+//	    i2.putExtra("votes", voteList);
+//	    i2.putExtra("votesint", votes);
+//	    i2.setClass(Voting.this, Stats.class);
+//	    startActivity(i2);
+//	    break;
+//
+//	case R.id.settings:
+//	    Intent i3 = new Intent();
+//	    i3.setClass(Voting.this, Settings.class);
+//	    startActivity(i3);
+//	    break;
+//
+//	case R.id.quit:
+//	    finish();
+//	    break;
+//	}
+//	return true;
     }
 }
