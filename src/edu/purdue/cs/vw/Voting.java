@@ -16,7 +16,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +32,8 @@ import android.widget.Toast;
  */
 
 public class Voting extends ListActivity {
-    public static ArrayList<String> voteList;
-    public static ArrayList<String> votes;
+    public ArrayList<String> voteList;
+    public ArrayList<String> votes;
 
     private Server server = null;
     private Vector<VoteData> data;
@@ -301,53 +301,18 @@ public class Voting extends ListActivity {
 	}
     }
 
-    // @Override
-    public boolean onPrepareOptionsMenu(Tabs menu) {
-	return super.onPrepareOptionsMenu((android.view.Menu) menu);
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+	return super.onPrepareOptionsMenu(menu);
     }
 
-    // @Override
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
-	MenuInflater inflater = getMenuInflater();
-	inflater.inflate(R.menu.menu, menu);
-	return true;
+	return Tabs.doCreateOptionsMenu(this, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 	return Tabs.doOptionsItemSelected(this, item);
-	
-//	Intent i = new Intent();
-//	switch (item.getItemId()) {
-//	case R.id.help:
-//	    i.setClass(Voting.this, Help.class);
-//	    startActivity(i);
-//	    break;
-//
-//	case R.id.info:
-//	    i.setClass(Voting.this, Information.class);
-//	    startActivity(i);
-//	    break;
-//
-//	case R.id.stats:
-//	    Intent i2 = new Intent();
-//	    i2.putExtra("votes", voteList);
-//	    i2.putExtra("votesint", votes);
-//	    i2.setClass(Voting.this, Stats.class);
-//	    startActivity(i2);
-//	    break;
-//
-//	case R.id.settings:
-//	    Intent i3 = new Intent();
-//	    i3.setClass(Voting.this, Settings.class);
-//	    startActivity(i3);
-//	    break;
-//
-//	case R.id.quit:
-//	    finish();
-//	    break;
-//	}
-//	return true;
     }
 }

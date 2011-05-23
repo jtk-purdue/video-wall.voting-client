@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import android.app.ListActivity;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -17,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import edu.purdue.cs.vw.R;
 
 public class Acknowledgements extends ListActivity {
 
@@ -66,17 +63,18 @@ public class Acknowledgements extends ListActivity {
 	v.startAnimation(anim); // Show animation when clicked
     }
 
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//	return super.onPrepareOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//	return Tabs.doCreateOptionsMenu(this, menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//	return Tabs.doOptionsItemSelected(this, item);
-//    }
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+	return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+	return Tabs.doCreateOptionsMenu(this, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	return Tabs.doOptionsItemSelected(this, item);
+    }
 }

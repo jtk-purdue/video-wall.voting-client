@@ -1,14 +1,14 @@
 package edu.purdue.cs.vw;
 
-import edu.purdue.cs.vw.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.media.MediaPlayer;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -187,4 +187,18 @@ public class Audio extends Activity {
 	}
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+	return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+	return Tabs.doCreateOptionsMenu(this, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	return Tabs.doOptionsItemSelected(this, item);
+    }
 }
