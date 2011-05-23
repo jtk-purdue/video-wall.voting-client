@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,44 +35,18 @@ public class Video extends Activity {
 	});
     }
 
-    // @Override
-    public boolean onPrepareOptionsMenu(Tabs menu) {
-	return super.onPrepareOptionsMenu((android.view.Menu) menu);
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+	return super.onPrepareOptionsMenu(menu);
     }
 
-    // @Override
     @Override
-    public boolean onCreateOptionsMenu(android.view.Menu menu) {
-	MenuInflater inflater = getMenuInflater();
-	inflater.inflate(R.menu.menu, menu);
-	return true;
+    public boolean onCreateOptionsMenu(Menu menu) {
+	return Tabs.doCreateOptionsMenu(this, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-	switch (item.getItemId()) {
-	case R.id.help:
-	    Intent i = new Intent();
-	    i.setClass(Video.this, Help.class);
-	    startActivity(i);
-	    break;
-
-	case R.id.info:
-	    Intent i2 = new Intent();
-	    i2.setClass(Video.this, Information.class);
-	    startActivity(i2);
-	    break;
-
-	case R.id.settings:
-	    Intent i3 = new Intent();
-	    i3.setClass(Video.this, Settings.class);
-	    startActivity(i3);
-	    break;
-
-	case R.id.quit:
-	    finish();
-	    break;
-	}
-	return true;
+	return Tabs.doOptionsItemSelected(this, item);
     }
 }

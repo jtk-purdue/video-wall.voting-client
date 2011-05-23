@@ -3,45 +3,44 @@ package edu.purdue.cs.vw;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import edu.purdue.cs.vw.R;
 
-/*This file sets up the splash screen when the application starts.
+/*
+ * This file sets up the splash screen when the application starts.
  */
 
 public class Splash extends Activity {
-    /** Called when the activity is first created. */
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.splash);
-	
-	// Lock the screen orientation to portrait mode.  (Problems when rotating?)
+
+	// Lock the screen orientation to portrait mode. (Problems when rotating?)
 	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+    
+    @Override
+    public void onResume() {
+	super.onResume();
 
 	// Creates a runnable thread in the background. Splash screen appears
-	// for a few seconds and then switches to Menu.java
-	Thread splashThread = new Thread() {
+	// for a few seconds and then switches to Tabs.
+	new AsyncTask<Void, Void, Void>() {
 	    @Override
-	    public void run() {
+	    protected Void doInBackground(Void... params) {
 		try {
-		    int waited = 0;
-		    while (waited < 2000) {
-			sleep(100);
-			waited += 100;
-		    }
-		} catch (InterruptedException e) {
-		    // do nothing
-		} finally {
-		    finish();
-
-		    Intent i = new Intent();
-		    i.setClass(Splash.this, Tabs.class);
-		    Splash.this.startActivity(i);
-
+		    Thread.sleep(2000);
+		} catch (InterruptedException e) { /* ignore */
 		}
+
+		Intent i = new Intent();
+		i.setClass(Splash.this, Tabs.class);
+		startActivity(i);
+		return null;
 	    }
-	};
-	splashThread.start();
+	}.execute();
     }
 }

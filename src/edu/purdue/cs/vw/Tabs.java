@@ -1,15 +1,16 @@
 package edu.purdue.cs.vw;
 
+import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TabHost;
 import android.widget.TextView;
-import edu.purdue.cs.vw.R;
 
 /*
  * This file sets up the tab view that the application uses.
@@ -19,11 +20,13 @@ public class Tabs extends TabActivity {
     static TextView status;
     
     public static void setStatus(String s) {
-	status.setText(s);
+	if (status != null)
+	    status.setText(s);
     }
     
-    /** Called when the activity is first created. */
-
+    /*
+     *  Called when the activity is first created. 
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
@@ -66,44 +69,57 @@ public class Tabs extends TabActivity {
 	setStatus("");
     }
 
-    // @Override
-    public boolean onPrepareOptionsMenu(Tabs menu) {
-	return super.onPrepareOptionsMenu((android.view.Menu) menu);
-    }
-
-    // @Override
-    @Override
-    public boolean onCreateOptionsMenu(android.view.Menu menu) {
-	MenuInflater inflater = getMenuInflater();
+    public static boolean doCreateOptionsMenu(Activity activity, Menu menu) {
+	MenuInflater inflater = activity.getMenuInflater();
 	inflater.inflate(R.menu.menu, menu);
 	return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public static boolean doOptionsItemSelected(Activity activity, MenuItem item) {
+	Intent i = new Intent();
+	
 	switch (item.getItemId()) {
 	case R.id.help:
-	    Intent i = new Intent();
-	    i.setClass(Tabs.this, Help.class);
-	    startActivity(i);
+	    i.setClass(activity, Help.class);
+	    activity.startActivity(i);
 	    break;
 
 	case R.id.info:
-	    Intent i2 = new Intent();
-	    i2.setClass(Tabs.this, Information.class);
-	    startActivity(i2);
+	    i.setClass(activity, Information.class);
+	    activity.startActivity(i);
+	    break;
+
+	case R.id.stats: 
+	    i.putExtra("votes", Voting.voteList);
+	    i.putExtra("votesint", Voting.votes);
+	    i.setClass(activity, Stats.class);
+	    activity.startActivity(i);
 	    break;
 
 	case R.id.settings:
-	    Intent i3 = new Intent();
-	    i3.setClass(Tabs.this, Settings.class);
-	    startActivity(i3);
+	    i.setClass(activity, Settings.class);
+	    activity.startActivity(i);
 	    break;
 
 	case R.id.quit:
-	    finish();
+	    activity.finish();
 	    break;
 	}
 	return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+	return super.onPrepareOptionsMenu(menu);
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+	return Tabs.doCreateOptionsMenu(this, menu);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+	return Tabs.doOptionsItemSelected(this, item);
     }
 }

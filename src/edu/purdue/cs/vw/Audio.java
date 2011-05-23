@@ -28,9 +28,6 @@ public class Audio extends Activity {
     Integer[] imageIDs = { R.drawable.icon, R.drawable.icon, R.drawable.icon, R.drawable.icon, R.drawable.icon,
 	    R.drawable.icon, R.drawable.icon, R.drawable.icon, R.drawable.icon };
 
-    // private ImageSwitcher imageSwitcher;
-    private boolean internetcheck;
-
     private String[] songUrls = {
 	    "http://www.eoezone.com/Update/2009/MUSICHEAVEN/MV/MV_56_Nickelback_Gotta_Be_Somebody.mp3",
 	    "http://vukwap.comli.com/upload/Katy_Perry_-_Firework.mp3",
@@ -54,7 +51,6 @@ public class Audio extends Activity {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.audio);
 
-	internetcheck = checkInternetConnection();
 	mp = new MediaPlayer();
 
 	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -68,23 +64,12 @@ public class Audio extends Activity {
 	});
     }
 
-    private boolean checkInternetConnection() {
-	ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	// test for connection
-	if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable()
-		&& cm.getActiveNetworkInfo().isConnected()) {
-	    return true;
-	} else {
-	    Log.d("Connection State", "Internet Connection Not Present");
-	    return false;
-	}
-    }
-
     public void playSong(int position) {
 	String url = songUrls[position];
 	mp.stop();
 	mp.reset();
-	if (internetcheck) {
+	// TODO: Handle missing internetcheck (?)
+	if (true /* internetcheck */) {
 	    try {
 		mp.setDataSource(url);
 		mp.prepare();
