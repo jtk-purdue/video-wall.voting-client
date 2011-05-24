@@ -20,13 +20,24 @@ public class Server {
     String serverLocation;
     int portnum;
     ConnectivityManager cm;
-    private boolean haveData = false;
+    private boolean haveData;
+    
+    public Server() {
+	Log.e("Server", "Empty constructor not currently implemented");
+    }
 
     public Server(String serverLocation, int portnum, ConnectivityManager cm) {
+	haveData = false;
 	requestSocket = null;
 	this.serverLocation = serverLocation;
 	this.portnum = portnum;
 	this.cm = cm;
+    }
+    
+    public void resetSocket(String serverLocation, int portnum) {
+	haveData = false;
+	this.serverLocation = serverLocation;
+	this.portnum = portnum;
     }
 
     void openSocket() throws ConnectException {

@@ -63,7 +63,12 @@ public class Voting extends ListActivity {
 	adapter = new VoteDataAdapter(this, R.layout.list_item, data);
 	setListAdapter(adapter);
 	getListView().setTextFilterEnabled(true);
-    }
+
+	if (server == null) { 
+	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    server = new Server(serverName, portNumber, cm);
+	}
+}
 
     void fetchPreferenceData() {
 	Tabs.setStatus("Fetching preference data...");
@@ -78,12 +83,7 @@ public class Voting extends ListActivity {
 	    serverName = serverNamePref;
 	    serverPort = portNumberPref;
 	    portNumber = Integer.parseInt(serverPort);
-	    server = null;  // force server reset below
-	}
-
-	if (server == null) { 
-	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	    server = new Server(serverName, portNumber, cm);
+	    server.resetSocket(serverName, portNumber);
 	}
     }
 
