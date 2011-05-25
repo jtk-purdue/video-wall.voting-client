@@ -10,7 +10,7 @@ public class ServerMock implements Server {
     ArrayList<String> votes;
     String[] channels;
 
-    ServerMock() {
+    public ServerMock() {
 	channels = new String[NUM_CHANNELS];
 	voteList = new ArrayList<String>();
 	votes = new ArrayList<String>();
@@ -51,5 +51,11 @@ public class ServerMock implements Server {
     public ArrayList<String> getCount() {
 	Log.d("MockServerTest", "getCount");
 	return votes;
+    }
+
+    @Override
+    public void resetSocket(String serverName, int portNumber) {
+	// TODO Auto-generated method stub
+	
     }
 }

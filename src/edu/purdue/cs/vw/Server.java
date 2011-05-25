@@ -9,4 +9,6 @@ public interface Server {
     public ArrayList<String> getList() throws IOException;
 
     public ArrayList<String> getCount() throws IOException;
+
+    public void resetSocket(String serverName, int portNumber);
 }
