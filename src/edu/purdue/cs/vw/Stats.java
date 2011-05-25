@@ -9,11 +9,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
-import edu.purdue.cs.vw.R;
-
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -37,10 +34,8 @@ public class Stats extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
-
-	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
 	setContentView(R.layout.stats);
+
 	image = (ImageView) findViewById(R.id.image);
 
 	Bundle data = getIntent().getExtras();

@@ -2,7 +2,6 @@ package edu.purdue.cs.vw;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -52,8 +51,6 @@ public class Audio extends Activity {
 	setContentView(R.layout.audio);
 
 	mp = new MediaPlayer();
-
-	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 	GridView gridview = (GridView) findViewById(R.id.gridview);
 	gridview.setAdapter(new ButtonAdapter(this));

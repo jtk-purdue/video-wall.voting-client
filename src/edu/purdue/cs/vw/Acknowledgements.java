@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import android.app.ListActivity;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,10 +23,10 @@ public class Acknowledgements extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
-	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
 	anim = AnimationUtils.loadAnimation(this, R.anim.shake);
+	
 	nameList = new ArrayList<String>();
-	// nameList.add("SPECIAL THANKS TO:");
 	nameList.add("Jim Clamons, Harris Corporation");
 	nameList.add("Dan Trinkle, CS Technical Systems Administrator");
 	nameList.add("Dave Burford, Purdue Electronics Shop");

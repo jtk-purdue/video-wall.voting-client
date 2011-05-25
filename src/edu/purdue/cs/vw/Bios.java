@@ -2,7 +2,6 @@ package edu.purdue.cs.vw;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.Button;
-import edu.purdue.cs.vw.R;
 
 /* 
  * This activity sets up the tab that allows the user to view the bio-pages of team members. Contains invisible buttons overlaid on the images. 
@@ -24,7 +22,6 @@ public class Bios extends Activity {
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.bios);
-	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 	Button button = (Button) findViewById(R.id.member1);// Creating a button
 	button.setBackgroundColor(Color.TRANSPARENT); // Make button invisible
@@ -33,12 +30,8 @@ public class Bios extends Activity {
 	    @Override
 	    public void onClick(View v) {
 		Intent i = new Intent();
-		i.putExtra("name", "TylerH");// PutExtra is used to send
-					     // information between
-					     // activities. Sends name to
-					     // BioPage activity.
-		i.setClass(Bios.this, BioPage.class);// Switch to BioPage
-						     // activity.
+		i.putExtra("name", "TylerH");
+		i.setClass(Bios.this, BioPage.class);
 		startActivity(i);
 	    }
 	});

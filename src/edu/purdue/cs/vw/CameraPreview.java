@@ -16,15 +16,15 @@
 
 package edu.purdue.cs.vw;
 
+import java.io.IOException;
+
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.Window;
-import java.io.IOException;
 
 /*
  * This file sets up the video preview on the phone.
@@ -43,8 +43,6 @@ public class CameraPreview extends Activity {
 	// Create our Preview view and set it as the content of our activity.
 	mPreview = new Preview(this);
 	setContentView(mPreview);
-	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
     }
 
 }

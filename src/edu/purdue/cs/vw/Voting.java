@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -51,11 +50,9 @@ public class Voting extends ListActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
+	setContentView(R.layout.list);
 
 	Log.d("Voting", "onCreate");
-
-	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-	setContentView(R.layout.list);
 
 	data = new Vector<VoteData>();
 	adapter = new VoteDataAdapter(this, R.layout.list_item, data);
