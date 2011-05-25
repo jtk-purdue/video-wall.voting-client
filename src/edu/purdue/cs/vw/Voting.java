@@ -32,9 +32,6 @@ import android.widget.Toast;
  */
 
 public class Voting extends ListActivity {
-    public ArrayList<String> voteList;
-    public ArrayList<String> votes;
-
     private Server server = null;
     private Vector<VoteData> data;
     private VoteDataAdapter adapter;
@@ -48,6 +45,7 @@ public class Voting extends ListActivity {
     
     public void setServer(Server server) {
 	this.server = server;
+	fetchServerData();
     }
 
     @Override
@@ -107,6 +105,9 @@ public class Voting extends ListActivity {
 
     private void fetchServerData() {
 	AsyncTask<Void, String, Boolean> handleServer = new AsyncTask<Void, String, Boolean>() {
+	    public ArrayList<String> voteList;
+	    public ArrayList<String> votes;
+
 	    @Override
 	    protected Boolean doInBackground(Void... params) {
 		try {
@@ -142,6 +143,7 @@ public class Voting extends ListActivity {
 			    data.add(new VoteData(voteList.get(i), votes.get(i)));
 		    }
 		    adapter.notifyDataSetChanged();
+		    notifyDataAvailable();
 		} else {
 		    Log.d("Voting", "failure in onPostExecute");
 		}
@@ -183,6 +185,8 @@ public class Voting extends ListActivity {
 
     private void registerServerVote(final String vote) {
 	AsyncTask<Void, String, Boolean> handleServer = new AsyncTask<Void, String, Boolean>() {
+	    public ArrayList<String> votes;
+
 	    @Override
 	    protected Boolean doInBackground(Void... params) {
 		try {
@@ -211,12 +215,13 @@ public class Voting extends ListActivity {
 	    protected void onPostExecute(Boolean success) {
 		super.onPostExecute(success);
 		if (success) {
-		    // TODO: code assumes the voteList and data list are the same size (in sync)
-		    for (int i = 0; i < voteList.size(); i++) {
+		    // TODO: code assumes the votes and data list are the same size (in sync)
+		    for (int i = 0; i < votes.size(); i++) {
 			VoteData voteData = (VoteData) data.elementAt(i);
 			voteData.setDetail(votes.get(i));
 		    }
 		    adapter.notifyDataSetChanged();
+		    notifyDataAvailable();
 		} else {
 		    Log.d("Voting", "voting failure in onPostExecute");
 		}
@@ -231,7 +236,6 @@ public class Voting extends ListActivity {
 
 	    @Override
 	    protected void onProgressUpdate(String... messages) {
-//		emptyMessage.setText(messages[0]);
 		Tabs.setStatus(messages[0]);
 		super.onProgressUpdate(messages);
 	    }
@@ -299,6 +303,28 @@ public class Voting extends ListActivity {
 
 	    return convertView;
 	}
+    }
+    
+    /*
+     * Allow external threads (e.g., test threads) to wait for data to have arrived from the server
+     * and transferred into the interface.
+     */
+    
+    boolean haveData = false;
+    
+    synchronized public void notifyDataAvailable() {
+	haveData = true;
+	notifyAll();
+    }
+
+    synchronized public void waitForData() {
+	while (!haveData)
+	    try {
+		wait();
+	    } catch (InterruptedException e) {
+		Log.e("ServerReal", "exception while waiting for data");
+		e.printStackTrace();
+	    }
     }
 
     @Override

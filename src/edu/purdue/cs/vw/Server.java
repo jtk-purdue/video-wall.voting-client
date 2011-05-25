@@ -20,14 +20,15 @@ public class Server {
     String serverLocation;
     int portnum;
     ConnectivityManager cm;
-    private boolean haveData;
     
     public Server() {
-	Log.e("Server", "Empty constructor not currently implemented");
+	requestSocket = null;
+	serverLocation = null;
+	portnum = 0;
+	cm = null;
     }
 
     public Server(String serverLocation, int portnum, ConnectivityManager cm) {
-	haveData = false;
 	requestSocket = null;
 	this.serverLocation = serverLocation;
 	this.portnum = portnum;
@@ -35,7 +36,6 @@ public class Server {
     }
     
     public void resetSocket(String serverLocation, int portnum) {
-	haveData = false;
 	this.serverLocation = serverLocation;
 	this.portnum = portnum;
     }
@@ -120,17 +120,6 @@ public class Server {
 	    message = in.readLine();
 	}
 	closeSocket();
-
-	/*
-	 * For testing...  Ensure that vote counts have arrived for testing process.
-	 */
-	if (votes.size() == 0)
-	    haveData  = false;
-	else {
-	    haveData = true;
-	    notifyAll();
-	}
-
 	return votes;
     }
 
@@ -143,15 +132,5 @@ public class Server {
 		message = "END";
 	    }
 	} while (!message.equals("END"));
-    }
-
-    synchronized public void waitForData() {
-	while (!haveData)
-	    try {
-		wait();
-	    } catch (InterruptedException e) {
-		Log.e("ServerReal", "exception while waiting for data");
-		e.printStackTrace();
-	    }
     }
 }
