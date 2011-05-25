@@ -32,18 +32,18 @@ import android.widget.Toast;
  */
 
 public class Voting extends ListActivity {
-    private Server server = null;
+    private ServerReal server = null;
     private Vector<VoteData> data;
     private VoteDataAdapter adapter;
     private String serverPort;
     private int portNumber;
     private String serverName;
     
-    public Server getServer() {
+    public ServerReal getServer() {
 	return server;
     }
     
-    public void setServer(Server server) {
+    public void setServer(ServerReal server) {
 	this.server = server;
 	fetchServerData();
     }
@@ -64,7 +64,7 @@ public class Voting extends ListActivity {
 
 	if (server == null) { 
 	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	    server = new Server(serverName, portNumber, cm);
+	    server = new ServerReal(serverName, portNumber, cm);
 	}
 }
 
