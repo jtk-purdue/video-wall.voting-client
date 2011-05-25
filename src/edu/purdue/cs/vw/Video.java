@@ -2,14 +2,11 @@ package edu.purdue.cs.vw;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import edu.purdue.cs.vw.R;
 
 /*
  * This tab allows users to start video streaming from their phone to the video wall. 
@@ -21,7 +18,6 @@ public class Video extends Activity {
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.video);
-	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 	Button button = (Button) findViewById(R.id.startvid);
 	button.setOnClickListener(new View.OnClickListener() {

@@ -3,7 +3,6 @@ package edu.purdue.cs.vw;
 import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,7 +23,6 @@ public class Tabs extends TabActivity {
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.tabs);
-	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 	status = (TextView) findViewById(R.id.status);
 	setStatus("Starting up...");
