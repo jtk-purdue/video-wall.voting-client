@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class BioPage extends Activity {
 
@@ -19,28 +20,22 @@ public class BioPage extends Activity {
 
 	if (n.equals("TylerH"))
 	    setContentView(R.layout.tylerh);
-
-	if (n.equals("TylerW"))
+	else if (n.equals("TylerW"))
 	    setContentView(R.layout.tylerw);
-
-	if (n.equals("Jaye"))
+	else if (n.equals("Jaye"))
 	    setContentView(R.layout.jaye);
-
-	if (n.equals("Maaz"))
+	else if (n.equals("Maaz"))
 	    setContentView(R.layout.maaz);
-
-	if (n.equals("Jon"))
+	else if (n.equals("Jon"))
 	    setContentView(R.layout.jon);
-
-	if (n.equals("Sohail"))
+	else if (n.equals("Sohail"))
 	    setContentView(R.layout.sohail);
-
-	if (n.equals("Nick"))
+	else if (n.equals("Nick"))
 	    setContentView(R.layout.nick);
-
-	if (n.equals("Rick"))
+	else if (n.equals("Rick"))
 	    setContentView(R.layout.rick);
-
+	else
+	    Toast.makeText(this, "Unrecognized team member: " + n, Toast.LENGTH_LONG).show();
     }
 
     @Override

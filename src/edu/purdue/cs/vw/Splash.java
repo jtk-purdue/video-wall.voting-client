@@ -27,7 +27,7 @@ public class Splash extends Activity {
 	    @Override
 	    protected Void doInBackground(Void... params) {
 		try {
-		    Thread.sleep(2000);
+		    Thread.sleep(500);
 		} catch (InterruptedException e) { /* ignore */
 		}
 
