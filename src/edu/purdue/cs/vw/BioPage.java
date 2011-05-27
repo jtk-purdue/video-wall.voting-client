@@ -13,29 +13,7 @@ public class BioPage extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
-
-	Intent i = getIntent();
-	String n = i.getStringExtra("name");
-	Log.d("NAME", n);
-
-	if (n.equals("TylerH"))
-	    setContentView(R.layout.tylerh);
-	else if (n.equals("TylerW"))
-	    setContentView(R.layout.tylerw);
-	else if (n.equals("Jaye"))
-	    setContentView(R.layout.jaye);
-	else if (n.equals("Maaz"))
-	    setContentView(R.layout.maaz);
-	else if (n.equals("Jon"))
-	    setContentView(R.layout.jon);
-	else if (n.equals("Sohail"))
-	    setContentView(R.layout.sohail);
-	else if (n.equals("Nick"))
-	    setContentView(R.layout.nick);
-	else if (n.equals("Rick"))
-	    setContentView(R.layout.rick);
-	else
-	    Toast.makeText(this, "Unrecognized team member: " + n, Toast.LENGTH_LONG).show();
+	setContentView(getIntent().getIntExtra("layout", R.layout.splash)); // Could report an error... :-)
     }
 
     @Override

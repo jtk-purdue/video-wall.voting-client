@@ -3,40 +3,56 @@ package edu.purdue.cs.vw;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 /*
- * This activity sets up the tab that allows the user to view the bio-pages of team members. Contains invisible 
- * buttons overlaid on the images.  Switches to an activity called BioPage, which sets the appropriate layout 
- * depending on which button is clicked. Each layout represents an individiual's biography.
+ * This activity sets up the tab that allows the user to view the bio-pages of team members. 
+ * Switches to an activity called BioPage, which sets the appropriate layout 
+ * depending on which button is clicked. Each layout represents an individual's biography.
  */
 public class Bios extends Activity {
-    Animation anim = null;
-
-    private Integer[] biopicIds = { 
-	    R.drawable.tylerh, 
-	    R.drawable.tylerw, 
-	    R.drawable.jaye, 
-	    R.drawable.maaz, 
-	    R.drawable.harris, 
-	    R.drawable.jon, 
-	    R.drawable.sohail, 
-	    R.drawable.nick, 
-	    R.drawable.rick, 
-	    };
+    /*
+     * These dimensions are adjusted for a 480px wide display.  Team photos are scaled (down slightly) to
+     * the size of a large touch-screen button.
+     */
+    public static final int PHOTO_DIMENSION = 138;  
+//    public static final int PHOTO_DIMENSION = 100;  // TODO: Layout still not centered; use this setting to see.  
+    private static final int SPACING = 2;
+    
+    /*
+     * Pull together the individual drawable with bio information and the corresponding team member picture.
+     * 
+     * Note that the middle item (=4) is a special case: Harris logo and Acknowledgments activity.
+     */
+    private class TeamData {
+	int picture;
+	int layout;
+	TeamData(int picture, int layout) {
+	    this.picture = picture;
+	    this.layout = layout;
+	}
+    }
+    
+    private TeamData[] teamData = {
+	    new TeamData(R.drawable.tylerh, R.layout.tylerh),
+	    new TeamData(R.drawable.tylerw, R.layout.tylerw),
+	    new TeamData(R.drawable.jaye, R.layout.jaye),
+	    new TeamData(R.drawable.maaz, R.layout.maaz),
+	    new TeamData(R.drawable.harris, R.layout.acknowledgements),
+	    new TeamData(R.drawable.jon, R.layout.jon),
+	    new TeamData(R.drawable.sohail, R.layout.sohail),
+	    new TeamData(R.drawable.nick, R.layout.nick),
+	    new TeamData(R.drawable.rick, R.layout.rick),
+    };
 
     class ImageAdapter extends BaseAdapter {
 	private Context context;
@@ -47,7 +63,7 @@ public class Bios extends Activity {
 
 	@Override
 	public int getCount() {
-	    return biopicIds.length;
+	    return teamData.length;
 	}
 
 	@Override
@@ -67,22 +83,15 @@ public class Bios extends Activity {
 	    ImageView iv;
 	    if (convertView == null) {
 		iv = new ImageView(context);
-		
-//		if (position == 0)
-//		    iv.setLayoutParams(new GridView.LayoutParams(85, 85));
-//		else if (position == 4)
-//		    iv.setLayoutParams(new GridView.LayoutParams(100, 100));
-//		else if (position == 8)
-//		    iv.setLayoutParams(new GridView.LayoutParams(190, 190));
-//		else
-
-		iv.setLayoutParams(new GridView.LayoutParams(135, 135));
-
+		/*
+		 * Scale team photos to desired size.
+		 */
+		iv.setLayoutParams(new GridView.LayoutParams(PHOTO_DIMENSION, PHOTO_DIMENSION));
 		iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		iv.setPadding(0, 0, 0, 0);
 	    } else 
 		iv = (ImageView) convertView;
-	    iv.setImageResource(biopicIds[position]);
+	    iv.setImageResource(teamData[position].picture);
 	    return iv;
 	}
     }
@@ -90,38 +99,34 @@ public class Bios extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
-	setContentView(R.layout.bios_grid);
+	setContentView(R.layout.bios);
 
+	/*
+	 * Strategy is to set column width to be roughly 1/3rd of screen size (although we don't
+	 * check the actual screen, assuming it is around 480).  Layout file sets GridVIew to wrap
+	 * content inside match parent LinearLayout.  Result is centered, tightly packed grid view.
+	 */
 	GridView gridview = (GridView) findViewById(R.id.grid);
 	gridview.setAdapter(new ImageAdapter(this));
-//	gridview.setStretchMode(GridView.NO_STRETCH);
-
+	gridview.setStretchMode(GridView.NO_STRETCH);  // doesn't really matter--dimensions are set
+	gridview.setColumnWidth(PHOTO_DIMENSION + SPACING);
+	gridview.setVerticalSpacing(SPACING);
+	gridview.setHorizontalSpacing(0);  // columnWidth includes the spacing, so no additional spacing needed
+	gridview.setSelection(4);  // highlight middle item in table
+	
 	gridview.setOnItemClickListener(new OnItemClickListener() {
 	    @Override
 	    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		switch (position) {
-		case 0: displayBio(R.id.member1, "TylerH"); break;
-		case 1: displayBio(R.id.member2, "TylerW"); break;
-		case 2: displayBio(R.id.member3, "Jaye"); break;
-		case 3: displayBio(R.id.member4, "Maaz"); break;
-		case 4: displayBio(R.id.member5, "Others"); break;
-		case 5: displayBio(R.id.member6, "Jon"); break;
-		case 6: displayBio(R.id.member7, "Sohail"); break;
-		case 7: displayBio(R.id.member8, "Nick"); break;
-		case 8: displayBio(R.id.member9, "Rick"); break;
+		Intent i = new Intent();
+		if (position == 4) // Hack: special case the center (acknowledgements) button
+		    i.setClass(Bios.this, Acknowledgements.class);
+		else {
+		    i.putExtra("layout", teamData[position].layout);
+		    i.setClass(Bios.this, BioPage.class);
 		}
+		startActivity(i);
 	    }
 	});
-    }
-
-    private void displayBio(int member, final String name) {
-	Intent i = new Intent();
-	i.putExtra("name", name);
-	if (name.equals("Others"))
-	    i.setClass(Bios.this, Acknowledgements.class);
-	else
-	    i.setClass(Bios.this, BioPage.class);
-	startActivity(i);
     }
     
     @Override
