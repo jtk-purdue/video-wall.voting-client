@@ -1,110 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-	android:id="@+id/widget50"
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	xmlns:android="http://schemas.android.com/apk/res/android">
-	<ImageView
-		android:src="@drawable/team"
-		android:id="@+id/ImageView02"
+	android:gravity="center">
+	<GridView
+		android:gravity="center"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content">
-	</ImageView>
-
-	<TableLayout
-		android:id="@+id/widget92"
-		android:layout_width="304px"
-		android:layout_height="320px"
-		android:orientation="vertical"
-		android:layout_centerVertical="true"
-		android:layout_centerHorizontal="true">
-		<TableRow
-			android:id="@+id/widget93"
-			android:layout_width="fill_parent"
-			android:layout_height="60px"
-			android:orientation="horizontal">
-			<Button
-				android:id="@+id/member1"
-				android:layout_width="100px"
-				android:layout_height="100px"
-				android:layout_centerVertical="true"
-				android:layout_centerHorizontal="true"
-				android:textSize="20px" />
-			<Button
-				android:id="@+id/member2"
-				android:layout_width="100px"
-				android:layout_height="100px"
-				android:layout_centerVertical="true"
-				android:layout_centerHorizontal="true"
-				android:textSize="20px" />
-			<Button
-				android:id="@+id/member3"
-				android:layout_width="100px"
-				android:layout_height="100px"
-				android:layout_centerVertical="true"
-				android:layout_centerHorizontal="true"
-				android:textSize="20px" />
-
-		</TableRow>
-
-		<TableRow
-			android:id="@+id/widget94"
-			android:layout_width="fill_parent"
-			android:layout_height="64px"
-			android:orientation="horizontal">
-
-			<Button
-				android:id="@+id/member4"
-				android:layout_width="100px"
-				android:layout_height="100px"
-				android:layout_centerVertical="true"
-				android:layout_centerHorizontal="true"
-				android:textSize="20px" />
-			<Button
-				android:id="@+id/member5"
-				android:layout_width="100px"
-				android:layout_height="100px"
-				android:layout_centerVertical="true"
-				android:layout_centerHorizontal="true"
-				android:textSize="20px" />
-			<Button
-				android:id="@+id/member6"
-				android:layout_width="100px"
-				android:layout_height="100px"
-				android:layout_centerVertical="true"
-				android:layout_centerHorizontal="true"
-				android:textSize="20px" />
-
-		</TableRow>
-
-		<TableRow
-			android:id="@+id/widget95"
-			android:layout_width="fill_parent"
-			android:layout_height="72px"
-			android:orientation="horizontal">
-
-			<Button
-				android:id="@+id/member7"
-				android:layout_width="100px"
-				android:layout_height="100px"
-				android:layout_centerVertical="true"
-				android:layout_centerHorizontal="true"
-				android:textSize="20px" />
-			<Button
-				android:id="@+id/member8"
-				android:layout_width="100px"
-				android:layout_height="100px"
-				android:layout_centerVertical="true"
-				android:layout_centerHorizontal="true"
-				android:textSize="20px" />
-			<Button
-				android:id="@+id/member9"
-				android:layout_width="100px"
-				android:layout_height="100px"
-				android:layout_centerVertical="true"
-				android:layout_centerHorizontal="true"
-				android:textSize="20px" />
-
-		</TableRow>
-	</TableLayout>
-</RelativeLayout>
+		android:layout_height="wrap_content"
+		android:id="@+id/grid"
+		android:numColumns="3">
+	</GridView>
+</LinearLayout>
