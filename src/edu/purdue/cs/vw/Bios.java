@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 /*
  * This activity sets up the tab that allows the user to view the bio-pages of team members. 
@@ -27,6 +29,7 @@ public class Bios extends Activity {
     public static final int PHOTO_DIMENSION = 138;  
 //    public static final int PHOTO_DIMENSION = 100;  // TODO: Layout still not centered; use this setting to see.  
     private static final int SPACING = 2;
+    private static final int LEFT_MARGIN = 24;
     
     /*
      * Pull together the individual drawable with bio information and the corresponding team member picture.
@@ -129,6 +132,18 @@ public class Bios extends Activity {
 	});
     }
     
+    @Override
+    protected void onResume() {
+	super.onResume();
+
+	Display display = getWindowManager().getDefaultDisplay(); 
+	int screenWidth = display.getWidth();
+	int screenHeight = display.getHeight();
+	
+	LinearLayout ll = (LinearLayout) findViewById(R.id.grid_parent);
+	ll.setPadding((screenWidth - 3 * (PHOTO_DIMENSION + SPACING)) / 2 - LEFT_MARGIN, 0, 0, 0);
+    }
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 	return super.onPrepareOptionsMenu(menu);
