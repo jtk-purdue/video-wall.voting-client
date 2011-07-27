@@ -87,7 +87,7 @@ public class ServerReal implements Server {
 	openSocket();
 	sendMessage("VOTE "+id+" "+rank);
 	sendMessage("END");
-	flushEnd();
+	//flushEnd();
     }
 
     synchronized public ArrayList<ChannelItem> getList() throws IOException {
@@ -124,6 +124,6 @@ public class ServerReal implements Server {
 	    } catch (IOException e) {
 		message = "END";
 	    }
-	} while (!message.equals("END"));
+	} while (!message.contains("END"));
     }
 }

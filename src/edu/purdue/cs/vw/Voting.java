@@ -175,6 +175,7 @@ public class Voting extends ListActivity {
 	try {
 	    server.vote(vote, rank);
 	} catch (IOException e) {e.printStackTrace();}
+	adapter.notifyDataSetChanged();
     }
     
     /*
