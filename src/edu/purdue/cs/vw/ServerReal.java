@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Vector;
 
 import android.net.ConnectivityManager;
 import android.util.Log;
@@ -45,6 +46,7 @@ public class ServerReal implements Server {
 	    Log.d("ServerReal", "No Internet connection");
 	    throw new ConnectException("No Internet");
 	}
+	if(requestSocket==null || requestSocket.isConnected())
 	try {
 	    requestSocket = new Socket(serverLocation, portnum);
 	    Log.d("Connection", "Connected to " + serverLocation + " in port " + portnum);
@@ -81,46 +83,37 @@ public class ServerReal implements Server {
 	Log.d("client>", msg);
     }
 
-    synchronized public void vote(String name) throws IOException {
+    synchronized public void vote(String id,int rank) throws IOException {
 	openSocket();
-	sendMessage("VOTE");
-	sendMessage(name);
+	sendMessage("VOTE "+id+" "+rank);
 	sendMessage("END");
 	flushEnd();
-	closeSocket();
     }
 
-    synchronized public ArrayList<String> getList() throws IOException {
-	ArrayList<String> voteList = new ArrayList<String>();
+    synchronized public ArrayList<ChannelItem> getList() throws IOException {
+	ArrayList<ChannelItem> voteList = new ArrayList<ChannelItem>();
 
 	openSocket();
-	sendMessage("GET");
+	sendMessage("GETLIST");
 	sendMessage("END");
 
+	int i=0;
 	String message = in.readLine();
-	while (!message.equals("END")) {
-	    voteList.add(message);
+	while (!message.contains("END")) {
+	    i++;
+	    String[] line = message.split(" ");
+	    Log.d("Server", message);
+	    String name ="";
+	    for(int c=3;c<line.length;c++)
+		name+=line[c]+" ";
+	    if(i>7)
+		break;
+	    voteList.add(new ChannelItem(line[1],(Double.parseDouble(line[2])),name));
 	    message = in.readLine();
 	}
-	closeSocket();
 	Collections.sort(voteList);
+	
 	return voteList;
-    }
-
-    synchronized public ArrayList<String> getCount() throws IOException {
-	ArrayList<String> votes = new ArrayList<String>();
-
-	openSocket();
-	sendMessage("GETCOUNT");
-	sendMessage("END");
-
-	String message = in.readLine();
-	while (!message.equals("END")) {
-	    votes.add(message);
-	    message = in.readLine();
-	}
-	closeSocket();
-	return votes;
     }
 
     void flushEnd() {

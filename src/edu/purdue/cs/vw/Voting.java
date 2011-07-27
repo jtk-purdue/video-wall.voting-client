@@ -2,10 +2,7 @@ package edu.purdue.cs.vw;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,15 +11,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /*
@@ -32,8 +24,8 @@ import android.widget.Toast;
 
 public class Voting extends ListActivity {
     private Server server = null;
-    private Vector<VoteData> data;
-    private VoteDataAdapter adapter;
+    private ArrayList<ChannelItem> data;
+    private VoteAdapter adapter;
     private String serverPort;
     private int portNumber;
     private String serverName;
@@ -54,16 +46,17 @@ public class Voting extends ListActivity {
 
 	Log.d("Voting", "onCreate");
 
-	data = new Vector<VoteData>();
-	adapter = new VoteDataAdapter(this, R.layout.list_item, data);
+	data = new ArrayList<ChannelItem>();
+	adapter = new VoteAdapter(data,this);
 	setListAdapter(adapter);
 	getListView().setTextFilterEnabled(true);
+	serverName="pc.cs.purdue.edu";
 
 	if (server == null) { 
 	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	    server = new ServerReal(serverName, portNumber, cm);
 	}
-}
+    }
 
     void fetchPreferenceData() {
 	Tabs.setStatus("Fetching preference data...");
@@ -72,7 +65,7 @@ public class Voting extends ListActivity {
 	SharedPreferences portPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
 	String serverNamePref = serverPref.getString("serverPref", "pc.cs.purdue.edu");
-	String portNumberPref = portPref.getString("editTextPref", "4242");
+	String portNumberPref = portPref.getString("editTextPref", "4241");
 
 	if (!(serverNamePref.equals(serverName)) || !(portNumberPref).equals(serverPort)) {
 	    serverName = serverNamePref;
@@ -102,8 +95,7 @@ public class Voting extends ListActivity {
 
     private void fetchServerData() {
 	AsyncTask<Void, String, Boolean> handleServer = new AsyncTask<Void, String, Boolean>() {
-	    public ArrayList<String> voteList;
-	    public ArrayList<String> votes;
+	    public ArrayList<ChannelItem> voteList;
 
 	    @Override
 	    protected Boolean doInBackground(Void... params) {
@@ -111,8 +103,6 @@ public class Voting extends ListActivity {
 		    publishProgress("Contacting server...");
 		    voteList = server.getList();
 		    publishProgress("Fetched vote list...");
-		    votes = server.getCount();
-		    publishProgress("Fetched vote count...");
 		} catch (IOException e) {
 		    voteList = null; // TODO: Set votes to null also? bit of a kludge to indicate
 		    publishProgress("Failed to connect to server...");
@@ -136,8 +126,9 @@ public class Voting extends ListActivity {
 			Log.e("Voting", "voteList is null in updateData");
 		    else {
 			Log.d("Voting", "updateData with " + voteList.size() + " votable items");
-			for (int i = 0; i < voteList.size(); i++)
-			    data.add(new VoteData(voteList.get(i), votes.get(i)));
+			
+			for(int c=0;c<voteList.size();c++)
+			data.add(voteList.get(c));
 		    }
 		    adapter.notifyDataSetChanged();
 		    notifyDataAvailable();
@@ -176,130 +167,14 @@ public class Voting extends ListActivity {
     }
 
     public void onListItemClick(ListView parent, View v, final int position, long id) {
-	String vote = data.get(position).title;
-	registerServerVote(vote);
+	String vote = data.get(position).id;
+	registerServerVote(vote,1);
     }
 
-    private void registerServerVote(final String vote) {
-	AsyncTask<Void, String, Boolean> handleServer = new AsyncTask<Void, String, Boolean>() {
-	    public ArrayList<String> votes;
-
-	    @Override
-	    protected Boolean doInBackground(Void... params) {
-		try {
-		    publishProgress("Registering vote...");
-		    server.vote(vote);
-		    publishProgress("Getting counts...");
-		    votes = server.getCount();
-		    // TODO: if server is down, voteList might be null, but call to getCount above generates exception,
-		    // skipping
-		    // .size()
-		    publishProgress("Voted for " + vote + ".");
-		} catch (IOException e) {
-		    publishProgress("Voting failed...");
-		    return false;
-		}
-		return true;
-	    }
-
-	    @Override
-	    protected void onCancelled() {
-		// TODO Auto-generated method stub
-		super.onCancelled();
-	    }
-
-	    @Override
-	    protected void onPostExecute(Boolean success) {
-		super.onPostExecute(success);
-		if (success) {
-		    // TODO: code assumes the votes and data list are the same size (in sync)
-		    for (int i = 0; i < votes.size(); i++) {
-			VoteData voteData = (VoteData) data.elementAt(i);
-			voteData.setDetail(votes.get(i));
-		    }
-		    adapter.notifyDataSetChanged();
-		    notifyDataAvailable();
-		} else {
-		    Log.d("Voting", "voting failure in onPostExecute");
-		}
-		publishProgress("");
-	    }
-
-	    @Override
-	    protected void onPreExecute() {
-		// TODO Auto-generated method stub
-		super.onPreExecute();
-	    }
-
-	    @Override
-	    protected void onProgressUpdate(String... messages) {
-		Tabs.setStatus(messages[0]);
-		super.onProgressUpdate(messages);
-	    }
-	};
-
-	handleServer.execute();
-    }
-
-    private class VoteData {
-	protected String title;
-	protected String detail;
-
-	VoteData(String title, String detail) {
-	    this.title = title;
-	    this.detail = detail;
-	}
-
-	@Override
-	public String toString() {
-	    return title + " " + detail;
-	}
-
-	public void setDetail(String item) {
-	    detail = item;
-	}
-    }
-
-    private class VoteDataAdapter extends ArrayAdapter<VoteData> {
-	LayoutInflater inflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-	int layoutId;
-
-	public VoteDataAdapter(Context context, int layoutId, List<VoteData> voteData) {
-	    super(context, layoutId, voteData);
-	    this.layoutId = layoutId;
-	}
-
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-	    class ViewData {
-		TextView title;
-		TextView detail;
-		ImageView icon;
-
-		ViewData(View row) {
-		    title = (TextView) row.findViewById(R.id.title);
-		    detail = (TextView) row.findViewById(R.id.detail);
-		    icon = (ImageView) row.findViewById(R.id.img);
-		}
-	    }
-	    ViewData viewData;
-
-	    if (convertView != null)
-		viewData = (ViewData) convertView.getTag();
-	    else {
-		convertView = inflater.inflate(layoutId, null);
-		viewData = new ViewData(convertView);
-		convertView.setTag(viewData);
-	    }
-
-	    VoteData voteData = getItem(position);
-
-	    viewData.title.setText(voteData.title);
-	    viewData.detail.setText("Number of votes: " + voteData.detail);
-	    viewData.icon.setImageResource(R.drawable.voteicon);
-
-	    return convertView;
-	}
+    private void registerServerVote(final String vote,int rank) {
+	try {
+	    server.vote(vote, rank);
+	} catch (IOException e) {e.printStackTrace();}
     }
     
     /*

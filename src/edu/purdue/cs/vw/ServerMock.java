@@ -1,6 +1,8 @@
 package edu.purdue.cs.vw;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import android.util.Log;
 
@@ -31,31 +33,45 @@ public class ServerMock implements Server {
 	return NUM_CHANNELS;
     }
 
-    @Override
-    public void vote(String name) {
-	Log.d("MockServerTest", "vote " + name);
-	for (int i = 0; i < channels.length; i++)
-	    if (channels[i].equals(name)) {
-		votes.set(i, String.valueOf(Integer.parseInt(votes.get(i)) + 1));
-		break;
-	    }
-    }
-
-    @Override
-    public ArrayList<String> getList() {
-	Log.d("MockServerTest", "get");
-	return voteList;
-    }
-
-    @Override
-    public ArrayList<String> getCount() {
-	Log.d("MockServerTest", "getCount");
-	return votes;
-    }
+//    @Override
+//    public void vote(String name) {
+//	Log.d("MockServerTest", "vote " + name);
+//	for (int i = 0; i < channels.length; i++)
+//	    if (channels[i].equals(name)) {
+//		votes.set(i, String.valueOf(Integer.parseInt(votes.get(i)) + 1));
+//		break;
+//	    }
+//    }
+//
+//    @Override
+//    public ArrayList<String> getList() {
+//	Log.d("MockServerTest", "get");
+//	return voteList;
+//    }
+//
+//    @Override
+//    public ArrayList<String> getCount() {
+//	Log.d("MockServerTest", "getCount");
+//	return votes;
+//    }
 
     @Override
     public void resetSocket(String serverName, int portNumber) {
 	// TODO Auto-generated method stub
 	
     }
+
+    @Override
+    public void vote(String name, int rank) throws IOException {
+	// TODO Auto-generated method stub
+	
+    }
+
+    @Override
+    public ArrayList<ChannelItem> getList() throws IOException {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+
 }
