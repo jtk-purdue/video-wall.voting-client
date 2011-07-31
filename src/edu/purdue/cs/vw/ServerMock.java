@@ -1,5 +1,6 @@
 package edu.purdue.cs.vw;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -68,7 +69,13 @@ public class ServerMock implements Server {
     }
 
     @Override
-    public ArrayList<ChannelItem> getList() throws IOException {
+    public void sendMessage(String msg) throws IOException {
+	// TODO Auto-generated method stub
+	
+    }
+
+    @Override
+    public BufferedReader getBufferedReader() {
 	// TODO Auto-generated method stub
 	return null;
     }
