@@ -46,7 +46,7 @@ public class ServerReal implements Server {
 	    Log.d("ServerReal", "No Internet connection");
 	    throw new ConnectException("No Internet");
 	}
-	if(requestSocket==null || requestSocket.isConnected())
+	if(requestSocket==null || !requestSocket.isConnected())
 	try {
 	    requestSocket = new Socket(serverLocation, portnum);
 	    Log.d("Connection", "Connected to " + serverLocation + " in port " + portnum);
@@ -77,7 +77,8 @@ public class ServerReal implements Server {
 	requestSocket.close();
     }
 
-    void sendMessage(String msg) {
+    public synchronized void sendMessage(String msg) throws IOException {
+	openSocket();
 	out.println(msg);
 	out.flush();
 	Log.d("client>", msg);
@@ -86,44 +87,11 @@ public class ServerReal implements Server {
     synchronized public void vote(String id,int rank) throws IOException {
 	openSocket();
 	sendMessage("VOTE "+id+" "+rank);
-	sendMessage("END");
-	//flushEnd();
     }
 
-    synchronized public ArrayList<ChannelItem> getList() throws IOException {
-	ArrayList<ChannelItem> voteList = new ArrayList<ChannelItem>();
-
-	openSocket();
-	sendMessage("GETLIST");
-	sendMessage("END");
-
-	int i=0;
-	String message = in.readLine();
-	while (!message.contains("END")) {
-	    i++;
-	    String[] line = message.split(" ");
-	    Log.d("Server", message);
-	    String name ="";
-	    for(int c=3;c<line.length;c++)
-		name+=line[c]+" ";
-	    if(i>7)
-		break;
-	    voteList.add(new ChannelItem(line[1],(Double.parseDouble(line[2])),name));
-	    message = in.readLine();
-	}
-	Collections.sort(voteList);
-	
-	return voteList;
+    @Override
+    public BufferedReader getBufferedReader() {
+	return in;
     }
 
-    void flushEnd() {
-	String message;
-	do {
-	    try {
-		message = in.readLine();
-	    } catch (IOException e) {
-		message = "END";
-	    }
-	} while (!message.contains("END"));
-    }
 }

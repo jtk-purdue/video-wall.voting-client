@@ -1,10 +1,9 @@
 package edu.purdue.cs.vw;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -44,6 +43,7 @@ public class VoteAdapter extends BaseAdapter {
 	//view = inflater.inflate(R.layout.addclasslistview, null);
 	TextView txt = new TextView(ctx); 
 	txt.setText(list.get(position).name+" "+list.get(position).rank);
+	txt.setTextSize(30);
 	return txt;
     }
 

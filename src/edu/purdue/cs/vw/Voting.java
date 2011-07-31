@@ -7,8 +7,8 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -23,21 +23,13 @@ import android.widget.Toast;
  */
 
 public class Voting extends ListActivity {
-    private Server server = null;
+    private ServerReal server = null;
     private ArrayList<ChannelItem> data;
-    private VoteAdapter adapter;
+    public VoteAdapter adapter;
     private String serverPort;
     private int portNumber;
     private String serverName;
-    
-    public Server getServer() {
-	return server;
-    }
-    
-    public void setServer(Server server) {
-	this.server = server;
-	fetchServerData();
-    }
+    private ChannelItemThread bth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,12 +42,35 @@ public class Voting extends ListActivity {
 	adapter = new VoteAdapter(data,this);
 	setListAdapter(adapter);
 	getListView().setTextFilterEnabled(true);
-	serverName="pc.cs.purdue.edu";
-
+	fetchPreferenceData();
+	
 	if (server == null) { 
 	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	    server = new ServerReal(serverName, portNumber, cm);
 	}
+	
+	final Handler h=new Handler();
+
+	
+	Runnable r = new Runnable(){
+
+	    @Override
+	    public void run() {
+		//This may make the screen flash when updating, use notifyDataSetChanged instead
+		if(bth!=null){
+		data=(ArrayList<ChannelItem>) bth.list.clone();
+		adapter=new VoteAdapter(data, Voting.this);
+		Voting.this.setListAdapter(adapter);
+		//adapter.notifyDataSetChanged();
+		}
+		h.postDelayed(this, 2000);
+	    }
+	    
+	};
+	   
+	h.postDelayed(r, 2000);
+
+	
     }
 
     void fetchPreferenceData() {
@@ -65,8 +80,9 @@ public class Voting extends ListActivity {
 	SharedPreferences portPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
 	String serverNamePref = serverPref.getString("serverPref", "pc.cs.purdue.edu");
-	String portNumberPref = portPref.getString("editTextPref", "4241");
+	String portNumberPref = portPref.getString("editTextPref", "4242");
 
+	if(server!=null)
 	if (!(serverNamePref.equals(serverName)) || !(portNumberPref).equals(serverPort)) {
 	    serverName = serverNamePref;
 	    serverPort = portNumberPref;
@@ -83,6 +99,7 @@ public class Voting extends ListActivity {
     public void onPause() {
 	super.onPause();
 	Log.d("Voting", "onPause");
+	//stopGatherThread();
     }
 
     @Override
@@ -90,68 +107,15 @@ public class Voting extends ListActivity {
 	super.onResume();
 	Log.d("Voting", "onResume");
 	fetchPreferenceData();
-	fetchServerData();
+	startChannelThread();
     }
 
-    private void fetchServerData() {
-	AsyncTask<Void, String, Boolean> handleServer = new AsyncTask<Void, String, Boolean>() {
-	    public ArrayList<ChannelItem> voteList;
-
-	    @Override
-	    protected Boolean doInBackground(Void... params) {
-		try {
-		    publishProgress("Contacting server...");
-		    voteList = server.getList();
-		    publishProgress("Fetched vote list...");
-		} catch (IOException e) {
-		    voteList = null; // TODO: Set votes to null also? bit of a kludge to indicate
-		    publishProgress("Failed to connect to server...");
-		    return false;
-		}
-		return true;
-	    }
-
-	    @Override
-	    protected void onCancelled() {
-		// TODO Auto-generated method stub
-		super.onCancelled();
-	    }
-
-	    @Override
-	    protected void onPostExecute(Boolean success) {
-		super.onPostExecute(success);
-		if (success) {
-		    data.clear();
-		    if (voteList == null)
-			Log.e("Voting", "voteList is null in updateData");
-		    else {
-			Log.d("Voting", "updateData with " + voteList.size() + " votable items");
-			
-			for(int c=0;c<voteList.size();c++)
-			data.add(voteList.get(c));
-		    }
-		    adapter.notifyDataSetChanged();
-		    notifyDataAvailable();
-		} else {
-		    Log.d("Voting", "failure in onPostExecute");
-		}
-		publishProgress("");
-	    }
-
-	    @Override
-	    protected void onPreExecute() {
-		// TODO Auto-generated method stub
-		super.onPreExecute();
-	    }
-
-	    @Override
-	    protected void onProgressUpdate(String... messages) {
-		Tabs.setStatus(messages[0]);
-		super.onProgressUpdate(messages);
-	    }
-	};
-
-	handleServer.execute();
+    private void startChannelThread(){
+	Tabs.setStatus("");
+	if(bth==null){
+	bth = new ChannelItemThread(server);
+	bth.start();
+	}
     }
 
     @Override
@@ -166,7 +130,7 @@ public class Voting extends ListActivity {
 	Log.d("Voting", "onDestroy");
     }
 
-    public void onListItemClick(ListView parent, View v, final int position, long id) {
+    public void onListItemClick(ListView parent, View v, final int position, long id){
 	String vote = data.get(position).id;
 	registerServerVote(vote,1);
     }
@@ -175,7 +139,6 @@ public class Voting extends ListActivity {
 	try {
 	    server.vote(vote, rank);
 	} catch (IOException e) {e.printStackTrace();}
-	adapter.notifyDataSetChanged();
     }
     
     /*
@@ -201,7 +164,7 @@ public class Voting extends ListActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(Menu menu){
 	return super.onPrepareOptionsMenu(menu);
     }
 
