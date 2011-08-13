@@ -42,7 +42,7 @@ public class VoteAdapter extends BaseAdapter {
 	//LayoutInflater inflater = (LayoutInflater)ctx.getLayoutInflater();
 	//view = inflater.inflate(R.layout.addclasslistview, null);
 	TextView txt = new TextView(ctx); 
-	txt.setText(list.get(position).name+" "+list.get(position).rank);
+	txt.setText(list.get(position).getName()+" "+list.get(position).getRank());
 	txt.setTextSize(30);
 	return txt;
     }

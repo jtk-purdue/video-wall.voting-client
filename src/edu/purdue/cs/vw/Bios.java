@@ -15,6 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 /*
  * This activity sets up the tab that allows the user to view the bio-pages of team members. 
@@ -98,12 +99,13 @@ public class Bios extends Activity {
 	    return iv;
 	}
     }
-
+    
+    //private boolean splash = true;
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.bios);
-
+	
 	/*
 	 * Strategy is to set column width to be roughly 1/3rd of screen size (although we don't
 	 * check the actual screen, assuming it is around 480).  Layout file sets GridVIew to wrap

@@ -24,6 +24,9 @@ public class Tabs extends TabActivity {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.tabs);
 
+	//starts splash screen when app is first opened
+	this.startActivity(new Intent(Tabs.this,Splash.class));	
+	
 	status = (TextView) findViewById(R.id.status);
 	setStatus("Starting up...");
 

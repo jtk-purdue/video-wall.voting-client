@@ -29,7 +29,7 @@ public class ChannelItemThread extends Thread {
 	} else if (line[0].equals("RANK")) {
 	    for (int i = 0; i < list.size(); i++)
 		if (list.get(i).id.equals(line[1])) {
-		    list.get(i).rank = Integer.parseInt(line[2]);
+		    list.get(i).setRank(Integer.parseInt(line[2]));
 		}
 	}
     }
