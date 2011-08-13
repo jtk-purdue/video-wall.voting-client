@@ -16,9 +16,9 @@ import android.widget.TextView;
  */
 
 public class Tabs extends TabActivity {
-    /*
-     * Called when the activity is first created.
-     */
+
+    private boolean adminTab = false;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
@@ -44,19 +44,19 @@ public class Tabs extends TabActivity {
 	spec = tabHost.newTabSpec("vote").setIndicator("Vote", res.getDrawable(R.drawable.vote_tab)).setContent(intent);
 	tabHost.addTab(spec);
 
-	// Tab: Audio streaming from wall
-
-	intent = new Intent().setClass(this, Audio.class);
-	spec = tabHost.newTabSpec("audio").setIndicator("Audio", res.getDrawable(R.drawable.audio_tab))
-		.setContent(intent);
-	tabHost.addTab(spec);
-
-	// Tab: Video streaming to wall
-
-	intent = new Intent().setClass(this, Video.class);
-	spec = tabHost.newTabSpec("video").setIndicator("Video", res.getDrawable(R.drawable.video_tab))
-		.setContent(intent);
-	tabHost.addTab(spec);
+//	// Tab: Audio streaming from wall
+//
+//	intent = new Intent().setClass(this, Audio.class);
+//	spec = tabHost.newTabSpec("audio").setIndicator("Audio", res.getDrawable(R.drawable.audio_tab))
+//		.setContent(intent);
+//	tabHost.addTab(spec);
+//
+//	// Tab: Video streaming to wall
+//
+//	intent = new Intent().setClass(this, Video.class);
+//	spec = tabHost.newTabSpec("video").setIndicator("Video", res.getDrawable(R.drawable.video_tab))
+//		.setContent(intent);
+//	tabHost.addTab(spec);
 
 	tabHost.setCurrentTab(0);
 	setStatus("");
@@ -87,22 +87,25 @@ public class Tabs extends TabActivity {
 	    activity.startActivity(i);
 	    break;
 
-	case R.id.stats:
-	    // TODO: Have the Stats activity call the Voting activity to get this data...
-//	    i.putExtra("votes", Voting.voteList);
-//	    i.putExtra("votesint", Voting.votes);
-	    i.setClass(activity, Stats.class);
-	    activity.startActivity(i);
-	    break;
+//	case R.id.stats:
+//	    // TODO: Have the Stats activity call the Voting activity to get this data...
+////	    i.putExtra("votes", Voting.voteList);
+////	    i.putExtra("votesint", Voting.votes);
+//	    i.setClass(activity, Stats.class);
+//	    activity.startActivity(i);
+//	    break;
 
 	case R.id.settings:
 	    i.setClass(activity, Settings.class);
 	    activity.startActivity(i);
 	    break;
+	 
+	//case R.id.admin:
+	    //i.setClass(activity, cls)
 
-	case R.id.quit:
-	    activity.finish();
-	    break;
+//	case R.id.quit:
+//	    activity.finish();
+//	    break;
 	}
 	return true;
     }
