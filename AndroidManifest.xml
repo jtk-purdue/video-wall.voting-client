@@ -16,7 +16,7 @@
     <uses-feature android:name="android.hardware.microphone" android:required="true" />
       
     <application android:icon="@drawable/icon3" android:label="@string/app_name">
-        <activity android:name=".Splash"
+        <activity android:name="Tabs"
         android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,8 +24,8 @@
             </intent-filter>
         </activity>
 
- <activity android:name="Tabs"
-           android:label="Harris Corporation Video Wall Demo">
+ <activity android:name="Splash"
+           android:label="@string/app_name">
  </activity>
    
 <activity android:name="Settings"></activity>
@@ -40,7 +40,6 @@
 <activity android:name="BioPage"
 		  android:theme="@android:style/Theme.NoTitleBar"></activity>
 
-<activity android:name="CameraPreview"></activity>
 <activity android:name="Acknowledgements"></activity>
 <activity android:name="Stats"></activity>
 
@@ -50,10 +49,8 @@
 		  android:theme="@android:style/Theme.Dialog">
 </activity>
 
-<activity android:name="Video"></activity>
 <activity android:name="Voting"></activity>
 <activity android:name="Welcome"></activity>
-<activity android:name="edu.purdue.cs.vw.Audio"></activity>
 </application>
     <uses-sdk android:minSdkVersion="8" />
 

@@ -3,7 +3,11 @@
     <string name="hello">Hello World, button!</string>
     <string name="app_name">Video Wall</string>
 <string name="information">Developed at Purdue University (2011) by:\nMaaz Humayun\nSohail Mehra</string>
-<string name="help">Team Tab: Allows you to view developers\' profiles.\n\nVote Tab: Allows you to vote for what you want to see on the video wall.\n\nAudio Tab: Allows you to select audio channel for something playing on the screen.\n\nVideo Tab: Allows you to stream video from your Android phone camera to the video wall.\n</string>
+<string name="help">
+Team Tab: Allows you to view developers\' profiles.
+\n\n
+Vote Tab: Allows you to vote for what you want to see on the video wall.
+</string>
 <string name="help_title">\t\t\t\t\t\tHelp</string>
 <string name="info_title">Information:</string>
 <string name="settings_title">\t\t\t\t   Settings</string>

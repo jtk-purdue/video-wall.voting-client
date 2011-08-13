@@ -31,11 +31,15 @@ public class Splash extends Activity {
 		} catch (InterruptedException e) { /* ignore */
 		}
 
-		Intent i = new Intent();
-		i.setClass(Splash.this, Tabs.class);
-		startActivity(i);
 		return null;
 	    }
+
+	    @Override
+	    protected void onPostExecute(Void result) {
+		super.onPostExecute(result);
+		Splash.this.finish();
+	    }
+	    
 	}.execute();
     }
 }
