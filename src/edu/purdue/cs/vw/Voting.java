@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+import edu.purdue.cs.vw.server.ServerReal;
 
 /*
  * When this activity starts, it pulls a list of available shows that can be voted on. 
