@@ -73,6 +73,7 @@ public class Tabs extends TabActivity {
     public static boolean doCreateOptionsMenu(Activity activity, Menu menu) {
 	MenuInflater inflater = activity.getMenuInflater();
 	inflater.inflate(R.menu.menu, menu);
+	menu.findItem(R.id.admin).setIcon(android.R.drawable.ic_menu_gallery);
 	return true;
     }
 
@@ -90,13 +91,10 @@ public class Tabs extends TabActivity {
 	    activity.startActivity(i);
 	    break;
 
-//	case R.id.stats:
-//	    // TODO: Have the Stats activity call the Voting activity to get this data...
-////	    i.putExtra("votes", Voting.voteList);
-////	    i.putExtra("votesint", Voting.votes);
-//	    i.setClass(activity, Stats.class);
-//	    activity.startActivity(i);
-//	    break;
+	case R.id.admin:
+	    i.setClass(activity, Admin.class);
+	    activity.startActivity(i);
+	    break;
 
 	case R.id.settings:
 	    i.setClass(activity, Settings.class);

@@ -1,13 +1,14 @@
 package edu.purdue.cs.vw;
 
 public class ChannelItem implements Comparable<ChannelItem> {
-    String id;
+    private String id;
     private int rank;
     private String name;
-    String detail;
+    private String detail;
+    private int personal_rank;
 
     public ChannelItem(String i, int r, String n) {
-	this.id = i;
+	this.setId(i);
 	this.setRank(r);
 	this.setName(n);
 	detail = "no info about this channel yet";
@@ -15,12 +16,12 @@ public class ChannelItem implements Comparable<ChannelItem> {
 
     @Override
     public int compareTo(ChannelItem another) {
-	return getRank()-another.getRank();
+	return rank-another.rank;
     }
 
     @Override
     public String toString() {
-	return id;
+	return getId();
     }
 
     public void setDetail(String item) {
@@ -41,6 +42,14 @@ public class ChannelItem implements Comparable<ChannelItem> {
 
     public int getRank() {
 	return rank;
+    }
+
+    public void setId(String id) {
+	this.id = id;
+    }
+
+    public String getId() {
+	return id;
     }
     
 }
