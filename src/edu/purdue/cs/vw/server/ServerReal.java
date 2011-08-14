@@ -34,11 +34,14 @@ public class ServerReal implements Server {
 	this.serverLocation = serverLocation;
 	this.portnum = portnum;
 	this.cm = cm;
+	Log.d("Server", "Intializing Server");
+	try{ openSocket();}catch(Exception e){}
     }
     
     public void resetSocket(String serverLocation, int portnum) {
 	this.serverLocation = serverLocation;
 	this.portnum = portnum;
+	try{ openSocket();}catch(Exception e){}
     }
 
     void openSocket() throws ConnectException {
@@ -95,7 +98,12 @@ public class ServerReal implements Server {
 	String m = "";
 	try{
 	    m=in.readLine();
-	}catch(Exception e){m=null;}
+	}catch(Exception e){
+	    m=null;
+	    if(in==null)
+		Log.d("Server", "in is null");
+	    Log.d("Server", e.toString());
+	}
 	return m;
     }
 

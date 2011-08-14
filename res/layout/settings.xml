@@ -8,10 +8,4 @@
 		android:numeric="integer" android:summary="Specify port number on server"
 		android:defaultValue="4242" android:maxLength="5" android:title="Server port number"
 		android:key="portPref" />
-	<CheckBoxPreference android:key="music"
-		android:title="@string/music_title" android:summary="@string/music_description"
-		android:defaultValue="true" />
-	<CheckBoxPreference android:key="vibrate"
-		android:title="Vibrate" android:summary="Toggle phone vibration"
-		android:defaultValue="true" />
 </PreferenceScreen>

@@ -50,7 +50,7 @@
 </activity>
 
 <activity android:name="Voting"></activity>
-<activity android:name="Welcome"></activity>
+<activity android:name="Admin"></activity>
 </application>
     <uses-sdk android:minSdkVersion="8" />
 

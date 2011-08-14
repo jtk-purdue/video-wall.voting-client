@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+import edu.purdue.cs.vw.adapter.VoteAdapter;
+import edu.purdue.cs.vw.server.Server;
 import edu.purdue.cs.vw.server.ServerReal;
 
 /*
@@ -24,37 +26,35 @@ import edu.purdue.cs.vw.server.ServerReal;
  */
 
 public class Voting extends ListActivity {
-    private ServerReal server = null;
+    public static Server server = null;
     private ArrayList<ChannelItem> data;
-    public VoteAdapter adapter;
+    private VoteAdapter adapter;
     private String serverPort;
     private int portNumber;
     private String serverName;
-    private ChannelItemThread bth;
+    private ReadThread bth;
+    private Handler h;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.list);
-
+	
 	Log.d("Voting", "onCreate");
 
 	data = new ArrayList<ChannelItem>();
 	adapter = new VoteAdapter(data,this);
 	setListAdapter(adapter);
 	getListView().setTextFilterEnabled(true);
-	fetchPreferenceData();
 	
 	if (server == null) { 
 	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	    server = new ServerReal(serverName, portNumber, cm);
+	    Log.d("Server", "Intializing Server");
 	}
 	
-	final Handler h=new Handler();
-
-	
+	h=new Handler();
 	Runnable r = new Runnable(){
-
 	    @Override
 	    public void run() {
 		//This may make the screen flash when updating, use notifyDataSetChanged instead
@@ -63,15 +63,17 @@ public class Voting extends ListActivity {
 		adapter=new VoteAdapter(data, Voting.this);
 		Voting.this.setListAdapter(adapter);
 		//adapter.notifyDataSetChanged();
+		bth.list.clear();
+		try {
+		    server.sendMessage("GETLIST");
+		} catch (IOException e) {
+		    e.printStackTrace();
 		}
-		h.postDelayed(this, 2000);
+		}
+		h.postDelayed(this, 5000);
 	    }
-	    
-	};
-	   
-	h.postDelayed(r, 2000);
-
-	
+	}; 
+	h.postDelayed(r, 5000);
     }
 
     void fetchPreferenceData() {
@@ -97,71 +99,36 @@ public class Voting extends ListActivity {
     }
 
     @Override
-    public void onPause() {
-	super.onPause();
-	Log.d("Voting", "onPause");
-	//stopGatherThread();
-    }
-
-    @Override
     public void onResume() {
 	super.onResume();
 	Log.d("Voting", "onResume");
 	fetchPreferenceData();
-	startChannelThread();
+	startReadThread();
     }
 
-    private void startChannelThread(){
-	Tabs.setStatus("");
+    private void startReadThread(){
+	Tabs.setStatus("Starting Read Thread...");
 	if(bth==null){
-	bth = new ChannelItemThread(server);
+	try {
+	    server.sendMessage("GETLIST");
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	bth = new ReadThread(server,Voting.this,h);
 	bth.start();
 	}
-    }
-
-    @Override
-    public void onStop() {
-	super.onStop();
-	Log.d("Voting", "onStop");
-    }
-
-    @Override
-    public void onDestroy() {
-	super.onDestroy();
-	Log.d("Voting", "onDestroy");
+	Tabs.setStatus("");
     }
 
     public void onListItemClick(ListView parent, View v, final int position, long id){
-	String vote = data.get(position).id;
+	String vote = data.get(position).getId();
 	registerServerVote(vote,1);
     }
-
+    
     private void registerServerVote(final String vote,int rank) {
 	try {
 	    server.vote(vote, rank);
 	} catch (IOException e) {e.printStackTrace();}
-    }
-    
-    /*
-     * Allow external threads (e.g., test threads) to wait for data to have arrived from the server
-     * and transferred into the interface.
-     */
-    
-    boolean haveData = false;
-    
-    synchronized public void notifyDataAvailable() {
-	haveData = true;
-	notifyAll();
-    }
-
-    synchronized public void waitForData() {
-	while (!haveData)
-	    try {
-		wait();
-	    } catch (InterruptedException e) {
-		Log.e("ServerReal", "exception while waiting for data");
-		e.printStackTrace();
-	    }
     }
 
     @Override
