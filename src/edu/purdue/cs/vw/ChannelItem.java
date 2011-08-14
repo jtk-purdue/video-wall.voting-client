@@ -4,14 +4,14 @@ public class ChannelItem implements Comparable<ChannelItem> {
     private String id;
     private int rank;
     private String name;
-    private String detail;
+    private String details;
     private int personal_rank;
 
     public ChannelItem(String i, int r, String n) {
 	this.setId(i);
 	this.setRank(r);
 	this.setName(n);
-	detail = "no info about this channel yet";
+	details = "no info about this channel yet";
     }
 
     @Override
@@ -25,7 +25,7 @@ public class ChannelItem implements Comparable<ChannelItem> {
     }
 
     public void setDetail(String item) {
-	detail = item;
+	details = item;
     }
 
     public void setName(String name) {
@@ -52,4 +52,17 @@ public class ChannelItem implements Comparable<ChannelItem> {
 	return id;
     }
     
+    public String getDetails(){
+	return details;
+    }
+    public void setDetials(String d){
+	details=d;
+    }
+    
+    public int getPersonalRank(){
+	return personal_rank;
+    }
+    public void setPersonalRank(int p){
+	personal_rank=p;
+    }
 }

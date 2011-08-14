@@ -16,8 +16,6 @@ import android.widget.TextView;
  */
 
 public class Tabs extends TabActivity {
-
-    private boolean adminTab = false;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
