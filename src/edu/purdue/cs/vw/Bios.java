@@ -1,6 +1,5 @@
 package edu.purdue.cs.vw;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,14 +14,13 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 /*
  * This activity sets up the tab that allows the user to view the bio-pages of team members. 
  * Switches to an activity called BioPage, which sets the appropriate layout 
  * depending on which button is clicked. Each layout represents an individual's biography.
  */
-public class Bios extends Activity {
+public class Bios extends BaseActivity {
     /*
      * These dimensions are adjusted for a 480px wide display.  Team photos are scaled (down slightly) to
      * the size of a large touch-screen button.
@@ -140,7 +138,6 @@ public class Bios extends Activity {
 
 	Display display = getWindowManager().getDefaultDisplay(); 
 	int screenWidth = display.getWidth();
-	int screenHeight = display.getHeight();
 	
 	LinearLayout ll = (LinearLayout) findViewById(R.id.grid_parent);
 	ll.setPadding((screenWidth - 3 * (PHOTO_DIMENSION + SPACING)) / 2 - LEFT_MARGIN, 0, 0, 0);

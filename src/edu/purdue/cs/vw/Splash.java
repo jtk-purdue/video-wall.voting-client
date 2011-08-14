@@ -1,9 +1,8 @@
 package edu.purdue.cs.vw;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 
 /*
  * This file sets up the splash screen when the application starts.
@@ -20,26 +19,14 @@ public class Splash extends Activity {
     @Override
     public void onResume() {
 	super.onResume();
-
-	// Creates a runnable thread in the background. Splash screen appears
-	// for a few seconds and then switches to Tabs.
-	new AsyncTask<Void, Void, Void>() {
+	
+	Handler h = new Handler();
+	h.postDelayed(new Runnable(){
 	    @Override
-	    protected Void doInBackground(Void... params) {
-		try {
-		    Thread.sleep(500);
-		} catch (InterruptedException e) { /* ignore */
-		}
-
-		return null;
+	    public void run() {
+		Splash.this.finish();		
 	    }
+	}, 1000);
 
-	    @Override
-	    protected void onPostExecute(Void result) {
-		super.onPostExecute(result);
-		Splash.this.finish();
-	    }
-	    
-	}.execute();
     }
 }

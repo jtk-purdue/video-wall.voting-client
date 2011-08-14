@@ -3,11 +3,11 @@ package edu.purdue.cs.vw;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import android.app.Activity;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import edu.purdue.cs.vw.server.Server;
 
@@ -16,15 +16,16 @@ public class ReadThread extends Thread {
     ArrayList<ChannelItem> list;
     Server server;
     boolean running;
-    Activity act;
+    BaseActivity act;
     Handler h;
+    Button retry;
 
-    public ReadThread(Server s, final Activity act, Handler h) {
+    public ReadThread(Server s, BaseActivity act,ArrayList<ChannelItem> l) {
 	server = s;
-	list = new ArrayList<ChannelItem>();
+	list = l;
 	running=true;
 	this.act=act;
-	this.h=h;
+	this.h=act.getHandler();
     }
 
     public void processServerInput(String input) {
@@ -45,6 +46,16 @@ public class ReadThread extends Thread {
 
     //Sends "GETLIST" command to the server, then waits for server input and parses input
     public void run() {
+	
+	if(retry!=null){
+	    h.post(new Runnable(){
+		@Override
+		public void run() {
+		    retry.setVisibility(View.GONE);
+		    Tabs.setStatus("");
+		}
+	    });
+	}
 
 	String m = new String();	
 	while (running) {
@@ -62,13 +73,19 @@ public class ReadThread extends Thread {
 			TextView txt = (TextView)act.findViewById(android.R.id.empty);
 			txt.setText("Error Connecting to Server!");
 			txt.setTextSize(30);
-			txt.setTextColor(Color.RED);			
+			txt.setTextColor(Color.RED);
+			retry= (Button)act.findViewById(R.id.retry);
+			retry.setVisibility(View.VISIBLE);
 		    }
 		});
 	    }
 
 	}
 
+    }
+    
+    public boolean isRunning(){
+	return running;
     }
 
 }
