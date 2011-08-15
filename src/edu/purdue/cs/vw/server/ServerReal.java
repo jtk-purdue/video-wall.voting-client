@@ -7,9 +7,6 @@ import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Vector;
 
 import android.net.ConnectivityManager;
 import android.util.Log;
@@ -34,17 +31,18 @@ public class ServerReal implements Server {
 	this.serverLocation = serverLocation;
 	this.portnum = portnum;
 	this.cm = cm;
-	Log.d("Server", "Intializing Server");
+	Log.d(Server.TAG, "Intializing Server");
 	try{ openSocket();}catch(Exception e){}
     }
     
     public void resetSocket(String serverLocation, int portnum) {
 	this.serverLocation = serverLocation;
 	this.portnum = portnum;
-	try{ openSocket();}catch(Exception e){}
+	try{ closeSocket();}catch(IOException e){Log.d(Server.TAG, "Socket refused to close due to "+e.toString());}
+	try{ openSocket();}catch(Exception e){Log.d(Server.TAG, "Socket refused to open due to "+e.toString());}
     }
 
-    void openSocket() throws ConnectException {
+    public void openSocket() throws ConnectException {
 	if (!haveInternetConnection()) {
 	    Log.d("ServerReal", "No Internet connection");
 	    throw new ConnectException("No Internet");
@@ -53,18 +51,18 @@ public class ServerReal implements Server {
 	if(requestSocket==null || !requestSocket.isConnected())
 	try {
 	    requestSocket = new Socket(serverLocation, portnum);
-	    Log.d("Connection", "Connected to " + serverLocation + " in port " + portnum);
+	    Log.d(Server.TAG, "Connected to " + serverLocation + " in port " + portnum);
 	    out = new PrintWriter(requestSocket.getOutputStream(), true);
 	    out.flush();
 	    in = new BufferedReader(new InputStreamReader(requestSocket.getInputStream()));
 	    String message = in.readLine();
-	    Log.d("Server", message);
+	    Log.d(Server.TAG, message);
 	} catch (UnknownHostException e) {
-	    Log.d("Server", "UnknownHostException: " + serverLocation + "@" + portnum);
+	    Log.d(Server.TAG, "UnknownHostException: " + serverLocation + "@" + portnum);
 	    requestSocket = null;
 	    throw new ConnectException("Unknown host");
 	} catch (IOException e) {
-	    Log.d("Server", "IOException: server down?");
+	    Log.d(Server.TAG, "IOException: server down?");
 	    requestSocket = null;
 	    throw new ConnectException("Server down?");
 	}
@@ -79,6 +77,11 @@ public class ServerReal implements Server {
 	in.close();
 	out.close();
 	requestSocket.close();
+	in=null;
+	out=null;
+	requestSocket=null;
+	//to slow take this out
+	System.gc();
     }
 
     public synchronized void sendMessage(String msg) throws IOException {
@@ -97,14 +100,22 @@ public class ServerReal implements Server {
     public String readLine(){
 	String m = "";
 	try{
+	    openSocket();
 	    m=in.readLine();
 	}catch(Exception e){
 	    m=null;
-	    if(in==null)
-		Log.d("Server", "in is null");
-	    Log.d("Server", e.toString());
+	    Log.d(Server.TAG, e.toString());
 	}
 	return m;
+    }
+    
+    public boolean isConnected(){
+	if(requestSocket==null || !requestSocket.isConnected())
+	    return false;
+	if(in==null || out==null)
+	    return false;
+	    
+	return true;
     }
 
 }

@@ -1,11 +1,8 @@
 package edu.purdue.cs.vw.server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.ArrayList;
-import java.util.Vector;
-
-import android.util.Log;
 
 public class ServerMock implements Server {
     private static final int NUM_CHANNELS = 100;
@@ -78,6 +75,18 @@ public class ServerMock implements Server {
     public String readLine() {
 	// TODO Auto-generated method stub
 	return null;
+    }
+
+    @Override
+    public void openSocket() throws ConnectException {
+	// TODO Auto-generated method stub
+	
+    }
+
+    @Override
+    public boolean isConnected() {
+	// TODO Auto-generated method stub
+	return false;
     }
 
 
