@@ -22,8 +22,7 @@
 		android:layout_height="wrap_content"
 		android:gravity="center"
 		android:text="Retry Connection"
-		android:visibility="gone"
-		android:onClick="retry"
+		android:visibility="visible"
 		/>
 		
 </LinearLayout>

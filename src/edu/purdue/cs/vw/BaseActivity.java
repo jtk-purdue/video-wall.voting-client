@@ -39,12 +39,17 @@ public class BaseActivity extends Activity {
     protected void onResume() {
 	super.onResume();
 	Log.d(this.getClass().getSimpleName(), "onResume");
+	connect();
+	Tabs.setStatus("");
+    }
+    
+    public void connect(){
 	fetchPreferenceData();
 	if (server == null || !server.isConnected())
 	    initServer();
 	if(server==null){
 	    Tabs.setStatus("Error Connecting to Server");
-	    channels.clear();
+	    clear();
 	}else{
 	    if(readThread==null || !readThread.isRunning()){
 		readThread=null;
@@ -53,7 +58,6 @@ public class BaseActivity extends Activity {
 		try{server.sendMessage("GETLIST");}catch(Exception e){}
 	    }
 	}
-	Tabs.setStatus("");
     }
     
     public void initServer(){
@@ -87,6 +91,7 @@ public class BaseActivity extends Activity {
 	return h;
     }
     
+    //overide to added better functionality for when there is no connection to the server
     public void clear(){
 	channels.clear();
     }
