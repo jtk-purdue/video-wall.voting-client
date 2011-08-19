@@ -39,10 +39,8 @@ public class ReadThread extends Thread {
 	}
     }
 
-    //Sends "GETLIST" command to the server, then waits for server input and parses input
+    //waits for server input and parses input
     public void run() {
-	
-
 	String m = new String();	
 	while (running) {
 	    Log.d("Server", "Server Loop Starting");
@@ -60,9 +58,7 @@ public class ReadThread extends Thread {
 		    }
 		});
 	    }
-
 	}
-
     }
     
     public boolean isRunning(){

@@ -1,6 +1,9 @@
 package edu.purdue.cs.vw;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import edu.purdue.cs.vw.adapter.VoteAdapter;
 
@@ -12,7 +15,8 @@ import edu.purdue.cs.vw.adapter.VoteAdapter;
 public class Voting extends BaseActivity {
     
     private VoteAdapter va;
-
+    private ListView lv;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
@@ -27,9 +31,34 @@ public class Voting extends BaseActivity {
     protected void onResume() {
 	super.onResume();
 	
-	ListView lv = (ListView)findViewById(android.R.id.list);
-	va = new VoteAdapter(channels,this);
-	lv.setAdapter(va);
+	if(null==lv)
+	    lv = (ListView)findViewById(android.R.id.list);
+	
+	if(va==null){
+	    va = new VoteAdapter(channels,this);
+	    lv.setAdapter(va);
+	}
+	
+	if(server==null || !server.isConnected()){
+	    Button b = (Button)findViewById(R.id.retry);
+	    lv.setVisibility(View.GONE);
+	    b.setOnClickListener(new OnClickListener(){
+		@Override
+		public void onClick(View v) {
+		    connect();
+		    if(server!=null && server.isConnected()){
+			lv.setVisibility(View.VISIBLE);
+			va.notifyDataSetChanged();
+		    }
+		}
+	    });
+	}else{
+	    if(lv.getVisibility()==View.GONE){
+		lv.setVisibility(View.VISIBLE);
+		va.notifyDataSetChanged();
+	    }
+	}
+	
     }
     
     public void clear(){
