@@ -3,12 +3,8 @@ package edu.purdue.cs.vw;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import android.graphics.Color;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import edu.purdue.cs.vw.server.Server;
 
 public class ReadThread extends Thread {
@@ -18,7 +14,6 @@ public class ReadThread extends Thread {
     boolean running;
     BaseActivity act;
     Handler h;
-    Button retry;
 
     public ReadThread(Server s, BaseActivity act,ArrayList<ChannelItem> l) {
 	server = s;
@@ -47,15 +42,6 @@ public class ReadThread extends Thread {
     //Sends "GETLIST" command to the server, then waits for server input and parses input
     public void run() {
 	
-	if(retry!=null){
-	    h.post(new Runnable(){
-		@Override
-		public void run() {
-		    retry.setVisibility(View.GONE);
-		    Tabs.setStatus("");
-		}
-	    });
-	}
 
 	String m = new String();	
 	while (running) {
@@ -67,15 +53,9 @@ public class ReadThread extends Thread {
 	    }else{
 		Log.d("Server", "Server Returned Null");
 		running=false;
-		h.post(new Runnable(){
-		    @Override
-		    public void run() {
-			TextView txt = (TextView)act.findViewById(android.R.id.empty);
-			txt.setText("Error Connecting to Server!");
-			txt.setTextSize(30);
-			txt.setTextColor(Color.RED);
-			retry= (Button)act.findViewById(R.id.retry);
-			retry.setVisibility(View.VISIBLE);
+		h.post(new  Runnable(){
+		    public void run(){
+			Tabs.setStatus("Please Recoonect to Internet");
 		    }
 		});
 	    }

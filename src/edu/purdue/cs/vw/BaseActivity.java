@@ -52,6 +52,7 @@ public class BaseActivity extends Activity {
 		try{server.sendMessage("GETLIST");}catch(Exception e){}
 	    }
 	}
+	Tabs.setStatus("");
     }
     
     public void initServer(){
