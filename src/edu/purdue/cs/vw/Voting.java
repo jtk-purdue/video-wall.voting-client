@@ -1,6 +1,7 @@
 package edu.purdue.cs.vw;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -66,15 +67,15 @@ public class Voting extends BaseActivity {
 	va.notifyDataSetChanged();
     }
 
-//    public void onListItemClick(ListView parent, View v, final int position, long id){
-//	String vote = data.get(position).getId();
-//	registerServerVote(vote,1);
-//    }
-//    
-//    private void registerServerVote(final String vote,int rank) {
-//	try {
-//	    server.vote(vote, rank);
-//	} catch (IOException e) {e.printStackTrace();}
-//    }
+    public void onListItemClick(ListView parent, View v, final int position, long id){
+	String vote = channels.get(position).getId();
+	registerServerVote(vote,1);
+    }
+    
+    private void registerServerVote(final String vote,int rank) {
+	try {
+	    server.vote(vote, rank);
+	} catch (Exception e) {Log.d("Server", "Error: "+e.toString());}
+    }
 
 }
