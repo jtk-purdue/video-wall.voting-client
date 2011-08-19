@@ -44,6 +44,7 @@ public class BaseActivity extends Activity {
 	    initServer();
 	if(server==null){
 	    Tabs.setStatus("Error Connecting to Server");
+	    channels.clear();
 	}else{
 	    if(readThread==null || !readThread.isRunning()){
 		readThread=null;
@@ -84,6 +85,10 @@ public class BaseActivity extends Activity {
     
     public Handler getHandler(){
 	return h;
+    }
+    
+    public void clear(){
+	channels.clear();
     }
     
     public void doToast(String message) {
