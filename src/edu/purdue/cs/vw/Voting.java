@@ -10,6 +10,8 @@ import edu.purdue.cs.vw.adapter.VoteAdapter;
  */
 
 public class Voting extends BaseActivity {
+    
+    private VoteAdapter va;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,12 +28,14 @@ public class Voting extends BaseActivity {
 	super.onResume();
 	
 	ListView lv = (ListView)findViewById(android.R.id.list);
-	VoteAdapter va = new VoteAdapter(channels,this);
+	va = new VoteAdapter(channels,this);
 	lv.setAdapter(va);
     }
     
-    
-
+    public void clear(){
+	super.clear();
+	va.notifyDataSetChanged();
+    }
 
 //    public void onListItemClick(ListView parent, View v, final int position, long id){
 //	String vote = data.get(position).getId();

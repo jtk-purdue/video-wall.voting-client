@@ -56,6 +56,7 @@ public class ReadThread extends Thread {
 		h.post(new  Runnable(){
 		    public void run(){
 			Tabs.setStatus("Please Recoonect to Internet");
+			act.clear();
 		    }
 		});
 	    }
