@@ -8,6 +8,7 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import android.content.Context;
 import android.net.ConnectivityManager;
 import android.util.Log;
 
@@ -17,20 +18,21 @@ public class ServerReal implements Server {
     BufferedReader in;
     String serverLocation;
     int portnum;
-    ConnectivityManager cm;
+    Context ctx;
     
-    public ServerReal() {
-	requestSocket = null;
-	serverLocation = null;
-	portnum = 0;
-	cm = null;
-    }
+    //Can not have defualt constructor. Never do!
+//    public ServerReal() {
+//	requestSocket = null;
+//	serverLocation = null;
+//	portnum = 0;
+//	ctx = null;
+//    }
 
-    public ServerReal(String serverLocation, int portnum, ConnectivityManager cm) {
+    public ServerReal(String serverLocation, int portnum, Context ctx) {
 	requestSocket = null;
 	this.serverLocation = serverLocation;
 	this.portnum = portnum;
-	this.cm = cm;
+	this.ctx = ctx;
 	Log.d(Server.TAG, "Intializing Server");
 	try{ openSocket();}catch(Exception e){}
     }
@@ -69,6 +71,7 @@ public class ServerReal implements Server {
     }
 
     boolean haveInternetConnection() {
+	ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
 	return (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable() && cm
 		.getActiveNetworkInfo().isConnected());
     }
@@ -80,7 +83,7 @@ public class ServerReal implements Server {
 	in=null;
 	out=null;
 	requestSocket=null;
-	//to slow take this out
+	//if to slow take this out
 	System.gc();
     }
 
@@ -97,15 +100,10 @@ public class ServerReal implements Server {
     }
 
     @Override
-    public String readLine(){
+    public String readLine() throws IOException{
 	String m = "";
-	try{
 	    openSocket();
 	    m=in.readLine();
-	}catch(Exception e){
-	    m=null;
-	    Log.d(Server.TAG, e.toString());
-	}
 	return m;
     }
     
@@ -116,6 +114,11 @@ public class ServerReal implements Server {
 	    return false;
 	    
 	return true;
+    }
+
+    @Override
+    public void updateContext(Context c) {
+	ctx=c;
     }
 
 }

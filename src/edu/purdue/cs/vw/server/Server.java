@@ -3,6 +3,8 @@ package edu.purdue.cs.vw.server;
 import java.io.IOException;
 import java.net.ConnectException;
 
+import android.content.Context;
+
 public interface Server {
     public final static String TAG = "Server";
     
@@ -14,7 +16,9 @@ public interface Server {
     
     public void resetSocket(String serverName, int portNumber);
         
-    public String readLine();
+    public String readLine() throws IOException;
     
     public boolean isConnected();
+    
+    public void updateContext(Context c);
 }

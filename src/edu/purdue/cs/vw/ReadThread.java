@@ -24,6 +24,8 @@ public class ReadThread extends Thread {
     }
 
     public void processServerInput(String input) {
+	//handle null case of server
+	if(input == null) return;
 	String[] line = input.split(" ");
 	if (line[0].equals("CHANNEL")) {
 	    String name = "";
@@ -41,19 +43,24 @@ public class ReadThread extends Thread {
 
     //waits for server input and parses input
     public void run() {
-	String m = new String();	
+	String m = new String();
+	boolean process = true;
 	while (running) {
 	    Log.d("Server", "Server Loop Starting");
-	    m = server.readLine();
-	    if(m!=null){
+	    try{m = server.readLine();}catch(Exception e){process=false;}
+	    if(m==null){
+		server.resetSocket("pc.cs.purdue.edu", 4242);
+	    }
+	    if(process){
 		processServerInput(m);
+		if(m!=null)
 		Log.d("Server", m);
 	    }else{
-		Log.d("Server", "Server Returned Null");
+		Log.d("Server", "Error Connecting to server.");
 		running=false;
 		h.post(new  Runnable(){
 		    public void run(){
-			Tabs.setStatus("Please Recoonect to Internet");
+			Tabs.setStatus("Please reconect to Internet");
 			act.clear();
 		    }
 		});

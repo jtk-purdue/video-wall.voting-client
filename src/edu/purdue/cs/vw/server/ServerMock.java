@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.util.ArrayList;
 
+import android.content.Context;
+
 public class ServerMock implements Server {
     private static final int NUM_CHANNELS = 100;
     ArrayList<String> voteList;
@@ -87,6 +89,12 @@ public class ServerMock implements Server {
     public boolean isConnected() {
 	// TODO Auto-generated method stub
 	return false;
+    }
+
+    @Override
+    public void updateContext(Context c) {
+	// TODO Auto-generated method stub
+	
     }
 
 
