@@ -47,4 +47,11 @@ public class VoteAdapter extends BaseAdapter {
 	return txt;
     }
 
+    @Override
+    public void notifyDataSetChanged() {
+	synchronized(list){
+	super.notifyDataSetChanged();
+	}
+    }
+
 }

@@ -3,9 +3,7 @@ package edu.purdue.cs.vw;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -40,22 +38,26 @@ public class BaseActivity extends Activity {
 	super.onResume();
 	Log.d(this.getClass().getSimpleName(), "onResume");
 	connect();
-	Tabs.setStatus("");
     }
     
     public void connect(){
 	fetchPreferenceData();
+	Tabs.setStatus("");
 	if (server == null || !server.isConnected())
 	    initServer();
-	if(server==null){
-	    Tabs.setStatus("Error Connecting to Server");
+	if(server == null ){
+	    Tabs.setStatus("Error Connecting to server.");
 	    clear();
-	}else{
+	}else if(!server.isConnected()){
+	    Tabs.setStatus("Error Connecting to server. Server is not null.");
+	}
+	else{
+	    server.updateContext(this);
 	    if(readThread==null || !readThread.isRunning()){
 		readThread=null;
 		readThread = new ReadThread(server,this,channels);
 		readThread.start();
-		try{server.sendMessage("GETLIST");}catch(Exception e){}
+		try{server.sendMessage("GETLIST");}catch(Exception e){Log.d(Server.TAG, e.toString());}
 	    }
 	}
     }
@@ -63,9 +65,10 @@ public class BaseActivity extends Activity {
     public void initServer(){
 	if(server!=null){
 	    try {server.resetSocket(serverName,portNumber);} catch (Exception e) {server=null;}
+	}else{
+	//ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	server = new ServerReal(serverName, portNumber, this);
 	}
-	ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	server = new ServerReal(serverName, portNumber, cm);
 	Log.d("Server", "Intializing Server");
     }
     

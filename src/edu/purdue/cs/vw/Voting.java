@@ -41,8 +41,8 @@ public class Voting extends BaseActivity {
 	}
 	
 	if(server==null || !server.isConnected()){
+	    //lv.setVisibility(View.GONE);
 	    Button b = (Button)findViewById(R.id.retry);
-	    lv.setVisibility(View.GONE);
 	    b.setOnClickListener(new OnClickListener(){
 		@Override
 		public void onClick(View v) {
@@ -59,17 +59,27 @@ public class Voting extends BaseActivity {
 		va.notifyDataSetChanged();
 	    }
 	}
-	
+	Runnable r = new Runnable(){
+	    @Override
+	    public void run() {
+		va.notifyDataSetChanged();
+		h.postDelayed(this, 2000);
+	    }
+	};
+	h.postDelayed(r, 2000);
     }
     
     public void clear(){
 	super.clear();
-	va.notifyDataSetChanged();
+	if(va!=null)
+	    va.notifyDataSetChanged();
     }
 
     public void onListItemClick(ListView parent, View v, final int position, long id){
-	String vote = channels.get(position).getId();
-	registerServerVote(vote,1);
+	if(lv.getVisibility()==View.VISIBLE){
+	    String vote = channels.get(position).getId();
+	    registerServerVote(vote,1);
+	}
     }
     
     private void registerServerVote(final String vote,int rank) {
