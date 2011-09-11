@@ -21,4 +21,7 @@ public interface Server {
     public boolean isConnected();
     
     public void updateContext(Context c);
+    
+    public void reconnect();
+
 }

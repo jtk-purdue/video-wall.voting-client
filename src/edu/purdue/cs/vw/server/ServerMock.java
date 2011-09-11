@@ -97,5 +97,11 @@ public class ServerMock implements Server {
 	
     }
 
+    @Override
+    public void reconnect() {
+	// TODO Auto-generated method stub
+	
+    }
+
 
 }
