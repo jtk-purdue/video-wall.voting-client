@@ -23,6 +23,6 @@
 		android:gravity="center"
 		android:text="Retry Connection"
 		android:visibility="visible"
+		android:onClick="retry"
 		/>
-		
 </LinearLayout>

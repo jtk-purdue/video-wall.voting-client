@@ -47,7 +47,7 @@ public class BaseActivity extends Activity {
 	    initServer();
 	if(server == null ){
 	    Tabs.setStatus("Error Connecting to server.");
-	    clear();
+	    disconnect();
 	}else if(!server.isConnected()){
 	    Tabs.setStatus("Error Connecting to server. Server is not null.");
 	}
@@ -76,7 +76,7 @@ public class BaseActivity extends Activity {
 	Tabs.setStatus("Fetching preference data...");
 	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 	String serverNamePref = pref.getString("serverPref", "pc.cs.purdue.edu");
-	String portNumberPref = pref.getString("editTextPref", "4242");
+	String portNumberPref = pref.getString("editTextPref", "4241");
 	serverName = serverNamePref;
 	portNumber = Integer.parseInt(portNumberPref);
     }
@@ -95,7 +95,7 @@ public class BaseActivity extends Activity {
     }
     
     //overide to added better functionality for when there is no connection to the server
-    public void clear(){
+    public void disconnect(){
 	channels.clear();
     }
     
