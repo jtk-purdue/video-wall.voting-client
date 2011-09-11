@@ -11,6 +11,7 @@ public class ChannelItem implements Comparable<ChannelItem> {
 	this.setId(i);
 	this.setRank(r);
 	this.setName(n);
+	this.setPersonalRank(-1);
 	details = "no info about this channel yet";
     }
 
