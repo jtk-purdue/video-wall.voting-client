@@ -90,8 +90,8 @@ public class Tabs extends TabActivity {
 	    break;
 
 	case R.id.admin:
-	    i.setClass(activity, Admin.class);
-	    activity.startActivity(i);
+	    //i.setClass(activity, Admin.class);
+	    //activity.startActivity(i);
 	    break;
 
 	case R.id.settings:

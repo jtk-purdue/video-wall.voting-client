@@ -34,15 +34,6 @@ public class Voting extends BaseActivity {
 	
 	if(null==lv){
 	    lv = (ListView)findViewById(android.R.id.list);
-//	    lv.setOnItemClickListener(new OnItemClickListener(){
-//		@Override
-//		public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-//			if(lv.getVisibility()==View.VISIBLE){
-//			    String vote = channels.get(position).getId();
-//			    registerServerVote(vote,1);
-//			}
-//		}
-//	    });
 	}
 		
 	
@@ -74,10 +65,10 @@ public class Voting extends BaseActivity {
 	Runnable r = new Runnable(){
 	    @Override
 	    public void run() {
-		//if(lv.getVisibility()==View.VISIBLE){
+		if(lv.getVisibility()==View.VISIBLE){
 			va.notifyDataSetChanged();
 			h.postDelayed(this, 2000);
-		//}
+		}
 	    }
 	};
 	h.postDelayed(r, 2000);
