@@ -10,7 +10,7 @@
   	android:layout_height="wrap_content"
   	android:id="@+id/text"
   	android:text="List Item"
-  	android:textSize="20dp"/>
+  	android:textSize="16dp"/>
   	
   <RadioGroup 
   	android:id="@+id/radioGroup1"

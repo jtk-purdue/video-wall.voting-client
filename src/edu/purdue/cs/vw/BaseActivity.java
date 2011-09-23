@@ -49,7 +49,7 @@ public class BaseActivity extends Activity {
 	    Tabs.setStatus("Error Connecting to server.");
 	    disconnect();
 	}else if(!server.isConnected()){
-	    Tabs.setStatus("Error Connecting to server. Server is not null.");
+	    Tabs.setStatus("Error Connecting to server.");
 	}
 	else{
 	    server.updateContext(this);
@@ -76,7 +76,7 @@ public class BaseActivity extends Activity {
 	Tabs.setStatus("Fetching preference data...");
 	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 	String serverNamePref = pref.getString("serverPref", "pc.cs.purdue.edu");
-	String portNumberPref = pref.getString("editTextPref", "4241");
+	String portNumberPref = pref.getString("editTextPref", "4242");
 	serverName = serverNamePref;
 	portNumber = Integer.parseInt(portNumberPref);
     }
