@@ -17,10 +17,9 @@
 		android:id="@+id/admin"
 		android:icon="@drawable/settings_icon"
 		android:title="Admin" />
-<!--
 	<item
-		android:id="@+id/quit"
-		android:title="Quit"
-		android:icon="@drawable/quit_icon" />
-	 -->
+		android:id="@+id/message"
+		android:title="Message the Wall"
+		android:icon="@android:drawable/ic_menu_save" />
+
 </menu>
