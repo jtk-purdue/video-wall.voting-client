@@ -12,6 +12,12 @@ public class Admin extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.admin);
+
+    }
+
+    @Override
+    protected void onResume() {
+	super.onResume();
 	Button on = (Button)findViewById(R.id.button1);
 	Button off = (Button)findViewById(R.id.button2);
 	on.setOnClickListener(new OnClickListener(){

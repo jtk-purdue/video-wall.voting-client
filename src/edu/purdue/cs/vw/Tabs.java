@@ -1,10 +1,16 @@
 package edu.purdue.cs.vw;
 
+import java.util.ArrayList;
+
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,11 +23,21 @@ import android.widget.TextView;
 
 public class Tabs extends TabActivity {
     
+    static Context ctx;
+    static ArrayList<String> accounts;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.tabs);
 
+	//Getting accounts
+	ctx=this;
+	accounts = new ArrayList<String>();
+	accounts.add("jfranklin773@gmail.com");
+	accounts.add("jtkorb@gmail.com");
+	accounts.add("jtk.purdue@gmail.com");
+	
 	//starts splash screen when app is first opened
 	this.startActivity(new Intent(Tabs.this,Splash.class));	
 	
@@ -90,8 +106,19 @@ public class Tabs extends TabActivity {
 	    break;
 
 	case R.id.admin:
-	    //i.setClass(activity, Admin.class);
-	    //activity.startActivity(i);
+	    Account[] a = AccountManager.get(ctx).getAccounts();
+	    for (Account account : a) {
+	      // TODO: Check possibleEmail against an email regex or treat
+	      // account.name as an email address only for certain account.type values.
+	      String possibleEmail = account.name;
+	      if(accounts.contains("jfranklin773@gmail.com")){
+		  i.setClass(activity, Admin.class);
+		  activity.startActivity(i);
+		  break;
+	      }
+	      Log.d("Tabs", possibleEmail);
+	    }
+
 	    break;
 
 	case R.id.settings:
