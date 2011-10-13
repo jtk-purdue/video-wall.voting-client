@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -14,8 +15,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /*
  * This file sets up the tab view that the application uses.
@@ -126,7 +132,22 @@ public class Tabs extends TabActivity {
 	    activity.startActivity(i);
 	    break;
 	 
-	//case R.id.admin:
+	case R.id.message:
+	    Context mContext = ctx.getApplicationContext();
+	    final Dialog dialog = new Dialog(ctx);
+
+	    dialog.setContentView(R.layout.messagedialog);
+	    final EditText edit = (EditText)dialog.findViewById(R.id.edit);
+	    Button b = (Button)dialog.findViewById(R.id.b1);
+	    b.setOnClickListener(new OnClickListener(){
+		@Override
+		public void onClick(View arg0) {
+		    Toast.makeText(ctx, edit.getEditableText().toString(), Toast.LENGTH_SHORT).show();
+		    dialog.cancel();
+		}
+	    });
+	    dialog.setTitle("POST A MESSAGE TO THE WALL");
+	    dialog.show();
 	    //i.setClass(activity, cls)
 
 //	case R.id.quit:
