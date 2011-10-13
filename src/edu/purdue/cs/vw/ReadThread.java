@@ -26,6 +26,7 @@ public class ReadThread extends Thread {
 
     public void processServerInput(String input) {
 	//handle null case of server
+	server.setResponse(1);
 	if(input == null) return;
 	String[] line = input.split(" ");
 	if (line[0].equals("CHANNEL")) {

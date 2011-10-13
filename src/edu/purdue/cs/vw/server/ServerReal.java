@@ -19,11 +19,13 @@ public class ServerReal implements Server {
     String serverLocation;
     int portnum;
     Context ctx;
+    int response;
     
     //Can not have defualt constructor. Never do!
 
     public ServerReal(String serverLocation, int portnum, Context ctx) {
 	requestSocket = null;
+	response=0;
 	this.serverLocation = serverLocation;
 	this.portnum = portnum;
 	this.ctx = ctx;
@@ -119,6 +121,16 @@ public class ServerReal implements Server {
     public void reconnect() {
 	try{ closeSocket();}catch(IOException e){Log.d(Server.TAG, "Socket refused to close due to "+e.toString());}
 	try{ openSocket();}catch(Exception e){Log.d(Server.TAG, "Socket refused to open due to "+e.toString());}
+    }
+
+    @Override
+    public void setResponse(int r) {
+	response=r;
+    }
+
+    @Override
+    public int getResponse() {
+	return response;
     }
 
 }

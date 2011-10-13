@@ -1,5 +1,6 @@
 package edu.purdue.cs.vw;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,7 +36,6 @@ public class Voting extends BaseActivity {
 	if(null==lv){
 	    lv = (ListView)findViewById(android.R.id.list);
 	}
-		
 	
 	if(va==null){
 	    va = new VoteAdapter(channels,this);
@@ -72,6 +72,40 @@ public class Voting extends BaseActivity {
 	    }
 	};
 	h.postDelayed(r, 2000);
+	
+	new AsyncTask(){
+
+	    @Override
+	    protected Object doInBackground(Object... params) {
+		connect();
+		return null;
+	    }
+	    
+	}.execute(null);
+	
+    }
+    
+    public void connect(){
+	if (server == null || !server.isConnected())
+	    initServer();
+	if(server == null ){
+	    //Tabs.setStatus("Error Connecting to server.");
+	    connected=ERROR;
+	    disconnect();
+	}else if(!server.isConnected()){
+	    connected=ERROR;
+	    //Tabs.setStatus("Error Connecting to server.");
+	}
+	else{
+	    server.updateContext(this);
+	    if(readThread==null || !readThread.isRunning()){
+		readThread=null;
+		readThread = new ReadThread(server,this,channels);
+		readThread.start();
+		try{server.sendMessage("GETLIST");}catch(Exception e){Log.d(Server.TAG, e.toString());}
+	    }
+	}
+	
     }
     
     public void disconnect(){

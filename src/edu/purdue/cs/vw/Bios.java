@@ -1,5 +1,6 @@
 package edu.purdue.cs.vw;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import android.widget.LinearLayout;
  * Switches to an activity called BioPage, which sets the appropriate layout 
  * depending on which button is clicked. Each layout represents an individual's biography.
  */
-public class Bios extends BaseActivity {
+public class Bios extends Activity {
     /*
      * These dimensions are adjusted for a 480px wide display.  Team photos are scaled (down slightly) to
      * the size of a large touch-screen button.

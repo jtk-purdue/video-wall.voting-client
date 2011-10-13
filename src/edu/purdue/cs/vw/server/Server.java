@@ -8,6 +8,10 @@ import android.content.Context;
 public interface Server {
     public final static String TAG = "Server";
     
+    public void setResponse(int r);
+    
+    public int getResponse();
+    
     public void openSocket() throws ConnectException;
 
     public void vote(String name,int rank) throws IOException;

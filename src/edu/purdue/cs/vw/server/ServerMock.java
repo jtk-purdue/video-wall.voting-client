@@ -103,5 +103,17 @@ public class ServerMock implements Server {
 	
     }
 
+    @Override
+    public void setResponse(int r) {
+	// TODO Auto-generated method stub
+	
+    }
+
+    @Override
+    public int getResponse() {
+	// TODO Auto-generated method stub
+	return 0;
+    }
+
 
 }

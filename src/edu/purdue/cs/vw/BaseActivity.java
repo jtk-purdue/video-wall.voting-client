@@ -3,7 +3,11 @@ package edu.purdue.cs.vw;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -22,34 +26,40 @@ public class BaseActivity extends Activity {
     protected static String serverName = "pc.cs.purdue.edu";
     protected static ArrayList<ChannelItem> channels;
     protected Handler h=null;
+    protected int connected=0;
+    
+    public static final int ERROR = -1;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	Log.d(this.getClass().getSimpleName(), "onCreate");
-	if(h==null)
-	    h=new Handler();
-	if(channels==null)
-	    channels = new ArrayList<ChannelItem>();
+
     }
 
     @Override
     protected void onResume() {
 	super.onResume();
+	if(h==null)
+	    h=new Handler();
+	if(channels==null)
+	    channels = new ArrayList<ChannelItem>();
 	Log.d(this.getClass().getSimpleName(), "onResume");
-	connect();
+	fetchPreferenceData();
+	//Tabs.setStatus("Connecting to the server.");
+	//connect();
     }
     
     public void connect(){
-	fetchPreferenceData();
-	Tabs.setStatus("");
 	if (server == null || !server.isConnected())
 	    initServer();
 	if(server == null ){
-	    Tabs.setStatus("Error Connecting to server.");
+	    //Tabs.setStatus("Error Connecting to server.");
+	    connected=ERROR;
 	    disconnect();
 	}else if(!server.isConnected()){
-	    Tabs.setStatus("Error Connecting to server.");
+	    connected=ERROR;
+	    //Tabs.setStatus("Error Connecting to server.");
 	}
 	else{
 	    server.updateContext(this);
@@ -60,8 +70,18 @@ public class BaseActivity extends Activity {
 		try{server.sendMessage("GETLIST");}catch(Exception e){Log.d(Server.TAG, e.toString());}
 	    }
 	}
+	
     }
     
+    public boolean isOnline() {
+	ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+	    return true;
+	}
+	return false;
+    }
+     
     public void initServer(){
 	if(server!=null){
 	    try {server.resetSocket(serverName,portNumber);} catch (Exception e) {server=null;}
@@ -73,7 +93,7 @@ public class BaseActivity extends Activity {
     }
     
     protected void fetchPreferenceData() {
-	Tabs.setStatus("Fetching preference data...");
+	//Tabs.setStatus("Fetching preference data...");
 	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 	String serverNamePref = pref.getString("serverPref", "pc.cs.purdue.edu");
 	String portNumberPref = pref.getString("editTextPref", "4242");
