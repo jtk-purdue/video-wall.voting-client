@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="edu.purdue.cs.vw" android:versionName="1.2" android:versionCode="2">
+      package="edu.purdue.cs.vw" android:versionName="1.3" android:versionCode="3">
       <uses-permission android:name="android.permission.CAMERA" />
  	  <uses-feature android:name="android.hardware.camera" />
       <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -41,6 +41,7 @@
 		  android:theme="@android:style/Theme.NoTitleBar"></activity>
 
 <activity android:name="Acknowledgements"></activity>
+<activity android:name="WebCamera"></activity>
 <activity android:name="Stats"></activity>
 
 <activity android:name="Help"

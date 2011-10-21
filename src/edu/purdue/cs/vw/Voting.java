@@ -80,6 +80,14 @@ public class Voting extends BaseActivity {
 		connect();
 		return null;
 	    }
+
+	    @Override
+	    protected void onPostExecute(Object result) {
+		super.onPostExecute(result);
+		if(connected==ERROR){
+		    disconnect();
+		}
+	    }
 	    
 	}.execute(null);
 	
@@ -91,7 +99,7 @@ public class Voting extends BaseActivity {
 	if(server == null ){
 	    //Tabs.setStatus("Error Connecting to server.");
 	    connected=ERROR;
-	    disconnect();
+	   // disconnect();
 	}else if(!server.isConnected()){
 	    connected=ERROR;
 	    //Tabs.setStatus("Error Connecting to server.");
