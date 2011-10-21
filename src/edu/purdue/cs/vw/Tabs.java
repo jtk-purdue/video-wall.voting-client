@@ -66,6 +66,10 @@ public class Tabs extends TabActivity {
 	intent = new Intent().setClass(this, Voting.class);
 	spec = tabHost.newTabSpec("vote").setIndicator("Vote", res.getDrawable(R.drawable.vote_tab)).setContent(intent);
 	tabHost.addTab(spec);
+	
+	intent = new Intent().setClass(this, WebCamera.class);
+	spec = tabHost.newTabSpec("webcamera").setIndicator("Web Camera", res.getDrawable(android.R.drawable.ic_menu_camera)).setContent(intent);
+	tabHost.addTab(spec);
 
 //	// Tab: Audio streaming from wall
 //
