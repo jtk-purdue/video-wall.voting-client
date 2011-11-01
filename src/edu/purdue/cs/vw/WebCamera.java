@@ -7,45 +7,57 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import android.net.Uri;
 import android.os.Bundle;
-import android.widget.ImageView;
+import android.widget.VideoView;
 
 public class WebCamera extends Activity {
 
-    ImageView image;
-
+    VideoView image;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.webcamera);
-	image = (ImageView) findViewById(R.id.image);
+	image = (VideoView) findViewById(R.id.image);
     }
 
     @Override
     protected void onResume() {
 	super.onResume();
-	new AsyncTask(){
+//	new AsyncTask(){
+//
+//	    Bitmap b;
+//	    
+//	    @Override
+//	    protected Object doInBackground(Object... params) {
+//		 String url = String.format("http://lwsn1130s-cam.cs.purdue.edu/axis-cgi/jpg/image.cgi?camera=3&resolution=%dx%d", 320,  240);
+//		b = downloadFile(url);
+//		return null;
+//	    }
+//
+//	    @Override
+//	    protected void onPostExecute(Object result) {
+//		super.onPostExecute(result);
+//		if(image!=null)
+//		    image.setImageBitmap(b);
+//	    }
+//	    
+//	}.execute(null);
+	//image.loadUrl("http://lwsn1130n-cam.cs.purdue.edu/mjpg/2/video.mjpg");
+	
+	 Uri uri = Uri.parse("http://lwsn1130n-cam.cs.purdue.edu/mjpg/2/video.mjpg");
+	 
+	    image.setVideoURI(uri);
+	    image.start();
 
-	    Bitmap b;
-	    
-	    @Override
-	    protected Object doInBackground(Object... params) {
-		 String url = String.format("http://lwsn1130s-cam.cs.purdue.edu/axis-cgi/jpg/image.cgi?camera=3&resolution=%dx%d", 320,  240);
-		b = downloadFile(url);
-		return null;
-	    }
+	 
+//	 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//	 startActivity(intent);
 
-	    @Override
-	    protected void onPostExecute(Object result) {
-		super.onPostExecute(result);
-		if(image!=null)
-		    image.setImageBitmap(b);
-	    }
-	    
-	}.execute(null);
     }
 
     public Bitmap downloadFile(String fileUrl) {
