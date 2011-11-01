@@ -43,6 +43,7 @@ public class Tabs extends TabActivity {
 	accounts.add("jfranklin773@gmail.com");
 	accounts.add("jtkorb@gmail.com");
 	accounts.add("jtk.purdue@gmail.com");
+	accounts.add("jtk.purdue@gmail.com");
 	
 	//starts splash screen when app is first opened
 	this.startActivity(new Intent(Tabs.this,Splash.class));	
@@ -121,7 +122,7 @@ public class Tabs extends TabActivity {
 	      // TODO: Check possibleEmail against an email regex or treat
 	      // account.name as an email address only for certain account.type values.
 	      String possibleEmail = account.name;
-	      if(accounts.contains("jfranklin773@gmail.com")){
+	      if(accounts.contains(a)){
 		  i.setClass(activity, Admin.class);
 		  activity.startActivity(i);
 		  break;
