@@ -1,5 +1,6 @@
 package edu.purdue.cs.vw;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.accounts.Account;
@@ -44,6 +45,11 @@ public class Tabs extends TabActivity {
 	accounts.add("jtkorb@gmail.com");
 	accounts.add("jtk.purdue@gmail.com");
 	accounts.add("jtk.purdue@gmail.com");
+	accounts.add("tylerbwear@gmail.com ");
+	accounts.add("rick.fogle90@gmail.com ");
+	accounts.add("1JonMoore@gmail.com");
+	accounts.add("sohailmehra7@gmail.com ");
+	accounts.add("humayun.maaz@gmail.com ");
 	
 	//starts splash screen when app is first opened
 	this.startActivity(new Intent(Tabs.this,Splash.class));	
@@ -86,7 +92,7 @@ public class Tabs extends TabActivity {
 //		.setContent(intent);
 //	tabHost.addTab(spec);
 
-	tabHost.setCurrentTab(0);
+	tabHost.setCurrentTab(1);
 	setStatus("");
     }
 
@@ -147,7 +153,12 @@ public class Tabs extends TabActivity {
 	    b.setOnClickListener(new OnClickListener(){
 		@Override
 		public void onClick(View arg0) {
-		    Toast.makeText(ctx, edit.getEditableText().toString(), Toast.LENGTH_SHORT).show();
+		    try {
+			BaseActivity.server.sendMessage("MESSAGE username "+edit.getEditableText().toString());
+		    } catch (Exception e) {
+			e.printStackTrace();
+		    }
+		    //Toast.makeText(ctx, edit.getEditableText().toString(), Toast.LENGTH_SHORT).show();
 		    dialog.cancel();
 		}
 	    });
