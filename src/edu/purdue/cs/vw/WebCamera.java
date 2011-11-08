@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -27,27 +28,27 @@ public class WebCamera extends Activity {
     @Override
     protected void onResume() {
 	super.onResume();
-	 Uri uri = Uri.parse("http://lwsn1130n-cam.cs.purdue.edu/mjpg/2/video.mjpg");
-	image.setImageURI(uri);
-//	new AsyncTask(){
-//
-//	    Bitmap b;
-//	    
-//	    @Override
-//	    protected Object doInBackground(Object... params) {
-//		 String url = String.format("http://lwsn1130s-cam.cs.purdue.edu/axis-cgi/jpg/image.cgi?camera=3&resolution=%dx%d", 320,  240);
-//		b = downloadFile(url);
-//		return null;
-//	    }
-//
-//	    @Override
-//	    protected void onPostExecute(Object result) {
-//		super.onPostExecute(result);
-//		if(image!=null)
-//		    image.setImageBitmap(b);
-//	    }
-//	    
-//	}.execute(null);
+	 //Uri uri = Uri.parse("http://lwsn1130n-cam.cs.purdue.edu/axis-cgi/jpg/image.cgi?camera=2&resolution=320x240");
+	//image.setImageURI(uri);
+	new AsyncTask(){
+
+	    Bitmap b;
+	    
+	    @Override
+	    protected Object doInBackground(Object... params) {
+		 String url = String.format("http://lwsn1130s-cam.cs.purdue.edu/axis-cgi/jpg/image.cgi?camera=2&resolution=640x480");
+		b = downloadFile(url);
+		return null;
+	    }
+
+	    @Override
+	    protected void onPostExecute(Object result) {
+		super.onPostExecute(result);
+		if(image!=null)
+		    image.setImageBitmap(b);
+	    }
+	    
+	}.execute(null);
 	//image.loadUrl("http://lwsn1130n-cam.cs.purdue.edu/mjpg/2/video.mjpg");
 		 
 	    //image.setVideoURI(uri);
