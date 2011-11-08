@@ -7,27 +7,28 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.VideoView;
+import android.widget.ImageView;
 
 public class WebCamera extends Activity {
 
-    VideoView image;
+    ImageView image;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.webcamera);
-	image = (VideoView) findViewById(R.id.image);
+	image = (ImageView) findViewById(R.id.image);
     }
 
     @Override
     protected void onResume() {
 	super.onResume();
+	 Uri uri = Uri.parse("http://lwsn1130n-cam.cs.purdue.edu/mjpg/2/video.mjpg");
+	image.setImageURI(uri);
 //	new AsyncTask(){
 //
 //	    Bitmap b;
@@ -48,11 +49,9 @@ public class WebCamera extends Activity {
 //	    
 //	}.execute(null);
 	//image.loadUrl("http://lwsn1130n-cam.cs.purdue.edu/mjpg/2/video.mjpg");
-	
-	 Uri uri = Uri.parse("http://lwsn1130n-cam.cs.purdue.edu/mjpg/2/video.mjpg");
-	 
-	    image.setVideoURI(uri);
-	    image.start();
+		 
+	    //image.setVideoURI(uri);
+	    //image.start();
 
 	 
 //	 Intent intent = new Intent(Intent.ACTION_VIEW, uri);

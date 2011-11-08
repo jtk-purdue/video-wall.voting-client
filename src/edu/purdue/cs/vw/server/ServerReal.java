@@ -50,8 +50,10 @@ public class ServerReal implements Server {
 	try {
 	    requestSocket = new Socket(serverLocation, portnum);
 	    Log.d(Server.TAG, "Connected to " + serverLocation + " in port " + portnum);
+	    // requestSocket.setSoTimeout(3000); set time out to 3 seconds for initial connection
 	    out = new PrintWriter(requestSocket.getOutputStream(), true);
 	    out.flush();
+	    // requestSocket.setSoTimeout(0); set time out to infinity for rest of application 
 	    in = new BufferedReader(new InputStreamReader(requestSocket.getInputStream()));
 	    String message = in.readLine();
 	    Log.d(Server.TAG, message);
