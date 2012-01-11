@@ -123,6 +123,9 @@ public class Tabs extends TabActivity {
 	    break;
 
 	case R.id.admin:
+		  i.setClass(activity, /*Admin.class*/RemoteSwitch.class);
+		  activity.startActivity(i);
+		  /*
 	    Account[] a = AccountManager.get(ctx).getAccounts();
 	    for (Account account : a) {
 	      // TODO: Check possibleEmail against an email regex or treat
@@ -135,7 +138,7 @@ public class Tabs extends TabActivity {
 	      }
 	      Log.d("Tabs", possibleEmail);
 	    }
-
+	      */
 	    break;
 
 	case R.id.settings:

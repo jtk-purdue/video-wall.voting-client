@@ -36,7 +36,7 @@ public class WebCamera extends Activity {
 	    
 	    @Override
 	    protected Object doInBackground(Object... params) {
-		 String url = String.format("http://lwsn1130s-cam.cs.purdue.edu/axis-cgi/jpg/image.cgi?camera=2&resolution=640x480");
+		 String url = String.format("http://lwsn1130n-cam.cs.purdue.edu/axis-cgi/jpg/image.cgi?camera=2&resolution=640x480");
 		b = downloadFile(url);
 		return null;
 	    }
